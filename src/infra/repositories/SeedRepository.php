@@ -183,6 +183,7 @@
             $this->createTableCarouselImages();
             $this->createTableOrder();
             $this->createTableOrderItens();
+            $this->createTableSimilarProducts();
         }
 
         public function destroyDatabase()
@@ -201,6 +202,7 @@
                 $this->conn->exec("drop table if exists Users");
                 
                 $this->conn->exec("drop table if exists states");
+                $this->conn->exec("drop table if exists SimilarProducts");
             }
             catch(Exception $ex)
             {
@@ -317,8 +319,6 @@
             );
         }
         
-       
-
         public function createTableSellers()
         {
             $this->conn->exec(
@@ -374,6 +374,18 @@
                     Qtd int
                 );"
             );
+        }
+
+        public function createTableSimilarProducts()
+        {
+            $query = "CREATE TABLE SimilarProducts (
+                SimilarProductId int PRIMARY KEY AUTO_INCREMENT, 
+                ParentProductId int NOT NULL,
+                ChildProductId int NOT NULL, 
+                FOREIGN KEY(ParentProductId) REFERENCES Products(ProductId),
+                FOREIGN KEY(ChildProductId) REFERENCES Products(ProductId)
+            );";
+            $this->conn->exec($query);
         }
     }
 ?>

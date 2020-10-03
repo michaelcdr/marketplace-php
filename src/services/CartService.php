@@ -9,6 +9,7 @@
     use models\CheckoutResult;
     use models\OrderItem;
     use models\Address;
+    use Exception;
 
     class CartService 
     {

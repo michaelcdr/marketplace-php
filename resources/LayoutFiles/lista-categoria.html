@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" 
+            rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" 
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+            crossorigin="anonymous">
+        <link rel="stylesheet" 
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="libs/slick/slick.css">
+        <link rel="stylesheet" href="libs/slick/slick-theme.css"> -->
+        <link rel="stylesheet" href="css/estilos.css">
+    </head>
+    <body>
+        <!-- cabeçalho de navegação para area administrativa -->
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" title="Voltar para o site." href="index.html">
+                        <span class="logo-strong">L</span>oja<span class="logo-strong">W</span>hatever 
+                        <small>(área administrativa)</small>
+                    </a>
+                    <button class="navbar-toggler" type="button" 
+                            data-toggle="collapse" data-target="#navbarSupportedContent" 
+                            aria-controls="navbarSupportedContent" aria-expanded="false" 
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="lista-vendedor.html">
+                                    Vendedores <span class="sr-only"></span>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="lista-produto.html">
+                                    Produtos <span class="sr-only"></span>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="lista-categoria.html">
+                                    Categorias <span class="sr-only"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <form class="form-inline">
+                            <span class="login-nav text-light ml-3">
+                                <i class="fa fa-user"></i> Olá, Michael clique em 
+                                <a href="login.html" class="a-primary" title="Sair no sistema" ]
+                                    data-container="body"
+                                    data-toggle="tooltip" data-placement="body">Sair
+                                </a> 
+                                <br /> para fazer seu logout.
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container">
+            <div class="d-flex align-items-center p-3 mt-3 text-white-50 bg-dark rounded shadow-sm">
+                <div class="lh-100">
+                    <h6 class="mb-0 text-white lh-100">Lista de categorias</h6>
+                    <small>Categorias > Lista de categorias</small>
+                </div>
+            </div>
+
+            <div class="card mt-3 ">
+                <div class="card-body">
+                    <h5>Veja abaixo as categorias disponiveis.</h6>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Pesquise pelo titulo da categoria" 
+                                        aria-label="Pesquise pelo titulo da categoria" aria-describedby="btn-pesquisar">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="btn-pesquisar">
+                                            Pesquisar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                                <a class="btn btn-dark " href="cadastro-produto.html">
+                                    <i class="fa fa-plus"></i> Cadastrar categoria
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mt-3">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end">
+                                    <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">Próxima</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <p class="mt-3">
+                        <a class="btn btn-dark " href="cadastro-produto.html">
+                            <i class="fa fa-plus"></i> Cadastrar categoria
+                        </a>
+                    </p>
+                </div>
+               
+            </div>
+        </div>
+
+
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" 
+        crossorigin="anonymous"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+        crossorigin="anonymous"></script>
+    <script src="js/lista-produto.js"></script>
+  </body>
+</html>

@@ -86,6 +86,8 @@
                 </div>
             </div>
         </section>
+
+        <?php require_once './views/produto/card-similar-product.php' ?>
     </div>
 </main>
 
@@ -94,7 +96,7 @@
 <script>
     $(function(){
         let qtdImgs = parseInt($("#img-container").data('qtd'));
-        console.log(qtdImgs)
+
         if (qtdImgs > 0){
             let minImgs = 3;
             if (qtdImgs < minImgs)
@@ -105,19 +107,28 @@
                 fade: true,
                 asNavFor: '.slider-nav-produto'
             });
+            
+            $('.similar-products-slider').slick({
+                speed: 1500,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000
+            });
+
             $('.slider-nav-produto').slick({
                 slidesToShow:minImgs,
                 arrows: true,
                 asNavFor: '.slider-for',
                 focusOnSelect: true,
-                prevArrow:'<button type="button" class="btn btn-outline-dark slick-next"><i class="fa fa-chevron-left"></i></button>',
-                nextArrow:'<button type="button" class="btn btn-outline-dark slick-next"><i class="fa fa-chevron-right"></i></button>'
+                prevArrow:'<button type="button" class="btn btn-outline-dark slick-next">'+
+                '<i class="fa fa-chevron-left"></i>'+
+                '</button>',
+                nextArrow:'<button type="button" class="btn btn-outline-dark slick-next">'+
+                '<i class="fa fa-chevron-right"></i>'+
+                '</button>'
             });
-
         }
-
-    })
-
-    
+    });
 </script>
         

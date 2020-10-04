@@ -16,7 +16,7 @@
                 header('location: /');
 
             $product = $this->_repoProduct->getById($_GET["id"]);           
-            
+            $similarProducts = $this->_repoProduct->getAllSimilarProducts($_GET["id"]);
             require "views/produto/detalhes-produto.php";
         }
     }

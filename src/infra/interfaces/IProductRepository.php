@@ -13,5 +13,6 @@
         public function update($product);
         public function decreaseStockByOrderItens($orderItens);
         public function getAllByUserIdSeller($userId);
+        public function getAllSimilarProducts($productId);
     }
 ?>

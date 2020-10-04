@@ -1,0 +1,52 @@
+/*usuarios*/
+
+create table Users(
+	UserId  int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Login varchar(100) not null unique,
+	Password varchar(255) not null,
+	Name varchar(255) not null
+);
+
+/*produtos*/
+
+CREATE TABLE Products (
+    ProductId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Title varchar(255) NOT NULL,
+    Description varchar(255),
+    Price decimal(10,2),
+    CreatedAt datetime,
+    CreatedBy varchar(255)
+);
+
+CREATE TABLE ProductsOnOffer (
+	ProductsOnOfferId int PRIMARY KEY AUTO_INCREMENT,
+	ProductId int NOT NULL,   
+	Price decimal(10,2), 
+	FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
+);
+
+CREATE TABLE ProductsImages (
+	ProductImageId int PRIMARY KEY AUTO_INCREMENT, 
+	ProductId int NOT NULL,
+    FileName nvarchar(255) not null, 
+	FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
+);
+
+CREATE TABLE Categories (
+    CategoryId int NOT NULL AUTO_INCREMENT,
+    Title varchar(255) NOT NULL,    
+    PRIMARY KEY (CategoryId)
+);
+CREATE TABLE CarouselImages (
+    CarouselImageId int NOT NULL AUTO_INCREMENT,
+    FileName varchar(255) NOT NULL,    
+    `Order` int not null,
+    PRIMARY KEY (CarouselImageId)
+);
+insert into Products(Title, Description, Price,createdat,createdby) values 
+('Guitarra Ibanez RG 7420Z',
+'Ibanez RG 7420Z | HH | 7 Cordas | Weathered Black (WK)',2000,now(),'michael');
+
+alter table ProductsOnOffer 
+add constraint pk_ProductsOnOfferId
+primary key(ProductsOnOfferId); 

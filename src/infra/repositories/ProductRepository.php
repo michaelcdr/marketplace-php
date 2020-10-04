@@ -310,6 +310,51 @@
             }
         }
 
+        public function getAllSimilarProducts($productId)
+        {
+            $stmt = $this->conn->prepare(
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
+                        p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
+                        p.UserId 
+                        FROM Products p
+                left join (
+                    select pi.ProductId, pi.filename as filename
+                    from ProductsImages pi     
+                )
+                as Image on p.ProductId = Image.ProductId 
+                where p.productId in(SELECT childproductid from similarproducts where parentproductid = :productId) 
+                group by p.productid 
+                order by p.title "
+            );
+            
+            $stmt->bindValue(':productId',  $productId);
+             
+            $stmt->execute();
+            $produtosResult = $stmt->fetchAll();
+
+            $products = array();
+            foreach($produtosResult as $row)
+            {
+                $prod = new Product(
+                    $row['ProductId'], 
+                    $row['Title'], 
+                    $row['Price'], 
+                    $row['Description'], 
+                    $row['CreatedAt'], 
+                    $row['CreatedBy'],
+                    $row['Offer'],
+                    $row['Stock'],
+                    $row['Sku'],
+                    $row['UserId'],
+                    ''
+                );
+                $prod->setDefaultImage($row["ImageFileName"]);
+
+                $products[] = $prod; 
+            }
+            return $products;
+        }
+
         public function getAllByUserIdSeller($userId)
         {
             $stmt = $this->conn->prepare(

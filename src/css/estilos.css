@@ -431,3 +431,52 @@ div.dropdown-menu.show .dropdown-item:focus {
 .table-cart .title{
     font-size: 12px;
 }
+
+
+.slick-prev, .slick-next{
+    z-index: 9999;
+    FONT-SIZE: 15px;
+    width: 50px;
+    border-radius: 50px;
+    height: 50px;
+    background-color: white;
+    color:  #343A40;
+    border: 2px solid #343A40;
+    transition: all .4s;
+}
+.slick-next {
+    position: absolute;
+    right: -35px;
+}
+.slick-prev {
+    position: absolute;
+    left: -40px;
+}
+.slick-next i{
+    margin-top: 15px;
+    margin-left: 18px;
+}
+.slick-prev i{
+    margin-top: 15px;
+    margin-left: 16px;
+}
+a.slick-next:link, a.slick-prev:link,
+a.slick-next:visited, a.slick-prev:visited {
+    background: none;
+    background-color: var(--second-color);
+    color: #343A40;
+}
+a.slick-next:hover, a.slick-prev:hover{
+    background: none;
+    background-color: #343A40;
+}
+a.slick-next:hover i, 
+a.slick-prev:hover i{
+    color: var(--second-color);
+}
+a.slick-next:active, 
+a.slick-prev:active {
+    background: none;
+    background-color: #343A40;
+    color: var(--second-color);
+}

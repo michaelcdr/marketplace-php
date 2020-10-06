@@ -5,7 +5,7 @@ class Carousel{
             lazyLoad: 'ondemand',
             fade:true,
             autoplay:true,
-            arrows:true,
+            arrows:false,
             dots:true
         });
     }

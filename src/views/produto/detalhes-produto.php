@@ -112,8 +112,16 @@
                 speed: 1500,
                 slidesToShow: 3,
                 slidesToScroll: 1,
+                arrows:true,
                 autoplay: true,
-                autoplaySpeed: 2000
+                infinite:true,
+                autoplaySpeed: 2000,
+                prevArrow:'<a class="slick-prev">'+
+                '<i class="fa fa-chevron-left"></i>'+
+                '</a>',
+                nextArrow:'<a  class="slick-next">'+
+                '<i class="fa fa-chevron-right"></i>'+
+                '</a>'
             });
 
             $('.slider-nav-produto').slick({

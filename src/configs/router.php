@@ -36,7 +36,7 @@
     use controllers\ProductPartialListController;
     use controllers\ProductDeleteController;
     use controllers\ProductImageUploadController;
-
+    use controllers\products\ProductSimilarController;
     use controllers\CartCheckoutController;
     use controllers\CartCheckoutPostController;
 
@@ -106,6 +106,7 @@
         "/admin/produto/editar-post" => [ProductEditPostController::class,"admin,vendedor"],
         "/admin/produto/deletar" => [ProductDeleteController::class,"admin,vendedor"],
         "/admin/produto/upload" => [ProductImageUploadController::class,"admin,vendedor"],
+        "/admin/produto/similares" => [ProductSimilarController::class,"admin,vendedor"],
         
         "/admin/categoria/upload" => [CategoryImageUploadController::class,"admin"],
         "/admin/categoria/editar" => [CategoryEditController::class, "admin"],

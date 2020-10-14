@@ -1,11 +1,10 @@
 <div class="row">
     <div class="col-md-12">
-        <table id="tb-products" data-page="0" 
-            class="table table-bordered table-hovered table-striped">
+        <table id="tb-products" data-page="0" class="table table-bordered table-hovered table-striped">
             <thead>
                 <tr>
                     <th width="10%"></th>
-                    <th align="center" style="text-align:center">Image</th>
+                    <th style="text-align:center">Image</th>
                     <th>Sku</th>
                     <th>Vendedor</th>
                     <th>Título</th>
@@ -19,21 +18,16 @@
                 <?php else  :?>
                     <?php foreach ($products as $product): ?>
                         <tr>
-                            <td align="align-middle">
+                            <td>
                                 <div class="btn-group">
                                     <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?php echo $product->getId(); ?>">
                                         <i class="fa fa-remove"></i>
                                     </button>
-                                    <a class="btn btn-sm btn-outline-dark" href="/admin/produto/editar?id=<?php echo $product->getId(); ?>">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
                                 </div>
                             </td>
-                            <td align="center" >
+                            <td>
                                 <?php if ($product->hasImages()): ?>
-                                    <img src="<?php echo $product->getDefaultImage(); ?>" 
-                                        title="" alt="" class="img-fluid" 
-                                        style="max-width:100px; max-height:100px; ">
+                                    <img src="<?php echo $product->getDefaultImage(); ?>"  title="" alt="" class="img-fluid" style="max-width:100px; max-height:100px; ">
                                 <?php endif; ?>
                             </td>
                             <td >
@@ -50,10 +44,5 @@
                 <?php endif ?>
             </tbody>
         </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <?php require_once './views/partials/pagination-admin-controlls.php' ?>
     </div>
 </div>

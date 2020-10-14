@@ -6,12 +6,8 @@
     use models\PaginatedResults;
     use PDO;
 
-    class CategoryRepository 
-        extends MySqlRepository 
-        implements ICategoryRepository
+    class CategoryRepository  extends MySqlRepository implements ICategoryRepository
     {
-
-
         public function add($category)
         {
             $stmt = $this->conn->prepare(

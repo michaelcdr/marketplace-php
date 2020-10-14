@@ -1,12 +1,8 @@
 <?php   
-
     namespace models\responses;
     
     class UpdateQtdProductResponse 
     {
-        /**
-         * Class constructor.
-         */
         public function __construct(bool $success, string $msg, int $stock, int $qtd, $finalValue, $subTotal)
         {
             $this->_success = $success;

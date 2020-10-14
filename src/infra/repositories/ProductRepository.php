@@ -247,8 +247,13 @@
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Description, p.Price, 
                         p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku,
-                         p.UserId  , u.name as Seller
+                         p.UserId  , u.name as Seller, Image.filename as ImageFileName
                 FROM Products p
+                left join (
+                    select pi.ProductId, pi.filename as filename
+                    from ProductsImages pi     
+                )
+                as Image on p.ProductId = Image.ProductId 
                 inner join users u on p.userid = u.userid
                 WHERE p.ProductId = :ProductId"
             );
@@ -272,6 +277,7 @@
                     $row['UserId'],
                     $row["Seller"]
                 );
+                $product->setDefaultImage($row["ImageFileName"]);
 
                 $stmt = $this->conn->prepare(
                     "select * from productsimages where productid = :ProductId;"
@@ -305,7 +311,6 @@
                     if (!$stmt->execute()){
                         return null;
                     }
-
                 }
             }
         }

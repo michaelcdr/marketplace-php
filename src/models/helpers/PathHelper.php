@@ -4,12 +4,8 @@ namespace models\helpers;
 
 class PathHelper
 {
+    private $pathImgProduct = '/assets/img/products/';
 
-    private $pathImgProduct = '/img/products/';
-
-    /**
-     * Get the value of pathProduct
-     */ 
     public function getPathImgProduct()
     {
         return $this->pathImgProduct;

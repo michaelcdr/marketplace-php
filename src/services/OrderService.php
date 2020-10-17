@@ -1,22 +1,24 @@
 <?php
-    namespace services;
-    use models\Order;
-    use models\OrderDetailsViewModel;
 
-    class OrderService 
+namespace services;
+
+use models\Order;
+use models\OrderDetailsViewModel;
+
+class OrderService
+{
+    private $_repoOrder;
+
+    public function __construct($factory)
     {
-        private $_repoOrder;
-        
-        public function __construct($factory)
-        {
-            $this->_repoOrder = $factory->getOrderRepository();
-        }
-
-        public function getOrderWithProducts()
-        {
-            $orderId = intval($_GET["id"]);
-            $order = $this->_repoOrder->getOrderWithProducts($orderId);
-            
-            return $order;
-        }
+        $this->_repoOrder = $factory->getOrderRepository();
     }
+
+    public function getOrderWithProducts()
+    {
+        $orderId = intval($_GET["id"]);
+        $order = $this->_repoOrder->getOrderWithProducts($orderId);
+
+        return $order;
+    }
+}

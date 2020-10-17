@@ -20,14 +20,14 @@
                         <tr>
                             <td class="align-middle">
                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?php echo $product->getId(); ?>">
+                                    <button class="btn btn-sm btn-outline-danger btn-delete" data-id="<?php echo $product->getId(); ?>" title="Remover produto">
                                         <i class="fa fa-remove"></i>
                                     </button>
-                                    <a class="btn btn-sm btn-outline-dark" href="/admin/produto/editar?id=<?php echo $product->getId(); ?>">
+                                    <a class="btn btn-sm btn-outline-dark" href="/admin/produto/editar?id=<?php echo $product->getId(); ?>" title="Editar produto">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a class="btn btn-sm btn-outline-dark" href="/admin/produto/similares?id=<?php echo $product->getId(); ?>">
-                                        <i class="fa fa-edit"></i>
+                                    <a class="btn btn-sm btn-outline-dark" href="/admin/produto/similares?id=<?php echo $product->getId(); ?>" title="Associar produtos similares">
+                                        <i class="fa fa-object-group"></i>
                                     </a>
                                 </div>
                             </td>

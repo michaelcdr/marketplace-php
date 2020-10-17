@@ -1,5 +1,7 @@
 <?php
-    namespace controllers;
+    namespace controllers\sellers;
+
+    use controllers\IBaseController;
     use services\SellerService;
 
     class SellerDetailsController implements IBaseController
@@ -17,4 +19,3 @@
             require "views/admin/sellers/detalhes.php";
         }
     }
-?>

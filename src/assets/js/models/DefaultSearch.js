@@ -1,15 +1,14 @@
-class PesquisaController{
-    constructor(){
+class DefaultSearch {
+    constructor() {
         this.animateSections();
     }
 
-    animateSections(){
+    animateSections() {
         //dando uma animada na bagaça...
         setTimeout(() => {
             $('.card').addClass('in');
-        
-        },300);        
+        }, 300);
     }
 }
 
-window.pesquisaController = new PesquisaController();
+window.pesquisaController = new DefaultSearch();

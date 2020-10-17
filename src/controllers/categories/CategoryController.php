@@ -1,5 +1,5 @@
 <?php
-    namespace controllers;
+    namespace controllers\categories;
     
     class CategoryController
     {
@@ -15,4 +15,3 @@
             return $this->_repoCategories->getAll();
         }
     }
-?>

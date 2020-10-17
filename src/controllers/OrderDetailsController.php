@@ -1,11 +1,5 @@
 <?php
     namespace controllers;
-    use infra;
-    use models;
-    use infra\repositories;
-    use models\JsonSuccess;
-    use models\JsonError;
-    use models\User;
     use services\OrderService;
 
     class OrderDetailsController implements IBaseController
@@ -23,4 +17,3 @@
             require "views/admin/order/details.php";
         }
     }
-?>

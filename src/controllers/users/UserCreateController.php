@@ -1,10 +1,6 @@
 <?php
-    namespace controllers;
-    
-    use controllers;
-    use infra;
-    use models;
-    use infra\repositories;
+    namespace controllers\users;    
+    use controllers\IBaseController;
 
     class UserCreateController implements IBaseController
     {
@@ -18,4 +14,3 @@
             require "views/admin/users/cadastrar-usuario.php";
         }
     }
-?>

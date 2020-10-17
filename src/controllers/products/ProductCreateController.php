@@ -5,7 +5,7 @@ namespace controllers\products;
 use controllers\IBaseController;
 use services\ProductService;
 
-class ProductSimilarController implements IBaseController
+class ProductCreateController implements IBaseController
 {
     private $_productService;
     public function __construct($factory)
@@ -15,8 +15,7 @@ class ProductSimilarController implements IBaseController
 
     public function proccessRequest(): void
     {
-        $model = $this->_productService->getById($_GET['id']);
-        //$model = $this->_productService->getProductCreateViewModel();
-        require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\similar.php';
+        $model = $this->_productService->getProductCreateViewModel();
+        require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\cadastrar.php';
     }
 }

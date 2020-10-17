@@ -5,9 +5,10 @@ namespace controllers\products;
 use controllers\IBaseController;
 use services\ProductService;
 
-class ProductSimilarController implements IBaseController
+class ProductListController implements IBaseController
 {
     private $_productService;
+
     public function __construct($factory)
     {
         $this->_productService = new ProductService($factory);
@@ -15,8 +16,9 @@ class ProductSimilarController implements IBaseController
 
     public function proccessRequest(): void
     {
-        $model = $this->_productService->getById($_GET['id']);
-        //$model = $this->_productService->getProductCreateViewModel();
-        require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\similar.php';
+        $paginatedResults = $this->_productService->getAllPaginated();
+        $products = $paginatedResults->results;
+
+        require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\lista.php';
     }
 }

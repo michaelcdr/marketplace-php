@@ -7,7 +7,7 @@
                 <?php foreach ($categories as $category): ?>
                 <li>
                     <div class="card-linha">
-                        <img src="img/categories/<?php echo $category->getImage();  ?>" 
+                        <img src="<?php echo $category->getImage();  ?>" 
                             alt="<?php echo $category->getTitle(); ?>" class="">
                     </div>
                     <div class="card-linha-title "><?php echo $category->getTitle();  ?></div> 

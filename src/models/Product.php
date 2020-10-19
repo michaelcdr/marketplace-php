@@ -3,7 +3,7 @@
 namespace models;
 
 use infra\helpers\SrcHelper;
-
+use catalog\domain\viewmodels\ProductImage;
 class Product
 {
     private $ProductId;
@@ -122,12 +122,11 @@ class Product
 
     public function getImagesWithSrc()
     {
+        $images = array();
         foreach ($this->images as $image) {
-            $image["FileName"] = SrcHelper::getProductImg() . $image["FileName"];
+            $images[] = new ProductImage($image["FileName"]);
         }
-        var_dump($this->images);
-
-        return $this->images;
+        return $images;
     }
 
     public function hasImages()

@@ -5,6 +5,7 @@
     use models\Category;
     use models\PaginatedResults;
     use PDO;
+    use infra\helpers\SrcHelper;
 
     class CategoryRepository  extends MySqlRepository implements ICategoryRepository
     {
@@ -61,7 +62,7 @@
                 $category = new Category(
                     $row['categoryId'], 
                     $row['title'], 
-                    $row['image']
+                    SrcHelper::getCategoryImg() . $row['image']
                 );
             
             return $category;
@@ -103,7 +104,9 @@
             $categoriesArray = array();
             foreach($categoriesResults as $row){
                 $categoriesArray[] = new Category(
-                    $row["categoryId"], $row["title"],$row["image"]
+                    $row["categoryId"], 
+                    $row["title"], 
+                    SrcHelper::getCategoryImg() . $row["image"]
                 );
             }
 

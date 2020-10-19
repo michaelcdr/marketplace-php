@@ -18,4 +18,13 @@ class SrcHelper
     {
         return "/assets/img/products/";
     }
+
+    public static function getCategoryImg()
+    {
+        return "/assets/img/categories/";
+    }
+
+    public static function getProductAdminJs(){
+        return "/assets/js/admin/product/";
+    }
 }

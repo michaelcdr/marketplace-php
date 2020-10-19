@@ -34,3 +34,8 @@
 .custom-labels label{
     font-weight: bold;
 }
+
+.product-similar.details-current-product{
+    background-color: #eee;
+    border-radius: 4px;
+}

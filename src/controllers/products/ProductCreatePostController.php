@@ -1,7 +1,6 @@
 <?php
     namespace controllers\products;
     
-    use controllers;
     use models\Product;
     use controllers\IBaseController;
     use services\ProductService;
@@ -48,11 +47,8 @@
                 );
 
                 //validando model se tiver ok o service resolve a treta!
-                if (!$product->isValid()){
-                    $retornoJson = new JsonError(
-                        "Não foi possível cadastrar o produto, ocorreram erros de validação verifique a seguir"
-                    ); 
-                }
+                if (!$product->isValid())
+                    $retornoJson = new JsonError("Não foi possível cadastrar o produto, ocorreram erros de validação verifique a seguir"); 
                 else
                 {
                     $imagesUploaded = null;

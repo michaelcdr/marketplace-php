@@ -5,20 +5,17 @@ namespace services;
 use models\Product;
 use models\ProductCreateViewModel;
 use models\ProductEditViewModel;
-use models\helpers\PathHelper;
 use infra\helpers\SrcHelper;
 
 class ProductService
 {
     private $_repoProduct;
     private $_repoUser;
-    private $_pathHelper;
 
     public function __construct($factory)
     {
         $this->_repoProduct = $factory->getProductRepository();
         $this->_repoUser = $factory->getUserRepository();
-        $this->_pathHelper = new PathHelper();
     }
 
     public function getProductCreateViewModel()
@@ -117,8 +114,8 @@ class ProductService
     }
 
     /* 
-        * Transforma uma lista PDO statement em uma lista de Model Product.
-        */
+    * Transforma uma lista PDO statement em uma lista de Model Product.
+    */
     public function stmtToProduct($produtosResult)
     {
         $products = array();
@@ -136,7 +133,7 @@ class ProductService
                 $productItem["UserId"],
                 $productItem["Seller"]
             );
-            $product->setDefaultImage($productItem["ImageFileName"]);
+            $product->setDefaultImage(SrcHelper::getProductImg() . $productItem["ImageFileName"]);
             $products[] = $product;
         }
 

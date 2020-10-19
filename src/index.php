@@ -3,7 +3,7 @@
 use services\SessionService;
 use services\AuthService;
 
-require_once './configs/autoload.php';
+require_once './infra/configs/autoload.php';
 
 $basePath = __DIR__;
 
@@ -23,7 +23,7 @@ $caminho =  "/";
 if (isset($_SERVER["PATH_INFO"]))
     $caminho =  $_SERVER["PATH_INFO"];
 
-$rotas = require __DIR__ . './configs/router.php';
+$rotas = require __DIR__ . './infra/configs/router.php';
 
 if (!array_key_exists($caminho, $rotas)) {
     http_response_code(404);

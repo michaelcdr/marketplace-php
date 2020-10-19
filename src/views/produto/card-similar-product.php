@@ -6,7 +6,7 @@
             <?php  foreach($similarProducts as $similar) :?>
                 <div class="card card-oferta fade in h-100 mr-2">
                     <div class="text-center p-2">
-                        <img src="/img/products/<?php echo $similar->getDefaultImage() ?>" 
+                        <img src="<?php echo $similar->getDefaultImage() ?>" 
                             class="card-img-top img-fluid" style="display:inline;"
                             alt="<?php echo $similar->getDefaultImage() ?>" 
                             title="<?php echo $similar->getDefaultImage() ?>">

@@ -30,16 +30,16 @@ require_once './views/partials/header.php';
                             <!-- Imagens disponiveis para o produto -->
                             <div class="col-lg-5" id="img-container" data-qtd="<?php echo count($product->getImages()); ?>">
                                 <div class="card p-3 slider-for">
-                                    <?php foreach ($product->getImages() as $image) : ?>
+                                    <?php foreach ($product->getImagesWithSrc() as $image) : ?>
                                         <div class="text-center">
-                                            <img src="<?php echo $image["FileName"] ?>" class="img-fluid d-block " style="max-height:250px; text-align:center; display:inline !important;" alt="" title="">
+                                            <img src="<?php echo $image->getImage() ?>" class="img-fluid d-block " style="max-height:250px; text-align:center; display:inline !important;" alt="" title="">
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                                 <div class="slider-nav-produto">
-                                    <?php foreach ($product->getImages() as $image) : ?>
+                                    <?php foreach ($product->getImagesWithSrc() as $image) : ?>
                                         <div style="width:70px; height:70px; text-align:center">
-                                            <img src="<?php echo $image["FileName"] ?>" style="max-height:50px;display:inline;" class="img-fluid">
+                                            <img src="<?php echo $image->getImage() ?>" style="max-height:50px;display:inline;" class="img-fluid">
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -88,49 +88,4 @@ require_once './views/partials/header.php';
 
 <?php require_once './views/partials/footer.php' ?>
 <script src="/assets/libs/slick/slick.min.js"></script>
-<script>
-    $(function() {
-        let qtdImgs = parseInt($("#img-container").data('qtd'));
-
-        if (qtdImgs > 0) {
-            let minImgs = 3;
-            if (qtdImgs < minImgs)
-                minImgs = qtdImgs;
-
-            $('.slider-for').slick({
-                arrows: false,
-                fade: true,
-                asNavFor: '.slider-nav-produto'
-            });
-
-            $('.similar-products-slider').slick({
-                speed: 1500,
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                arrows: true,
-                autoplay: true,
-                infinite: true,
-                autoplaySpeed: 2000,
-                prevArrow: '<a class="slick-prev">' +
-                    '<i class="fa fa-chevron-left"></i>' +
-                    '</a>',
-                nextArrow: '<a  class="slick-next">' +
-                    '<i class="fa fa-chevron-right"></i>' +
-                    '</a>'
-            });
-
-            $('.slider-nav-produto').slick({
-                slidesToShow: minImgs,
-                arrows: true,
-                asNavFor: '.slider-for',
-                focusOnSelect: true,
-                prevArrow: '<button type="button" class="btn btn-outline-dark slick-next">' +
-                    '<i class="fa fa-chevron-left"></i>' +
-                    '</button>',
-                nextArrow: '<button type="button" class="btn btn-outline-dark slick-next">' +
-                    '<i class="fa fa-chevron-right"></i>' +
-                    '</button>'
-            });
-        }
-    });
-</script>
+<script src="/assets/js/web/product/details.js"></script>

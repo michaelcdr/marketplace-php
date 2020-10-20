@@ -7,7 +7,6 @@ use infra\interfaces\IProductRepository;
 use models\Product;
 use models\PaginatedResults;
 use PDO;
-use Exception;
 
 class ProductRepository
 extends MySqlRepository
@@ -21,21 +20,15 @@ implements IProductRepository
             if (isset($userId) && $userId != null)
                 $userClausule = " where p.userId = :userId ";
 
-            $stmt = $this->conn->prepare(
-                "SELECT count(p.ProductId) as total FROM Products p $userClausule"
-            );
+            $stmt = $this->conn->prepare("SELECT count(p.ProductId) as total FROM Products p $userClausule");
         } else {
             if (isset($userId) && $userId != null)
                 $userClausule = " where p.userId = :userId ";
 
             $stmt = $this->conn->prepare(
                 "SELECT count(p.ProductId) as total FROM Products p
-                    where 
-                        (p.title like :search or
-                        p.description like :search or
-                        p.Sku like :search) $userClausule "
+                 WHERE  (p.title like :search or p.description like :search or p.Sku like :search) $userClausule "
             );
-
             $stmt->bindValue(":search", '%' . $search . '%');
         }
         if (isset($userId) && $userId != null)
@@ -300,50 +293,6 @@ implements IProductRepository
         }
     }
 
-    public function getAllSimilarProducts($productId)
-    {
-        $stmt = $this->conn->prepare(
-            "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
-                        p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
-                        p.UserId 
-                        FROM Products p
-                left join (
-                    select pi.ProductId, pi.filename as filename
-                    from ProductsImages pi     
-                )
-                as Image on p.ProductId = Image.ProductId 
-                where p.productId in(SELECT childproductid from similarproducts where parentproductid = :productId) 
-                group by p.productid 
-                order by p.title "
-        );
-
-        $stmt->bindValue(':productId',  $productId);
-
-        $stmt->execute();
-        $produtosResult = $stmt->fetchAll();
-
-        $products = array();
-        foreach ($produtosResult as $row) {
-            $prod = new Product(
-                $row['ProductId'],
-                $row['Title'],
-                $row['Price'],
-                $row['Description'],
-                $row['CreatedAt'],
-                $row['CreatedBy'],
-                $row['Offer'],
-                $row['Stock'],
-                $row['Sku'],
-                $row['UserId'],
-                ''
-            );
-            $prod->setDefaultImage($row["ImageFileName"]);
-
-            $products[] = $prod;
-        }
-        return $products;
-    }
-
     public function getAllByUserIdSeller($userId)
     {
         $stmt = $this->conn->prepare(
@@ -388,5 +337,135 @@ implements IProductRepository
             $products[] = $prod;
         }
         return $products;
+    }
+
+    public function getAllSimilarProducts($productId)
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
+                    p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName, p.UserId 
+            FROM Products p
+            left join (
+                select pi.ProductId, pi.filename as filename
+                from ProductsImages pi     
+            )
+            as Image on p.ProductId = Image.ProductId 
+            where p.productId in (SELECT childproductid from similarproducts where parentproductid = :productId) 
+            group by p.productid 
+            order by p.title "
+        );
+
+        $stmt->bindValue(':productId',  $productId);
+
+        $stmt->execute();
+        $produtosResult = $stmt->fetchAll();
+
+        $products = array();
+        foreach ($produtosResult as $row) {
+            $prod = new Product(
+                $row['ProductId'],
+                $row['Title'],
+                $row['Price'],
+                $row['Description'],
+                $row['CreatedAt'],
+                $row['CreatedBy'],
+                $row['Offer'],
+                $row['Stock'],
+                $row['Sku'],
+                $row['UserId'],
+                ''
+            );
+            $prod->setDefaultImage($row["ImageFileName"]);
+
+            $products[] = $prod;
+        }
+        return $products;
+    }
+
+    public function totalOfSimilarProducts($search, $productId)
+    {
+        $stmt = null;
+        if (is_null($search) ||  $search === "") {
+            $stmt = $this->conn->prepare("SELECT count(childproductid) as total from similarproducts where parentproductid = :productId");
+        } else {
+            $stmt = $this->conn->prepare(
+                "SELECT count(p.ProductId) as total FROM Products p
+                 WHERE (p.title like :search orp.description like :search or p.Sku like :search) and p.ProductId in (SELECT childproductid from similarproducts where parentproductid = :productId) "
+            );
+            $stmt->bindValue(":search", '%' . $search . '%');
+        }
+        $stmt->bindValue(':productId',  $productId);
+        $stmt->execute();
+        $total = $stmt->fetch();
+        return intval($total["total"]);
+    }
+
+    public function getAllSimilarProductsPaginated($productId, $page, $search, $pageSize)
+    {
+        if (!isset($pageSize))
+            $pageSize = 5;
+
+        $skipNumber = 0;
+
+        if (!is_null($page) && $page > 0)
+            $skipNumber = $pageSize * ($page - 1);
+
+        $stmt = null;
+        $total = $this->totalOfSimilarProducts($search, $productId);
+
+        if (is_null($search) ||  $search === "") {
+            $stmt = $this->conn->prepare(
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName, p.UserId, u.Name as Seller
+                 FROM Products p
+                 LEFT JOIN (
+                    select pi.ProductId, pi.filename as filename from ProductsImages pi     
+                ) as Image on p.ProductId = Image.ProductId 
+                where p.ProductId in (SELECT childproductid from similarproducts where parentproductid = :productId)
+                GROUP BY p.productid 
+                ORDER BY p.title
+                limit :pageSize OFFSET :skipNumber "
+            );
+        } else {
+            $stmt = $this->conn->prepare(
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName, p.UserId, u.Name as Seller
+                 FROM Products p
+                 LEFT JOIN (
+                        select pi.ProductId, pi.filename as filename from ProductsImages pi     
+                 ) as Image on p.ProductId = Image.ProductId 
+                 WHERE p.ProductId in (SELECT childproductid from similarproducts where parentproductid = :productId) AND (p.title like :search or p.description like :search or p.Sku like :search) 
+                 GROUP BY productid 
+                 ORDER BY p.title 
+                 LIMIT :pageSize OFFSET :skipNumber "
+            );
+            $stmt->bindValue(":search", '%' . $search . '%');
+        }
+
+        $stmt->bindValue(":productId", intval(trim($productId)), PDO::PARAM_INT);
+        $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
+        $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $produtosResult = $stmt->fetchAll();
+
+
+        $numberOfPages = ceil($total / $pageSize);
+        $hasPreviousPage = false;
+        if ($numberOfPages > 1 && $page > 1)
+            $hasPreviousPage = true;
+
+        $hasNextPage = false;
+        if ($numberOfPages > intval($page))
+            $hasNextPage = true;
+
+        return new PaginatedResults(
+            $produtosResult,
+            $total,
+            count($produtosResult),
+            $hasPreviousPage,
+            $hasNextPage,
+            $page,
+            $numberOfPages,
+            "/admin/produto?p="
+        );
     }
 }

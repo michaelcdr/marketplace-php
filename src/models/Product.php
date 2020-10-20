@@ -3,7 +3,8 @@
 namespace models;
 
 use infra\helpers\SrcHelper;
-use catalog\domain\viewmodels\ProductImage;
+use domain\catalog\viewmodels\ProductImage;
+
 class Product
 {
     private $ProductId;
@@ -21,6 +22,7 @@ class Product
     private $errors;
     private $userId;
     private $imgPath;
+
     public function __construct(
         $id,
         $title,
@@ -40,7 +42,6 @@ class Product
         $this->Description = $description;
         $this->CreatedAt = $createdAt;
         $this->CreatedBy = $createdBy;
-
         $this->Offer = $offer;
         $this->Sku = $sku;
         $this->Stock = $stock;

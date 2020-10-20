@@ -9,6 +9,7 @@ use services\ProductService;
 class ProductSimilarController implements IBaseController
 {
     private $_productService;
+
     public function __construct($factory)
     {
         $this->_productService = new ProductService($factory);
@@ -16,9 +17,14 @@ class ProductSimilarController implements IBaseController
 
     public function proccessRequest(): void
     {
-        $model = $this->_productService->getById($_GET['id']);
+        $productWithSimilarProducts = $this->_productService->getProductByIdWithSimilarProducts($_GET['id'], 0, null, 10);
+        // echo '<pre>';
+        // var_dump($productWithSimilarProducts);
+        // echo '</pre>';
         $pathJs = SrcHelper::getProductAdminJs();
-        //$model = $this->_productService->getProductCreateViewModel();
+        $model = $productWithSimilarProducts->getProduct();
+        $paginatedResults = $productWithSimilarProducts->getPaginatedResultsOfSimilarProducts();
+        $products = $productWithSimilarProducts->getPaginatedResultsOfSimilarProducts()->results;
         require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\similar.php';
     }
 }

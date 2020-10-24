@@ -53,7 +53,7 @@ class UserService
                     $seller = $this->_repoSeller->getByUserId($userId);
                     $_SESSION["sellerId"] = $seller->getSellerId();
                 }
-                return new RegisterUserResponse(true, "Você foi registrado com sucesso.");
+                return new RegisterUserResponse(true, "Você foi registrado com suc0esso.");
             } catch (Exception $e) {
                 return new RegisterUserResponse(
                     false,

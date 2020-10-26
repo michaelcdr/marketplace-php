@@ -38,7 +38,7 @@ require_once './views/partials/header-admin.php';
                                 <button class="btn btn-outline-secondary " type="button" id="btn-pesquisar">
                                     <i class="fa fa-search"></i>
                                 </button>
-                                <button class="btn btn-dark btn-sm" type="button" id="btn-pesquisar">
+                                <button class="btn btn-dark btn-sm" type="button" id="btn-add">
                                     Adicionar produto <i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -53,5 +53,5 @@ require_once './views/partials/header-admin.php';
     </div>
 </div>
 <?php require_once './views/partials/scripts-admin.php' ?>
-<script src="<?php echo $pathJs . "ProductList.js" ?>"></script>
+<script src="<?php echo $pathJs . "ListOfSimilarProducts.js" ?>"></script>
 <?php require_once './views/partials/footer-admin.php' ?>

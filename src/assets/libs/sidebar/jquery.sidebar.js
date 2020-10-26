@@ -6,7 +6,7 @@
         el: Elemento da instância, use this.
         configuracoes: Objeto com parâmetros necessários para criarmos a instância do sidebar.
     */
-    $.sidebar = function (el, configuracoes) {        
+    $.sidebar = function (el, configuracoes) {
 
         $(".tooltip").remove();
 
@@ -18,7 +18,7 @@
             'pesquisaFixa': false,
             'submit': false,
             'focusCustomizado': false
-        };        
+        };
         $.extend(obj, configuracoes);
 
         //criando elemento do sidebar
@@ -48,8 +48,9 @@
             type: obj.metodo,
             data: obj.parametros
         });
-        jqxhr.error(function (e) {
-            if (e.status == 404) 
+        console.log(jqxhr)
+        jqxhr.fail(function (e) {
+            if (e.status == 404)
                 console.error("Página não encontrada, erro 404");
             else
                 console.error(e.statusText);
@@ -61,70 +62,22 @@
             //preenchendo sidebar com o conteudo recebido via ajax...
             $(".sidebar .nivel[data-nivel='" + obj.nivel + "']").html(retorno);
 
-            jQuery.validator.unobtrusive.parse(jQuery(".sidebar .nivel[data-nivel='" + obj.nivel + "']"));
+            //jQuery.validator.unobtrusive.parse(jQuery(".sidebar .nivel[data-nivel='" + obj.nivel + "']"));
             var form = $(".sidebar .nivel[data-nivel='" + obj.nivel + "'] form");
             form.submit(function () {
                 return false;
             });
-            
+
             $(document).keyup(function (e) {
                 if (e.which == 13 && (form.find(".rodape button[data-submit=true]").length > 0))
                     form.find(".rodape button[data-submit=true]").trigger("click");
             });
-            
+
             //callback após abrir modal lateral...
-            if (obj.callbackAbrir != null && typeof(obj.callbackAbrir) === "function")
+            if (obj.callbackAbrir != null && typeof (obj.callbackAbrir) === "function")
                 obj.callbackAbrir.call(this);
 
-            //montando botoes...
-            if (obj.botoes != null && obj.botoes.length > 0) {
-                //botoes parametrizados pelo usuario:
-                $(obj.botoes).each(function (index, element) {
-                    var loadingText = '...';
-                    if (element.loadingText) {
-                        loadingText = element.loadingText
-                    } else if (element.submit) {
-                        loadingText = 'Processando, aguarde...';
-                    }
-
-                    var bt = $("<button id='" + element.id + "' type='button' class='btn " + element.estilo + "' data-submit='" + element.submit + "' data-loading-text='"+loadingText+"' /> ");
-                    if (element.icone != undefined && element.icone != null && element.icone != "")
-                        bt.html("<i class='" + element.icone + "'></i> " + element.label);
-                    else
-                        bt.html(element.label);
-
-                    bt.click(function (elBtCriado) {
-                        if (element.submit) {
-                            //submit padrao...                                                                
-                            if (form.validate().form()) {
-                                let btnAlvo = $(bt);
-                                if (element.id !== null && element.id !== undefined)
-                                    btnAlvo = $("#" + element.id);
-
-                                btnAlvo.button("loading");
-                                $.post(form.attr("action"), form.serialize(), function (data) {                                        
-                                    if (data.Sucesso) {
-                                        if (element.callback != null && typeof (element.callback) === "function")
-                                            element.callback.call(this, data);
-                                    } else
-                                        console.error("Ops, ocorreu um problema verifique a seguir: " + data.Texto);
-
-                                    btnAlvo.button("reset");
-
-                                }).error(function (e, error) {
-                                    Notifica("Erro", e.statusText, 2000, "danger");
-                                    btnAlvo.button("reset");
-                                });
-                            }
-                        } else {
-                            //funcão passada pelo usuario...
-                            if (element.callback != null && typeof (element.callback) === "function")
-                                element.callback.call(this, elBtCriado);
-                        }
-                    });
-                    $(".sidebar .nivel[data-nivel='" + obj.nivel + "'] .rodape").append(bt);
-                });                    
-            }
+            $.sidebar._fnMontarBotoes();
 
             //botao para fechar sidebar...
             if (obj.fechar) {
@@ -138,7 +91,7 @@
             if (!obj.focusCustomizado)
                 $.sidebar.fnFocus();
         });
-        
+
 
         //eventos...
         if (obj.fechar) {
@@ -147,6 +100,65 @@
                 if (e.which == 27) $.sidebar.fnFechar(e);
             });
         }
+
+        $.sidebar._fnMontarBotao = function (element) {
+            var loadingText = '...';
+            if (element.loadingText)
+                loadingText = element.loadingText
+            else if (element.submit === true)
+                loadingText = 'Processando, aguarde...';
+
+            var bt = $("<button id='" + element.id + "' type='button' class='btn " + element.estilo + "' data-submit='" + (element.submit === true) + "' data-loading-text='" + loadingText + "' /> ");
+            if (!$.isNullOrEmptyOrUndefined(element.icone))
+                bt.html("<i class='" + element.icone + "'></i> ");
+            if (!$.isNullOrEmptyOrUndefined(element.label))
+                bt.html(bt.html() + " " + element.label);
+
+            return bt;
+        };
+
+        $.sidebar._fnMontarEventoBotao = function (btn, element) {
+            btn.click(function (elBtCriado) {
+                if (element.submit) {
+                    if (form.validate().form()) {
+                        let btnAlvo = $(btn);
+                        if (!$.isNullOrEmptyOrUndefined(element.id))
+                            btnAlvo = $("#" + element.id);
+
+                        btnAlvo.button("loading");
+
+                        $.post(form.attr("action"), form.serialize(), function (data) {
+                            if (data.Sucesso) {
+                                if (element.callback != null && typeof (element.callback) === "function")
+                                    element.callback.call(this, data);
+                            } else
+                                console.error("Ops, ocorreu um problema verifique a seguir: " + data.Texto);
+
+                            btnAlvo.button("reset");
+
+                        }).error(function (e, error) {
+                            console.error(`Erro ${e.statusText}`);
+                            btnAlvo.button("reset");
+                        });
+                    }
+                } else {
+                    if (element.callback != null && typeof (element.callback) === "function")
+                        element.callback.call(this, elBtCriado);
+                }
+            });
+            return btn;
+        }
+
+        $.sidebar._fnMontarBotoes = function () {
+            if (obj.botoes !== null && obj.botoes.length > 0) {
+                $(obj.botoes).each(function (index, element) {
+                    let bt = $.sidebar._fnMontarBotao(element);
+                    bt = $.sidebar._fnMontarEventoBotao(bt, element);
+
+                    $(".sidebar .nivel[data-nivel='" + obj.nivel + "'] .rodape").append(bt);
+                });
+            }
+        };
 
         $.sidebar.fnLoader = function (ativar) {
             $(".sidebar.open .rodape").find('button').button(ativar === true ? 'loading' : 'reset');
@@ -170,7 +182,7 @@
         };
 
         $.sidebar.fnFocus = function () {
-            $(".sidebar .nivel[data-nivel='"+obj.nivel+"']").find("input:not(:hidden),select,textarea").first().focus();
+            $(".sidebar .nivel[data-nivel='" + obj.nivel + "']").find("input:not(:hidden),select,textarea").first().focus();
         };
 
         $.sidebar.fnAdicionarNivel = function () {

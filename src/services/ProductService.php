@@ -143,7 +143,7 @@ class ProductService
                 $productItem["UserId"],
                 $productItem["Seller"]
             );
-            $product->setDefaultImage(SrcHelper::getProductImg() . $productItem["ImageFileName"]);
+            $product->setDefaultImage($productItem["ImageFileName"]);
             $products[] = $product;
         }
 

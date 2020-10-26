@@ -1,6 +1,6 @@
 <?php
 
-namespace catalog\domain\viewmodels;
+namespace domain\catalog\viewmodels;
 
 use infra\helpers\SrcHelper;
 

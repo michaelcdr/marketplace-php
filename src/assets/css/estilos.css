@@ -287,6 +287,9 @@ main{
 footer{
     background-color: #343A40;
     min-height: 200px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 .social-media-footer img{
     height: 25px;

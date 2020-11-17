@@ -468,4 +468,83 @@ implements IProductRepository
             "/admin/produto?p="
         );
     }
+
+    public function getPossibleChoicesForSimilarProducts($page, $search, $userId, $pageSize, $currentProductId)
+    {
+        $pageSize = (!isset($pageSize)) ? 5 : $pageSize;
+        $skipNumber = (!is_null($page) && $page > 0) ?  $pageSize * ($page - 1) : 0;
+        $stmt = null;
+        $total = $this->totalOfProducts($search, $userId);
+        $userClausule = "";
+
+        if (is_null($search) ||  $search === "") {
+            if (isset($userId) && $userId != null)
+                $userClausule = " where p.userId = :userId ";
+
+            $stmt = $this->conn->prepare(
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
+                        p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
+                        p.UserId, u.Name as Seller
+                        FROM Products p
+                inner join users u on p.userid = u.userid
+                left join (
+                    select pi.ProductId, pi.filename as filename
+                    from ProductsImages pi     
+                )
+                as Image on p.ProductId = Image.ProductId 
+                WHERE p.productid  <> :currentProductId $userClausule
+                group by p.productid 
+                order by p.title
+                limit :pageSize OFFSET :skipNumber "
+            );
+        } else {
+            if (isset($userId) && $userId != null)
+                $userClausule = " and p.userId = :userId ";
+
+            $stmt = $this->conn->prepare(
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
+                        p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
+                        p.UserId, u.Name as Seller
+                FROM Products p
+                inner join users u on p.userid = u.userid
+                left join (
+                    select pi.ProductId, pi.filename as filename
+                    from ProductsImages pi     
+                )
+                as Image on p.ProductId = Image.ProductId 
+                where p.productid  <> :currentProductId AND
+                    (p.title like :search or
+                    p.description like :search or
+                    p.Sku like :search) $userClausule 
+                group by productid 
+                order by p.title 
+                limit :pageSize OFFSET :skipNumber "
+            );
+            $stmt->bindValue(":search", '%' . $search . '%');
+        }
+
+        if (isset($userId) && $userId != null)
+            $stmt->bindValue(':userId',  $userId);
+
+        $stmt->bindValue(':currentProductId', intval(trim($currentProductId)), PDO::PARAM_INT);
+        $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
+        $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $produtosResult = $stmt->fetchAll();
+        $numberOfPages = ceil($total / $pageSize);
+        $hasPreviousPage =  ($numberOfPages > 1 && $page > 1) ? true : false;
+        $hasNextPage = ($numberOfPages > intval($page)) ? true : false;
+
+        return new PaginatedResults(
+            $produtosResult,
+            $total,
+            count($produtosResult),
+            $hasPreviousPage,
+            $hasNextPage,
+            $page,
+            $numberOfPages,
+            "/admin/produto?p="
+        );
+    }
 }

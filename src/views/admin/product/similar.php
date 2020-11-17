@@ -27,6 +27,7 @@ require_once './views/partials/header-admin.php';
                         </h6>
                         <div class="text-center pt-3">
                             <img src="<?php echo $model->getDefaultImage(); ?>" src="..." alt="..." class="img-fluid" style="max-height:100px;">
+
                         </div>
                     </div>
                 </div>
@@ -38,7 +39,7 @@ require_once './views/partials/header-admin.php';
                                 <button class="btn btn-outline-secondary " type="button" id="btn-pesquisar">
                                     <i class="fa fa-search"></i>
                                 </button>
-                                <button class="btn btn-dark btn-sm" type="button" id="btn-add">
+                                <button class="btn btn-dark btn-sm" type="button" id="btn-add" data-product-id="<?php echo $model->getId(); ?>">
                                     Adicionar produto <i class="fa fa-plus"></i>
                                 </button>
                             </div>

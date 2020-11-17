@@ -14,4 +14,5 @@ interface IProductRepository
     public function getAllByUserIdSeller($userId);
     public function getAllSimilarProducts($productId);
     public function getAllSimilarProductsPaginated($productId, $page, $search, $pageSize);
+    public function getPossibleChoicesForSimilarProducts($page, $search, $userId, $pageSize, $currentProductId);
 }

@@ -61,11 +61,11 @@ class ListOfSimilarProducts {
         });
     }
 
-    add() {
+    add(btnEl) {
         console.log('entrou no metodo adicionar')
-
+        btnEl = $(btnEl);
         $.sidebar(this, {
-            url: '/admin/produto/similares/add',
+            url: `/admin/produto/similares/add?id=${btnEl.data('productId')}`,
             botoes: [
                 {
                     estilo: "btn-warning", icone: "fa fa-chevron-left", callback: function () {

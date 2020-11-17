@@ -3,21 +3,20 @@
 namespace controllers\products;
 
 use controllers\IBaseController;
-use infra\helpers\SrcHelper;
-use services\ProductService;
+use services\SimilarProductService;
 
 class AddSimilarProductControler implements IBaseController
 {
-    private $_productService;
+    private $_service;
 
     public function __construct($factory)
     {
-        $this->_productService = new ProductService($factory);
+        $this->_service = new SimilarProductService($factory);
     }
 
     public function proccessRequest(): void
     {
-        $paginatedResults = $this->_productService->getAllPaginated();
+        $paginatedResults = $this->_service->getAllPaginated($_GET["id"]);
         $products = $paginatedResults->results;
         require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\add-similar.php';
     }

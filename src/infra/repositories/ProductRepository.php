@@ -469,12 +469,40 @@ implements IProductRepository
         );
     }
 
+    public function totalOfPossibleChoicesForSimilarProducts($search, $userId, $currentProductId)
+    {
+        $stmt = null;
+        $userClausule = "";
+        if (is_null($search) ||  $search === "") {
+            if (isset($userId) && $userId != null)
+                $userClausule = " and p.userId = :userId ";
+
+            $stmt = $this->conn->prepare("SELECT count(p.ProductId) as total FROM Products p where p.productId <> :currentProductId $userClausule");
+        } else {
+            if (isset($userId) && $userId != null)
+                $userClausule = " and p.userId = :userId ";
+
+            $stmt = $this->conn->prepare(
+                "SELECT count(p.ProductId) as total FROM Products p
+                 WHERE  p.productId <> :currentProductId and (p.title like :search or p.description like :search or p.Sku like :search) $userClausule "
+            );
+            $stmt->bindValue(":search", '%' . $search . '%');
+        }
+        if (isset($userId) && $userId != null)
+            $stmt->bindValue(":userId", $userId);
+
+        $stmt->bindValue(":currentProductId", $currentProductId);
+        $stmt->execute();
+        $total = $stmt->fetch();
+        return intval($total["total"]);
+    }
+
     public function getPossibleChoicesForSimilarProducts($page, $search, $userId, $pageSize, $currentProductId)
     {
         $pageSize = (!isset($pageSize)) ? 5 : $pageSize;
         $skipNumber = (!is_null($page) && $page > 0) ?  $pageSize * ($page - 1) : 0;
         $stmt = null;
-        $total = $this->totalOfProducts($search, $userId);
+        $total = $this->totalOfPossibleChoicesForSimilarProducts($search, $userId, $currentProductId);
         $userClausule = "";
 
         if (is_null($search) ||  $search === "") {

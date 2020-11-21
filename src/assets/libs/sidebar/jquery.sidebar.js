@@ -48,7 +48,6 @@
             type: obj.metodo,
             data: obj.parametros
         });
-        console.log(jqxhr)
         jqxhr.fail(function (e) {
             if (e.status == 404)
                 console.error("Página não encontrada, erro 404");
@@ -61,15 +60,14 @@
             $(obj.target).button("reset");
             //preenchendo sidebar com o conteudo recebido via ajax...
             $(".sidebar .nivel[data-nivel='" + obj.nivel + "']").html(retorno);
-
-            //jQuery.validator.unobtrusive.parse(jQuery(".sidebar .nivel[data-nivel='" + obj.nivel + "']"));
+            const TECLA_ENTER = 13;
             var form = $(".sidebar .nivel[data-nivel='" + obj.nivel + "'] form");
             form.submit(function () {
                 return false;
             });
 
             $(document).keyup(function (e) {
-                if (e.which == 13 && (form.find(".rodape button[data-submit=true]").length > 0))
+                if (e.which == TECLA_ENTER && (form.find(".rodape button[data-submit=true]").length > 0))
                     form.find(".rodape button[data-submit=true]").trigger("click");
             });
 

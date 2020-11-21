@@ -52,5 +52,5 @@ require_once './views/partials/header-admin.php';
     </div>
 </div>
 <?php require_once './views/partials/scripts-admin.php' ?>
-<script src="../js/admin/product/ListOfProducts.js"></script>
+<script src="/assets/js/admin/product/ListOfProducts.js"></script>
 <?php require_once './views/partials/footer-admin.php' ?>

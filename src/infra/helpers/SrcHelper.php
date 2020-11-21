@@ -16,7 +16,19 @@ class SrcHelper
 
     public static function getProductImg()
     {
-        return "/assets/img/products/";
+        return isset($_SERVER['REQUEST_SCHEME'])
+            ? $_SERVER['REQUEST_SCHEME'] . "/assets/img/products/"
+            : "/assets/img/products/";
+    }
+
+    public static function getCategoryImgPhysicPath()
+    {
+        return $_SERVER['DOCUMENT_ROOT'] . "/assets/img/categories/";
+    }
+
+    public static function getProductImgPhysicPath()
+    {
+        return $_SERVER['DOCUMENT_ROOT'] . "/assets/img/products/";
     }
 
     public static function getCategoryImg()
@@ -24,7 +36,8 @@ class SrcHelper
         return "/assets/img/categories/";
     }
 
-    public static function getProductAdminJs(){
+    public static function getProductAdminJs()
+    {
         return "/assets/js/admin/product/";
     }
 }

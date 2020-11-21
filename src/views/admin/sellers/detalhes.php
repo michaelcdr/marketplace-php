@@ -18,7 +18,7 @@
     <div class="card mt-3  mb-3">
         <div class="card-body">
             <div class="row">
-                <input type="hidden" name="sellerId" id="sellerId" value="<?php echo $model->getSellerId(); ?>" >
+                <input type="hidden" name="sellerId" id="sellerId" value="<?php echo $model->getSellerId(); ?>">
                 <div class="col-md-12 mb-2" id="container-dados-gerais">
                     <h5>Dados gerais do vendedor:</h5>
                     <div class="container-gray custom-labels">
@@ -30,37 +30,35 @@
                                 <label for="website">Site:</label><?php echo $model->getWebsite(); ?>
                             </div>
                             <div class="col-md-6">
-                            
+
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        
+
                         <div class="card-body">
                             <h5>Produtos do vendedor:</h5>
                             <div class="row">
-                                <?php foreach($model->getProducts() as $product):?>
+                                <?php foreach ($model->getProducts() as $product) : ?>
                                     <div class="col-md-4 ">
-                                        <div class="card h-100" >
+                                        <div class="card h-100">
                                             <div style="text-align:center; ">
-                                                <img src="/img/products/<?php echo $product->getDefaultImage(); ?>" 
-                                                    class="card-img-top " style="max-width:120px; max-height:120px" alt="...">
+                                                <img src="/img/products/<?php echo $product->getDefaultImage(); ?>" class="card-img-top " style="max-width:120px; max-height:120px" alt="...">
                                             </div>
                                             <div class="card-body ">
                                                 <p class="card-text text-center">
                                                     <?php echo $product->getTitle(); ?>
                                                 </p>
-                                                <a href="/admin/produto/editar?id=<?php echo $product->getId(); ?>" 
-                                                    class="btn btn-dark btn-block">
+                                                <a href="/admin/produto/editar?id=<?php echo $product->getId(); ?>" class="btn btn-dark btn-block">
                                                     Editar
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                <?php  endforeach;?>
-                            </div>    
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -73,12 +71,12 @@
                     </a>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
 
 <?php require_once './views/partials/scripts-admin.php' ?>
-<!-- <script src="/libs/jquery.mask/jquery.mask.min.js"></script>
-<script src="/js/models/SellerEdit.js"></script> -->
+<!-- <script src="/assets/libs/jquery.mask/jquery.mask.min.js"></script>
+<script src="/assets/js/models/SellerEdit.js"></script> -->
 <?php require_once './views/partials/footer-admin.php' ?>

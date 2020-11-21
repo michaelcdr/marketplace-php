@@ -2,47 +2,41 @@
 
 namespace services;
 
-use models\Product;
+use models\ProductComAssociacaoSimilar;
 
 class SimilarProductService
 {
     private $_repoProduct;
-    private $_repoUser;
 
     public function __construct($factory)
     {
         $this->_repoProduct = $factory->getProductRepository();
-        $this->_repoUser = $factory->getUserRepository();
     }
 
     public function getAllPaginated($currentProductId)
     {
-        $pagina = 1;
-        if (isset($_GET["p"]))
-            $pagina = intval($_GET["p"]);
-
-        $search = null;
-        if (isset($_GET["s"]))
-            $search = $_GET["s"];
-
-        $userId = null;
-
-        if ($_SESSION["role"] === "vendedor")
-            $userId = $_SESSION["userId"];
+        $pagina = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
+        $search = isset($_GET["s"]) ? $_GET["s"] : null;
+        $userId = $_SESSION["role"] === "vendedor" ? $_SESSION["userId"] : null;
 
         $paginatedResults = $this->_repoProduct->getPossibleChoicesForSimilarProducts($pagina, $search, $userId, 5, $currentProductId);
         $paginatedResults->results = $this->stmtToProduct($paginatedResults->results);
         return $paginatedResults;
     }
 
+    public function getAllCurrentSimilarProductsIdsByProductId($produtoId)
+    {
+        return $this->_repoProduct->getAllCurrentSimilarProductsIdsByProductId($produtoId);
+    }
+
     /* 
-    * Transforma uma lista PDO statement em uma lista de Model Product.
+    * Transforma uma lista PDO statement em uma lista de ProductComAssociacaoSimilar.
     */
     public function stmtToProduct($produtosResult)
     {
         $products = array();
         foreach ($produtosResult as $productItem) {
-            $product = new Product(
+            $product = new ProductComAssociacaoSimilar(
                 $productItem["ProductId"],
                 $productItem["Title"],
                 number_format($productItem["Price"], 2, ",", "."),
@@ -56,6 +50,7 @@ class SimilarProductService
                 $productItem["Seller"]
             );
             $product->setDefaultImage($productItem["ImageFileName"]);
+            $product->setAssociado($productItem["Associado"]);
             $products[] = $product;
         }
 

@@ -1,5 +1,6 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" id="current-similar-products-container">
+        <input type="hidden" value="<?php echo $currentSimilarProductsIds; ?>" id="current-similar-products-ids" name="current-similar-products-ids" />
         <table id="tb-products" data-page="0" class="table table-bordered table-hovered table-striped">
             <thead>
                 <tr>
@@ -17,7 +18,11 @@
                     <?php foreach ($products as $product) : ?>
                         <tr>
                             <td class="text-center">
-                                <input type="checkbox" name="cb-similar-product" id="cb-similar-product-<?php echo $product->getId(); ?>">
+                                <?php if ($product->getAssociado() == 1) : ?>
+                                    <input type="checkbox" value="<?php echo $product->getId(); ?>" checked="checked" name="cb-similar-product" id="cb-similar-product-<?php echo $product->getId(); ?>">
+                                <?php else : ?>
+                                    <input type="checkbox" value="<?php echo $product->getId(); ?>" name="cb-similar-product" id="cb-similar-product-<?php echo $product->getId(); ?>">
+                                <?php endif; ?>
                             </td>
                             <td class="text-center">
                                 <?php if ($product->hasImages()) : ?>

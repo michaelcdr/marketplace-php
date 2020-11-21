@@ -4,6 +4,7 @@ class ListOfSimilarProducts {
         this._routeDelete = '/admin/produto/deletar';
         this._routeList = '/admin/produto/lista-partial';
         this._listContainerEl = $('#container-products');
+        this._similarProductsIds = [];
         console.log("entrou em ListOfSimilarProducts");
     }
 
@@ -61,15 +62,50 @@ class ListOfSimilarProducts {
         });
     }
 
+    getProductsSelected() {
+        let selectedProducts = [];
+        $("#tb-products tbody tr input[type=checkbox]").each(function () {
+            let el = $(this);
+            if (el.is(":checked")) {
+                selectedProducts.push(parseInt(el.val()));
+            }
+        });
+        return selectedProducts;
+    }
+
     add(btnEl) {
-        console.log('entrou no metodo adicionar')
         btnEl = $(btnEl);
+        let _self = this;
+        let productId = btnEl.data('productId');
         $.sidebar(this, {
-            url: `/admin/produto/similares/add?id=${btnEl.data('productId')}`,
+            url: `/admin/produto/similares/add?id=${productId}`,
+            callbackAbrir: function () {
+                let container = $("#current-similar-products-container");
+                _self._similarProductsIds = [];
+                if (!$.isNullOrEmpty(container.find("#current-similar-products-ids").val())) {
+                    _self._similarProductsIds = container.find("#current-similar-products-ids").val().split(",");
+                    _self._similarProductsIds = _self._similarProductsIds.map(item => { return parseInt(item); });
+                }
+            },
             botoes: [
                 {
                     estilo: "btn-warning", icone: "fa fa-chevron-left", callback: function () {
                         $.sidebar.fnFechar();
+                    }
+                },
+                {
+                    estilo: "btn-dark", icone: "fa fa-save", label: "Salvar", callback: function () {
+                        console.log('clicou em salvar');
+                        let params = {
+                            productId: productId,
+                            similarProductsIds: _self._similarProductsIds
+                        }
+                        $.post('/admin/produto/similares/add-post', params, function (data) {
+
+                            //$.sidebar.fnFechar();
+                        }).fail(function () {
+                            console.error("Não foi possível atualizar a lista de produtos similares.");
+                        });
                     }
                 }
             ]

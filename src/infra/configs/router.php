@@ -40,6 +40,7 @@ use controllers\products\ProductDeleteController;
 use controllers\products\ProductImageUploadController;
 use controllers\products\ProductSimilarController;
 use controllers\products\AddSimilarProductControler;
+use controllers\products\AddSimilarProductPostControler;
 
 use controllers\CartCheckoutController;
 use controllers\CartCheckoutPostController;
@@ -112,6 +113,7 @@ $routes = [
     "/admin/produto/upload" => [ProductImageUploadController::class, "admin,vendedor"],
     "/admin/produto/similares" => [ProductSimilarController::class, "admin,vendedor"],
     "/admin/produto/similares/add" => [AddSimilarProductControler::class, "admin,vendedor"],
+    "/admin/produto/similares/add-post" => [AddSimilarProductPostControler::class, "admin,vendedor"],
 
     "/admin/categoria/upload" => [CategoryImageUploadController::class, "admin"],
     "/admin/categoria/editar" => [CategoryEditController::class, "admin"],

@@ -5,6 +5,8 @@ namespace models;
 use infra\helpers\SrcHelper;
 use domain\catalog\viewmodels\ProductImage;
 
+
+
 class Product
 {
     private $ProductId;

@@ -1,24 +1,20 @@
-class ProductImageCard
-{
-    constructor()
-    {
+class ProductImageCard {
+    constructor() {
 
     }
 
-    remove(fileName)
-    {
+    remove(fileName) {
         let el = $(`#product-img-cards-container .card[data-name="${fileName}"]`);
 
-        el.fadeOut(300,() => {
+        el.fadeOut(300, () => {
             el.remove();
         });
     }
 
-    build(fileObj)
-    {
+    build(fileObj) {
         return `<div class="card text-center" data-name="${fileObj.fileName}">
             <div class="text-center p-2">
-                <img src="/img/products/${fileObj.fileName}" 
+                <img src="/assets/img/products/${fileObj.fileName}" 
                     style="max-width:100px; max-height:100px;"
                     class="img-fluid ">
             </div>

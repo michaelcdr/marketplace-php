@@ -3,6 +3,7 @@
 namespace controllers\products;
 
 use controllers\IBaseController;
+use infra\repositories\ProductRepository;
 use services\SimilarProductService;
 
 class AddSimilarProductControler implements IBaseController
@@ -18,6 +19,7 @@ class AddSimilarProductControler implements IBaseController
     {
         $paginatedResults = $this->_service->getAllPaginated($_GET["id"]);
         $products = $paginatedResults->results;
+        $currentSimilarProductsIds = $this->_service->getAllCurrentSimilarProductsIdsByProductId($_GET["id"]);
         require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\add-similar.php';
     }
 }

@@ -27,7 +27,6 @@ require_once './views/partials/header-admin.php';
                         </h6>
                         <div class="text-center pt-3">
                             <img src="<?php echo $model->getDefaultImage(); ?>" src="..." alt="..." class="img-fluid" style="max-height:100px;">
-
                         </div>
                     </div>
                 </div>

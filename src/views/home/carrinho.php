@@ -1,13 +1,13 @@
 <?php
-    $titlePage = "Loja Whatever - Sua loja de instrumentos músicais e acessórios";
-    require_once './views/partials/header.php';
-?>   
+$titlePage = "Loja Whatever - Sua loja de instrumentos músicais e acessórios";
+require_once './views/partials/header.php';
+?>
 
 <!-- conteudo principal -->
 <main>
     <div class="container">
         <section id="caminho-carrinho">
-            <div class="row mt-3" >
+            <div class="row mt-3">
                 <div class="col-md-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark">
@@ -33,5 +33,4 @@
 </main>
 
 <?php require_once './views/partials/footer.php' ?>
-<script src="js/models/Carrinho.js"></script>
-
+<script src="/assets/js/models/Carrinho.js"></script>

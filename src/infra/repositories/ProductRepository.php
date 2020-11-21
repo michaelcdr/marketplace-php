@@ -415,8 +415,10 @@ implements IProductRepository
 
         if (is_null($search) ||  $search === "") {
             $stmt = $this->conn->prepare(
-                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName, p.UserId, u.Name as Seller
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, 
+                        Image.filename as ImageFileName, p.UserId, u.Name as Seller
                  FROM Products p
+                 inner join users u on p.UserId = u.UserId
                  LEFT JOIN (
                     select pi.ProductId, pi.filename as filename from ProductsImages pi     
                 ) as Image on p.ProductId = Image.ProductId 
@@ -427,8 +429,10 @@ implements IProductRepository
             );
         } else {
             $stmt = $this->conn->prepare(
-                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName, p.UserId, u.Name as Seller
+                "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, 
+                        Image.filename as ImageFileName, p.UserId, u.Name as Seller
                  FROM Products p
+                 inner join users u on p.UserId = u.UserId
                  LEFT JOIN (
                         select pi.ProductId, pi.filename as filename from ProductsImages pi     
                  ) as Image on p.ProductId = Image.ProductId 
@@ -509,17 +513,20 @@ implements IProductRepository
             if (isset($userId) && $userId != null)
                 $userClausule = " where p.userId = :userId ";
 
+            //echo "getPossibleChoicesForSimilarProducts " . $userId;
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
                         p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
-                        p.UserId, u.Name as Seller
+                        p.UserId, u.Name as Seller,
+                        (case when sp.ParentProductId is not null then true else false end) as Associado
                         FROM Products p
                 inner join users u on p.userid = u.userid
                 left join (
                     select pi.ProductId, pi.filename as filename
                     from ProductsImages pi     
                 )
-                as Image on p.ProductId = Image.ProductId 
+                as Image on p.ProductId = Image.ProductId
+                left join similarproducts sp on p.ProductId = sp.ChildProductId and sp.ParentProductId = :currentProductId
                 WHERE p.productid  <> :currentProductId $userClausule
                 group by p.productid 
                 order by p.title
@@ -532,7 +539,8 @@ implements IProductRepository
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
                         p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
-                        p.UserId, u.Name as Seller
+                        p.UserId, u.Name as Seller,
+                        (case when sp.ParentProductId is not null then true else false end) as Associado
                 FROM Products p
                 inner join users u on p.userid = u.userid
                 left join (
@@ -540,6 +548,7 @@ implements IProductRepository
                     from ProductsImages pi     
                 )
                 as Image on p.ProductId = Image.ProductId 
+                left join similarproducts sp on p.ProductId = sp.ChildProductId and sp.ParentProductId = :currentProductId
                 where p.productid  <> :currentProductId AND
                     (p.title like :search or
                     p.description like :search or
@@ -574,5 +583,15 @@ implements IProductRepository
             $numberOfPages,
             "/admin/produto?p="
         );
+    }
+
+    public function getAllCurrentSimilarProductsIdsByProductId($productId)
+    {
+        $stmt = $this->conn->prepare("select group_concat(ChildProductId) as productsIds from similarproducts where ParentProductId = :currentProductId");
+        $stmt->bindValue(':currentProductId', intval(trim($productId)), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        return $result["productsIds"];
     }
 }

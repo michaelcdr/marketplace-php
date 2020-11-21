@@ -173,7 +173,7 @@ a.a-primary:active{
     float: right;
 }
 main{
-    min-height: 768px;
+    min-height: calc(100vh - 303px);
 }
 /*helpers*/
 .logo-strong{
@@ -287,9 +287,7 @@ main{
 footer{
     background-color: #343A40;
     min-height: 200px;
-    position: absolute;
     width: 100%;
-    bottom: 0;
 }
 .social-media-footer img{
     height: 25px;

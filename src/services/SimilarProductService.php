@@ -15,6 +15,7 @@ class SimilarProductService
 
     public function getAllPaginated($currentProductId)
     {
+        echo "getAllPaginated";
         $pagina = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
         $search = isset($_GET["s"]) ? $_GET["s"] : null;
         $userId = $_SESSION["role"] === "vendedor" ? $_SESSION["userId"] : null;
@@ -57,8 +58,9 @@ class SimilarProductService
         return $products;
     }
 
-    public function remove($productId)
+    public function update($productId, $arrayOfIdsSimilarProducts)
     {
-        $this->_repoProduct->remove($productId);
+        $this->_repoProduct->removeAllSimilarProducts($productId);
+        $this->_repoProduct->addSimilarProducts($productId, $arrayOfIdsSimilarProducts);
     }
 }

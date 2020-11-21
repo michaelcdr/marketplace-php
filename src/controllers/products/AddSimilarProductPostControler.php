@@ -24,17 +24,9 @@ class AddSimilarProductPostControler implements IBaseController
         try {
             $productId = filter_input(INPUT_POST, 'productId', FILTER_SANITIZE_STRING);
             $similarProductsIds = $_POST["similarProductsIds"];
-            echo $productId;
-            echo '<pre>';
-            var_dump($similarProductsIds);
-            echo '</pre>';
-            exit;
-            /*
-            $retornoAdd =  $this->productService->add($imagesUploaded, $product);
-            
-            if (is_null($retornoAdd))
-                throw new Exception();
-            */
+
+            $this->_service->update($productId, $similarProductsIds);
+
             $retornoJson = new JsonSuccess("Produto cadastrado com sucesso");
             header('Content-type:application/json;charset=utf-8');
         } catch (Exception $e) {

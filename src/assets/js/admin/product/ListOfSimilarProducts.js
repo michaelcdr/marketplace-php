@@ -1,8 +1,8 @@
 class ListOfSimilarProducts {
     constructor() {
         this.initEvents();
-        this._routeDelete = '/admin/produto/deletar';
-        this._routeList = '/admin/produto/lista-partial';
+        this._routeDelete = '/admin/produto/similares/deletar';
+        this._routeList = '/admin/produto/similares/lista-partial';
         this._listContainerEl = $('#container-products');
         this._similarProductsIds = [];
         console.log("entrou em ListOfSimilarProducts");
@@ -53,8 +53,9 @@ class ListOfSimilarProducts {
         }, callback);
     }
 
-    toList(page, search) {
-        let params = { page: page, s: search };
+    toList(productId, page, search) {
+        console.log(`carregando lista productId : ${productId}`);
+        let params = { productId: productId, page: page, s: search };
         let _self = this;
         $.get(_self._routeList, params, function (data) {
             _self._listContainerEl.html(data);
@@ -73,6 +74,15 @@ class ListOfSimilarProducts {
         return selectedProducts;
     }
 
+    addSimilarProduct(value) {
+        let _self = this;
+        let currentId = _self._similarProductsIds.find(id => id == parseInt(value));
+        if (currentId === undefined) {
+            console.log('valor não encontrado : ' + currentId);
+            _self._similarProductsIds.push(parseInt(value));
+        }
+    }
+
     add(btnEl) {
         btnEl = $(btnEl);
         let _self = this;
@@ -86,6 +96,23 @@ class ListOfSimilarProducts {
                     _self._similarProductsIds = container.find("#current-similar-products-ids").val().split(",");
                     _self._similarProductsIds = _self._similarProductsIds.map(item => { return parseInt(item); });
                 }
+
+                $('[name=cb-similar-product]:checked').each(function () {
+                    _self.addSimilarProduct($(this).val());
+                });
+
+                $('[name=cb-similar-product]').unbind('change');
+                $('[name=cb-similar-product]').change(function () {
+                    let value = $(this).val();
+                    if ($(this).is(":checked")) {
+                        _self.addSimilarProduct(value);
+                    } else {
+                        let similarProductsIdsAfterRemovingItem = _self._similarProductsIds.filter(function (item) {
+                            return item != parseInt(value);
+                        });
+                        _self._similarProductsIds = similarProductsIdsAfterRemovingItem;
+                    }
+                });
             },
             botoes: [
                 {
@@ -99,10 +126,15 @@ class ListOfSimilarProducts {
                         let params = {
                             productId: productId,
                             similarProductsIds: _self._similarProductsIds
-                        }
+                        };
                         $.post('/admin/produto/similares/add-post', params, function (data) {
+                            if (data.success) {
+                                alertSuccess({ text: data.msg });
+                                _self.toList(productId, 0, "");
+                                $.sidebar.fnFechar();
+                            } else
+                                alertError({ text: data.msg });
 
-                            //$.sidebar.fnFechar();
                         }).fail(function () {
                             console.error("Não foi possível atualizar a lista de produtos similares.");
                         });

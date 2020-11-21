@@ -594,4 +594,26 @@ implements IProductRepository
         $result = $stmt->fetch();
         return $result["productsIds"];
     }
+
+    public function removeAllSimilarProducts($productId)
+    {
+        $stmt = $this->conn->prepare("delete from similarproducts where ParentProductId = :productId");
+        $stmt->bindValue(':productId', $productId);
+        $stmt->execute();
+        return true;
+    }
+
+    public function addSimilarProducts($productId, $arrayOfIdsSimilarProducts)
+    {
+        if (is_null($arrayOfIdsSimilarProducts)) {
+            return;
+        } else {
+            foreach ($arrayOfIdsSimilarProducts as $childProductId) {
+                $stmt = $this->conn->prepare("INSERT INTO similarproducts(ParentProductId,ChildProductId) VALUES (:ParentProductId,:ChildProductId)");
+                $stmt->bindValue(':ParentProductId', $productId);
+                $stmt->bindValue(':ChildProductId', $childProductId);
+                $stmt->execute();
+            }
+        }
+    }
 }

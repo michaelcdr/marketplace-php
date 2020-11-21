@@ -19,3 +19,4 @@ SellerRepository update: Array
 atualizando pessoa física
 SellerRepository update: Array
 28 - 22
+5 - 1

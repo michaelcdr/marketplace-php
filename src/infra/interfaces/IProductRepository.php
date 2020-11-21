@@ -17,4 +17,6 @@ interface IProductRepository
     public function getPossibleChoicesForSimilarProducts($page, $search, $userId, $pageSize, $currentProductId);
     public function totalOfPossibleChoicesForSimilarProducts($search, $userId, $currentProductId);
     public function getAllCurrentSimilarProductsIdsByProductId($productId);
+    public function addSimilarProducts($productId, $arrayOfIdsSimilarProducts);
+    public function removeAllSimilarProducts($productId);
 }

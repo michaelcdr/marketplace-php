@@ -141,4 +141,6 @@ $routes = [
     "/admin/usuario/minhas-compras" => [OrderListController::class, "admin,vendedor,comum"],
     "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"],
 ];
+
+                
 return $routes;

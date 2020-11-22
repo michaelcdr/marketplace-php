@@ -33,6 +33,7 @@ class UserAuthenticateController implements IBaseController
             if ($user->passwordIsValid($_POST["password"])) {
                 //echo 'senha valida<br>';
                 $_SESSION["userId"] = $user->getUserId();
+                
                 $_SESSION["userName"] = stripslashes($user->getName());
                 $_SESSION["role"] = stripslashes($user->getRole());
                 $_SESSION["sellerId"] = null;

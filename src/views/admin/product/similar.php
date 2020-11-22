@@ -2,6 +2,7 @@
 require_once './views/partials/header-admin.php';
 ?>
 <div class="container">
+    <input type="hidden" name="productId" id="productId" value="<?php echo $model->getId(); ?>">
     <div class="d-flex align-items-center p-3 mt-3 text-white-50 bg-dark rounded shadow-sm">
         <div class="lh-100">
             <h6 class="mb-0 text-white lh-100">Produtos similares</h6>
@@ -45,7 +46,7 @@ require_once './views/partials/header-admin.php';
                         </div>
                     </div>
                     <div id="container-products">
-                        <?php include './views/admin/product/lista-table.php' ?>
+                        <?php include './views/admin/product/list-similar-products.php' ?>
                     </div>
                 </div>
             </div>

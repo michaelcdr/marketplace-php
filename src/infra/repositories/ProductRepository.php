@@ -400,7 +400,7 @@ implements IProductRepository
         return intval($total["total"]);
     }
 
-    public function getAllSimilarProductsPaginated($productId, $page, $search, $pageSize)
+    public function getAllSimilarProductsPaginated($page, $search, $userId, $pageSize, $productId)
     {
         if (!isset($pageSize))
             $pageSize = 5;
@@ -412,7 +412,8 @@ implements IProductRepository
 
         $stmt = null;
         $total = $this->totalOfSimilarProducts($search, $productId);
-
+        $userClausule = (isset($userId) && $userId != null) ? " and p.userId = :userId " :"";
+        
         if (is_null($search) ||  $search === "") {
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, 
@@ -423,10 +424,13 @@ implements IProductRepository
                     select pi.ProductId, pi.filename as filename from ProductsImages pi     
                 ) as Image on p.ProductId = Image.ProductId 
                 where p.ProductId in (SELECT childproductid from similarproducts where parentproductid = :productId)
+                      $userClausule
                 GROUP BY p.productid 
                 ORDER BY p.title
                 limit :pageSize OFFSET :skipNumber "
             );
+            if (isset($userId) && $userId != null)
+                $stmt->bindValue(':userId', intval(trim($userId)), PDO::PARAM_INT);
         } else {
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, 
@@ -436,21 +440,25 @@ implements IProductRepository
                  LEFT JOIN (
                         select pi.ProductId, pi.filename as filename from ProductsImages pi     
                  ) as Image on p.ProductId = Image.ProductId 
-                 WHERE p.ProductId in (SELECT childproductid from similarproducts where parentproductid = :productId) AND (p.title like :search or p.description like :search or p.Sku like :search) 
+                 WHERE p.ProductId in (SELECT childproductid from similarproducts where parentproductid = :productId) AND
+                       (p.title like :search or p.description like :search or p.Sku like :search) 
+                       $userClausule
                  GROUP BY productid 
                  ORDER BY p.title 
                  LIMIT :pageSize OFFSET :skipNumber "
             );
             $stmt->bindValue(":search", '%' . $search . '%');
+            if (isset($userId) && $userId != null)
+                $stmt->bindValue(':userId', intval(trim($userId)), PDO::PARAM_INT);
         }
 
         $stmt->bindValue(":productId", intval(trim($productId)), PDO::PARAM_INT);
         $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
         $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
+        
         $stmt->execute();
 
         $produtosResult = $stmt->fetchAll();
-
 
         $numberOfPages = ceil($total / $pageSize);
         $hasPreviousPage = false;
@@ -511,7 +519,7 @@ implements IProductRepository
 
         if (is_null($search) ||  $search === "") {
             if (isset($userId) && $userId != null)
-                $userClausule = " where p.userId = :userId ";
+                $userClausule = " and p.userId = :userId ";
 
             //echo "getPossibleChoicesForSimilarProducts " . $userId;
             $stmt = $this->conn->prepare(

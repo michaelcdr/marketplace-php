@@ -5,6 +5,7 @@ class ListOfSimilarProducts {
         this._routeList = '/admin/produto/similares/lista-partial';
         this._listContainerEl = $('#container-products');
         this._similarProductsIds = [];
+        this._productId = parseInt($("#productId").val());
         console.log("entrou em ListOfSimilarProducts");
     }
 
@@ -53,7 +54,8 @@ class ListOfSimilarProducts {
         }, callback);
     }
 
-    toList(productId, page, search) {
+    toList(page, search) {
+        let productId = this._productId;
         console.log(`carregando lista productId : ${productId}`);
         let params = { productId: productId, page: page, s: search };
         let _self = this;
@@ -130,7 +132,7 @@ class ListOfSimilarProducts {
                         $.post('/admin/produto/similares/add-post', params, function (data) {
                             if (data.success) {
                                 alertSuccess({ text: data.msg });
-                                _self.toList(productId, 0, "");
+                                _self.toList(0, "");
                                 $.sidebar.fnFechar();
                             } else
                                 alertError({ text: data.msg });

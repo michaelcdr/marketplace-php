@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-md-12">
-        <table id="tb-products" data-page="0" class="table table-bordered table-hovered table-striped">
+    <div class="col-md-12 table-responsive">
+        <table id="tb-products" data-page="0" class="table  table-bordered table-hovered table-striped">
             <thead>
                 <tr>
                     <th width="10%"></th>

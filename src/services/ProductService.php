@@ -19,14 +19,7 @@ class ProductService
         $this->_repoUser = $factory->getUserRepository();
     }
 
-    public function getProductByIdWithSimilarProducts($productId, $page, $search, $pageSize)
-    {
-        $product = $this->_repoProduct->getById($productId);
-
-        $paginatedResultsOfSimilarProducts = $this->_repoProduct->getAllSimilarProductsPaginated($productId, $page, $search, $pageSize);
-        $paginatedResultsOfSimilarProducts->results = $this->stmtToProduct($paginatedResultsOfSimilarProducts->results);
-        return new ProductWithSimilarProducts($product, $paginatedResultsOfSimilarProducts);
-    }
+  
 
     public function getProductCreateViewModel()
     {

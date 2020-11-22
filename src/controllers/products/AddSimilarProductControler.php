@@ -17,7 +17,7 @@ class AddSimilarProductControler implements IBaseController
 
     public function proccessRequest(): void
     {
-        $paginatedResults = $this->_service->getAllPaginated($_GET["id"]);
+        $paginatedResults = $this->_service->getPossibleChoicesForSimilarProducts($_GET["id"]);
         $products = $paginatedResults->results;
         $currentSimilarProductsIds = $this->_service->getAllCurrentSimilarProductsIdsByProductId($_GET["id"]);
         require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\add-similar.php';

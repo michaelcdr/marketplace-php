@@ -45,7 +45,15 @@ require_once './views/partials/header.php';
                                 </div>
                             </div>
                             <div class="col-lg-7">
-                                <h4><?php echo $product->getTitle(); ?></h4>
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <h4><?php echo $product->getTitle(); ?></h4>
+                                    </div>
+                                    <div class="col-lg-2 text-right">
+                                        <i id="btn-like" data-product-id="<?php echo $product->getId(); ?>" class="cursor fa <?php echo ($isLiked === TRUE ? "fa-heart" : "fa-heart-o"); ?>"></i>
+                                    </div>
+                                </div>
+
                                 <div class="sku">(Cód. <?php echo $product->getSku(); ?>)</div>
                                 <div class="vendedor">Vendido por: <strong><?php echo $product->getSeller(); ?></strong></div>
                                 <div class="estoque">Qtd. estoque: <?php echo $product->getStock(); ?></div>

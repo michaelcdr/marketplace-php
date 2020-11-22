@@ -20,4 +20,7 @@ interface IProductRepository
     public function addSimilarProducts($productId, $arrayOfIdsSimilarProducts);
     public function removeAllSimilarProducts($productId);
     public function deleteSimilarProduct($parentProductId, $childProductId);
+    public function isLiked($productId, $userId): bool;
+    public function dislike($productId, $userId);
+    public function like($productId, $userId);
 }

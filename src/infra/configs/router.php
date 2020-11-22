@@ -70,6 +70,8 @@ use controllers\categories\CategoryImageUploadController;
 use controllers\AddressCreateController;
 use controllers\products\SimilarProductPartialListController;
 use controllers\products\DeleteSimilarProductControler;
+use controllers\products\DislikeProductController;
+use controllers\products\LikeProductController;
 
 //rota X [controller , roles]
 $routes = [
@@ -96,6 +98,8 @@ $routes = [
     "/finalizar-pedido" => [CartCheckoutController::class, ""],
     "/cart-checkout-post" => [CartCheckoutPostController::class, ""],
     "/remover-item-carrinho" => [RemoveFromCartController::class, ""],
+    "/produto/curtir" => [LikeProductController::class, ""],
+    "/produto/descurtir" => [DislikeProductController::class, ""],
 
     "/admin/usuario/editar" => [UserEditController::class, "admin,vendedor,comum"],
     "/admin/usuario/editar-post" => [UserEditPostController::class, "admin,vendedor,comum"],

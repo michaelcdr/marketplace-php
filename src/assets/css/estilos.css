@@ -481,3 +481,6 @@ a.slick-prev:active {
     background-color: #343A40;
     color: var(--second-color);
 }
+.cursor{
+    cursor: pointer;
+}

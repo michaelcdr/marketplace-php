@@ -632,4 +632,40 @@ implements IProductRepository
         $stmt->bindValue(':childProductId', $childProductId);
         $stmt->execute();
     }
+
+    public function like($productId, $userId)
+    {
+        $stmt = $this->conn->prepare(
+            "INSERT INTO productslikeds(ProductId,UserId)
+             SELECT ProductId, UserId FROM products WHERE ProductId = :ProductId and UserId = :UserId and 
+                not exists(select productlikedid from productslikeds where  ProductId = :ProductId and UserId = :UserId);"
+        );
+        $stmt->bindValue(':ProductId', $productId);
+        $stmt->bindValue(':UserId', $userId);
+        $stmt->execute();
+    }
+
+    public function dislike($productId, $userId)
+    {
+        $stmt = $this->conn->prepare(
+            "DELETE FROM productslikeds WHERE ProductId = :ProductId and UserId = :UserId"
+        );
+        $stmt->bindValue(':ProductId', $productId);
+        $stmt->bindValue(':UserId', $userId);
+        $stmt->execute();
+    }
+
+    public function isLiked($productId, $userId): bool
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT count(productLikedId) as total from productslikeds where  ProductId = :ProductId and UserId = :UserId"
+        );
+        $stmt->bindValue(":UserId", $userId);
+        $stmt->bindValue(':ProductId',  $productId);
+        $stmt->execute();
+
+        $total = $stmt->fetch();
+        $isLiked = (intval($total["total"]) == 0 ? false : true);
+        return $isLiked;
+    }
 }

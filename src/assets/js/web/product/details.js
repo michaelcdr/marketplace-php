@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     let qtdImgs = parseInt($("#img-container").data('qtd'));
 
     if (qtdImgs > 0) {
@@ -41,4 +41,22 @@ $(function() {
                 '</button>'
         });
     }
+
+    $('#btn-like').on('click', function () {
+        let el = $(this);
+        let isLiked = el.hasClass('fa-heart');
+        let url = isLiked ? '/produto/descurtir' : '/produto/curtir';
+        console.log(el);
+        console.log(el.data('productId'));
+        $.post(url, { productId: el.data('productId') }, function (data) {
+            if (data.success) {
+                if (isLiked)
+                    el.removeClass('fa-heart').addClass('fa-heart-o');
+                else
+                    el.removeClass('fa-heart-o').addClass('fa-heart');
+            }
+        }).fail(function () {
+            alertServerError();
+        })
+    });
 });

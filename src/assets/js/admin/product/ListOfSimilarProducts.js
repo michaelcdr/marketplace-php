@@ -39,7 +39,7 @@ class ListOfSimilarProducts {
         //exibindo msg amigavel ao usuario e quando ele confirmar volta para index
         let _self = this;
         let callback = function () {
-            let params = { id: btnEl.data('id') };
+            let params = { parentProductId: _self._productId, childProductId: btnEl.data('id') };
             $.post(_self._routeDelete, params, function (data) {
                 if (data.success) {
                     _self.toList(0, $("#search-products").val());

@@ -412,8 +412,8 @@ implements IProductRepository
 
         $stmt = null;
         $total = $this->totalOfSimilarProducts($search, $productId);
-        $userClausule = (isset($userId) && $userId != null) ? " and p.userId = :userId " :"";
-        
+        $userClausule = (isset($userId) && $userId != null) ? " and p.userId = :userId " : "";
+
         if (is_null($search) ||  $search === "") {
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku, 
@@ -455,7 +455,7 @@ implements IProductRepository
         $stmt->bindValue(":productId", intval(trim($productId)), PDO::PARAM_INT);
         $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
         $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
-        
+
         $stmt->execute();
 
         $produtosResult = $stmt->fetchAll();
@@ -623,5 +623,13 @@ implements IProductRepository
                 $stmt->execute();
             }
         }
+    }
+
+    public function deleteSimilarProduct($parentProductId, $childProductId)
+    {
+        $stmt = $this->conn->prepare("delete from similarproducts where parentProductId = :parentProductId and childProductId = :childProductId ");
+        $stmt->bindValue(':parentProductId', $parentProductId);
+        $stmt->bindValue(':childProductId', $childProductId);
+        $stmt->execute();
     }
 }

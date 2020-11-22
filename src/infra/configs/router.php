@@ -69,6 +69,7 @@ use controllers\categories\CategoryImageUploadController;
 
 use controllers\AddressCreateController;
 use controllers\products\SimilarProductPartialListController;
+use controllers\products\DeleteSimilarProductControler;
 
 //rota X [controller , roles]
 $routes = [
@@ -117,6 +118,7 @@ $routes = [
     "/admin/produto/similares/lista-partial" => [SimilarProductPartialListController::class, "admin,vendedor"],
     "/admin/produto/similares/add" => [AddSimilarProductControler::class, "admin,vendedor"],
     "/admin/produto/similares/add-post" => [AddSimilarProductPostControler::class, "admin,vendedor"],
+    "/admin/produto/similares/deletar" => [DeleteSimilarProductControler::class, "admin,vendedor"],
 
     "/admin/categoria/upload" => [CategoryImageUploadController::class, "admin"],
     "/admin/categoria/editar" => [CategoryEditController::class, "admin"],
@@ -142,5 +144,5 @@ $routes = [
     "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"],
 ];
 
-                
+
 return $routes;

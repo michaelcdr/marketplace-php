@@ -2,9 +2,8 @@
 
 namespace services;
 
-use models\Product;
-use models\ProductComAssociacaoSimilar;
 use domain\admin\ProductWithSimilarProducts;
+use  infra\helpers\StatementHelper;
 
 class SimilarProductService
 {
@@ -31,7 +30,6 @@ class SimilarProductService
     {
         $pagina = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
         $search = isset($_GET["s"]) ? $_GET["s"] : null;
-
         $product = $this->_repoProduct->getById($currentProductId);
 
         $paginatedResults = $this->_repoProduct
@@ -46,10 +44,10 @@ class SimilarProductService
         $pagina = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
         $search = isset($_GET["s"]) ? $_GET["s"] : null;
         $product = $this->_repoProduct->getById($currentProductId);
-        
+
         $paginatedResults = $this->_repoProduct
             ->getAllSimilarProductsPaginated($pagina, $search, $product->getUserId(), 5, $currentProductId);
-            
+
         $paginatedResults->results = $this->stmtToProduct($paginatedResults->results);
         return $paginatedResults;
     }
@@ -66,24 +64,9 @@ class SimilarProductService
     {
         $products = array();
         foreach ($produtosResult as $productItem) {
-            $product = new ProductComAssociacaoSimilar(
-                $productItem["ProductId"],
-                $productItem["Title"],
-                number_format($productItem["Price"], 2, ",", "."),
-                $productItem["Description"],
-                $productItem["CreatedAt"],
-                $productItem["CreatedBy"],
-                $productItem["Offer"],
-                $productItem["Stock"],
-                $productItem["Sku"],
-                $productItem["UserId"],
-                $productItem["Seller"]
-            );
-            $product->setDefaultImage($productItem["ImageFileName"]);
-            $product->setAssociado($productItem["Associado"]);
+            $product = StatementHelper::ToProductComAssociacaoSimilar($productItem);
             $products[] = $product;
         }
-
         return $products;
     }
 
@@ -91,20 +74,7 @@ class SimilarProductService
     {
         $products = array();
         foreach ($produtosResult as $productItem) {
-            $product = new Product(
-                $productItem["ProductId"],
-                $productItem["Title"],
-                number_format($productItem["Price"], 2, ",", "."),
-                $productItem["Description"],
-                $productItem["CreatedAt"],
-                $productItem["CreatedBy"],
-                $productItem["Offer"],
-                $productItem["Stock"],
-                $productItem["Sku"],
-                $productItem["UserId"],
-                $productItem["Seller"]
-            );
-            $product->setDefaultImage($productItem["ImageFileName"]);
+            $product = StatementHelper::ToProduct($productItem);
             $products[] = $product;
         }
 
@@ -114,6 +84,13 @@ class SimilarProductService
     public function update($productId, $arrayOfIdsSimilarProducts)
     {
         $this->_repoProduct->removeAllSimilarProducts($productId);
-        $this->_repoProduct->addSimilarProducts($productId, $arrayOfIdsSimilarProducts);
+
+        if (!is_null($arrayOfIdsSimilarProducts))
+            $this->_repoProduct->addSimilarProducts($productId, $arrayOfIdsSimilarProducts);
+    }
+
+    public function delete($parentProductId, $childProductId)
+    {
+        $this->_repoProduct->deleteSimilarProduct($parentProductId, $childProductId);
     }
 }

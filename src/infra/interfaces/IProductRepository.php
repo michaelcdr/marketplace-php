@@ -13,10 +13,11 @@ interface IProductRepository
     public function decreaseStockByOrderItens($orderItens);
     public function getAllByUserIdSeller($userId);
     public function getAllSimilarProducts($productId);
-    public function getAllSimilarProductsPaginated($page, $search, $userId, $pageSize,$productId);
+    public function getAllSimilarProductsPaginated($page, $search, $userId, $pageSize, $productId);
     public function getPossibleChoicesForSimilarProducts($page, $search, $userId, $pageSize, $currentProductId);
     public function totalOfPossibleChoicesForSimilarProducts($search, $userId, $currentProductId);
     public function getAllCurrentSimilarProductsIdsByProductId($productId);
     public function addSimilarProducts($productId, $arrayOfIdsSimilarProducts);
     public function removeAllSimilarProducts($productId);
+    public function deleteSimilarProduct($parentProductId, $childProductId);
 }

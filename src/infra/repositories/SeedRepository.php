@@ -1,24 +1,25 @@
 <?php
-    namespace infra\repositories;
 
-    use Exception;
+namespace infra\repositories;
 
-    use infra;
-    use infra\MySqlRepository;
-    use infra\interfaces\ISeedRepository;
-    use models\User;
-    use infra\repositories\UserRepository;
-    use infra\repositories\SellerRepository;
+use Exception;
 
-    class SeedRepository 
-        extends MySqlRepository 
-        implements ISeedRepository
+use infra;
+use infra\MySqlRepository;
+use infra\interfaces\ISeedRepository;
+use models\User;
+use infra\repositories\UserRepository;
+use infra\repositories\SellerRepository;
+
+class SeedRepository
+extends MySqlRepository
+implements ISeedRepository
+{
+    public function seedProducts()
     {
-        public function seedProducts()
-        {
-             //inserindo produtos...
-            $this->conn->exec(
-                "insert into products(
+        //inserindo produtos...
+        $this->conn->exec(
+            "insert into products(
                     title,
                     description,
                     price,
@@ -39,9 +40,9 @@
                     '001',
                     (select UserId from users where role = 'vendedor' limit 1)
                 );"
-            );
-            $this->conn->exec(
-                "insert into products(
+        );
+        $this->conn->exec(
+            "insert into products(
                     title,
                     description,
                     price,
@@ -62,9 +63,9 @@
                     '002',
                     (select UserId from users where role = 'vendedor' limit 1)
                 );"
-            );
-            $this->conn->exec(
-                "insert into products(
+        );
+        $this->conn->exec(
+            "insert into products(
                     title,
                     description,
                     price,
@@ -85,11 +86,11 @@
                     '003',
                     (select UserId from users where role = 'vendedor' limit 1)
                 );"
-            );
-            
-            //inserindo imagens de produtos...
-            $this->conn->exec(
-                "insert into productsimages(
+        );
+
+        //inserindo imagens de produtos...
+        $this->conn->exec(
+            "insert into productsimages(
                     productid,
                     filename
                 )
@@ -101,9 +102,9 @@
                         limit 1
                     ) 
                 , 'fender-american-especial-stratocaster-maple2-color-sunburst2012.jpg');"
-            );
-            $this->conn->exec(
-                "insert into productsimages(productid,filename)
+        );
+        $this->conn->exec(
+            "insert into productsimages(productid,filename)
                 values 
                 (
                     (
@@ -112,9 +113,9 @@
                         limit 1
                     ) 
                 , 'fender-mex-black-014-5102-506.jpg');"
-            );
-            $this->conn->exec(
-                "insert into productsimages(productid,filename)
+        );
+        $this->conn->exec(
+            "insert into productsimages(productid,filename)
                 values 
                 (
                     (
@@ -123,108 +124,105 @@
                         limit 1
                     ) 
                 , 'jackson-dincky-JS11GLOSSBLACK2910110503.jpg');"
-            );
+        );
+    }
+
+    public function seedUsersAndSellers()
+    {
+        $_repoUser = new UserRepository($this->conn);
+        $_repoUser->add(new User(null, "michael", "123456", "michael", "admin", "", ""));
+        $userId = $_repoUser->add(new User(null, "multisom", "123456", "Multisom", "vendedor", "", ""));
+        echo "vendedorId: " . $userId . "<br>";
+
+        $_repoSeller = new SellerRepository($this->conn);
+        $_repoSeller->addSimplifiedSeller($userId);
+    }
+
+    public function seedCarousel()
+    {
+        // carrossel
+        $this->conn->exec("insert into carouselimages(filename,`order`) values ('guitar-1920x384-1.jpg',1)");
+        $this->conn->exec("insert into carouselimages(filename,`order`) values ('guitar-1920x384-2.jpg',2)");
+        $this->conn->exec("insert into carouselimages(filename,`order`) values ('guitar-1920x384-3.jpg',3)");
+    }
+
+    public function seedStates()
+    {
+        $this->conn->exec("insert into states(name, stateabreviattion) values ('Rio Grande do Sul','RS')");
+        $this->conn->exec("insert into states(name, stateabreviattion) values ('Santa Catarina','SC')");
+    }
+
+    public function seed()
+    {
+        $this->destroyDatabase();
+        echo "Destruiu o banco<br>";
+        $this->createDb();
+        echo "Criou o banco<br>";
+        $this->seedCarousel();
+        echo "Adicionou imagens de carrosel<br>";
+        $this->seedUsersAndSellers();
+        echo "Adicionou usuarios e vendedores padroes de carrosel<br>";
+        $this->seedStates();
+        echo "Adicionou estados<br>";
+        $this->seedProducts();
+        echo "Adicionou produtos<br>";
+
+        //header('Location: /');
+    }
+
+    public function createDb()
+    {
+        $this->createTableCategories();
+        $this->createTableSubCategories();
+        $this->createTableStates();
+        $this->createTableUsers();
+        $this->createTableAddress();
+
+        $this->createTableSellers();
+        $this->createTableProducts();
+        $this->createTableProductImages();
+        $this->createTableCarouselImages();
+        $this->createTableOrder();
+        $this->createTableOrderItens();
+        $this->createTableSimilarProducts();
+    }
+
+    public function destroyDatabase()
+    {
+        try {
+            $this->conn->exec("drop table if exists CarouselImages");
+            $this->conn->exec("drop table if exists Sellers");
+
+            $this->conn->exec("drop table if exists OrderItens");
+            $this->conn->exec("drop table if exists Orders");
+            $this->conn->exec("drop table if exists ProductsImages");
+            $this->conn->exec("drop table if exists Products");
+            $this->conn->exec("drop table if exists SubCategories");
+            $this->conn->exec("drop table if exists Categories");
+            $this->conn->exec("drop table if exists Addresses");
+            $this->conn->exec("drop table if exists Users");
+
+            $this->conn->exec("drop table if exists states");
+            $this->conn->exec("drop table if exists SimilarProducts");
+        } catch (Exception $ex) {
+            echo "Ocorreu um erro ao tentar destruir o banco de dados.";
         }
+    }
 
-        public function seedUsersAndSellers()
-        {
-            $_repoUser = new UserRepository($this->conn);
-            $_repoUser->add(new User(null,"michael","123456","michael","admin","",""));
-            $userId = $_repoUser->add(new User(null,"multisom","123456","Multisom","vendedor","",""));
-            echo "vendedorId: " . $userId . "<br>";
-
-            $_repoSeller = new SellerRepository($this->conn);
-            $_repoSeller->addSimplifiedSeller($userId);
-        }
-
-        public function seedCarousel()
-        {
-            // carrossel
-            $this->conn->exec("insert into carouselimages(filename,`order`) values ('guitar-1920x384-1.jpg',1)");
-            $this->conn->exec("insert into carouselimages(filename,`order`) values ('guitar-1920x384-2.jpg',2)");
-            $this->conn->exec("insert into carouselimages(filename,`order`) values ('guitar-1920x384-3.jpg',3)");
-        }
-
-        public function seedStates()
-        {
-            $this->conn->exec("insert into states(name, stateabreviattion) values ('Rio Grande do Sul','RS')");
-            $this->conn->exec("insert into states(name, stateabreviattion) values ('Santa Catarina','SC')");
-        }
-
-        public function seed()
-        {
-            $this->destroyDatabase();
-            echo "Destruiu o banco<br>";
-            $this->createDb();
-            echo "Criou o banco<br>";
-            $this->seedCarousel();
-            echo "Adicionou imagens de carrosel<br>";
-            $this->seedUsersAndSellers();
-            echo "Adicionou usuarios e vendedores padroes de carrosel<br>";
-            $this->seedStates();
-            echo "Adicionou estados<br>";
-            $this->seedProducts();
-            echo "Adicionou produtos<br>";
-            
-            //header('Location: /');
-        }
-
-        public function createDb()
-        {
-            $this->createTableCategories();
-            $this->createTableSubCategories();
-            $this->createTableStates();
-            $this->createTableUsers();  
-            $this->createTableAddress();
-
-            $this->createTableSellers();
-            $this->createTableProducts();
-            $this->createTableProductImages();
-            $this->createTableCarouselImages();
-            $this->createTableOrder();
-            $this->createTableOrderItens();
-            $this->createTableSimilarProducts();
-        }
-
-        public function destroyDatabase()
-        {   
-            try{
-                $this->conn->exec("drop table if exists CarouselImages");
-                $this->conn->exec("drop table if exists Sellers");
-                
-                $this->conn->exec("drop table if exists OrderItens");
-                $this->conn->exec("drop table if exists Orders");
-                $this->conn->exec("drop table if exists ProductsImages");
-                $this->conn->exec("drop table if exists Products");
-                $this->conn->exec("drop table if exists SubCategories");
-                $this->conn->exec("drop table if exists Categories");
-                $this->conn->exec("drop table if exists Addresses");
-                $this->conn->exec("drop table if exists Users");
-                
-                $this->conn->exec("drop table if exists states");
-                $this->conn->exec("drop table if exists SimilarProducts");
-            }
-            catch(Exception $ex)
-            {
-                echo "Ocorreu um erro ao tentar destruir o banco de dados.";
-              
-            }
-        }
-
-        public function createTableStates()
-        {
-            $this->conn->exec(
-                "CREATE TABLE States (
+    public function createTableStates()
+    {
+        $this->conn->exec(
+            "CREATE TABLE States (
                     StateId INT NOT NULL  PRIMARY KEY AUTO_INCREMENT,
                     Name varchar(255) NOT NULL,
                     StateAbreviattion varchar(255)
                 );"
-            );
-        }
+        );
+    }
 
-        public function createTableUsers()
-        {
-            $query =  "create table Users(
+    public function createTableUsers()
+    {
+        $query =  "create table Users(
                 UserId  int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 Login varchar(100) not null unique,
                 Password varchar(255) not null,
@@ -233,46 +231,46 @@
                 Cpf  varchar(14),
                 LastName  varchar(100)
             );";
-            $this->conn->exec($query);
-        }
+        $this->conn->exec($query);
+    }
 
-        public function createTableCategories()
-        {
-            $query = "CREATE TABLE Categories (
+    public function createTableCategories()
+    {
+        $query = "CREATE TABLE Categories (
                 CategoryId int NOT NULL AUTO_INCREMENT,
                 Title varchar(255) NOT NULL,    
                 Image varchar(100),    
                 PRIMARY KEY (CategoryId)
-            );";            
-            $this->conn->exec($query);
-        }
+            );";
+        $this->conn->exec($query);
+    }
 
-        public function createTableSubCategories()
-        {
-            $query = "CREATE TABLE SubCategories (
+    public function createTableSubCategories()
+    {
+        $query = "CREATE TABLE SubCategories (
                 SubCategoryId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 CategoryId int,
                 Title varchar(255) NOT NULL,    
                 Image varchar(100), 
                 FOREIGN KEY(CategoryId) REFERENCES Categories(CategoryId)
-            );";            
-            $this->conn->exec($query);
-        }
+            );";
+        $this->conn->exec($query);
+    }
 
-        public function createTableCarouselImages()
-        {      
-            $query = "CREATE TABLE CarouselImages (
+    public function createTableCarouselImages()
+    {
+        $query = "CREATE TABLE CarouselImages (
                 CarouselImageId int NOT NULL AUTO_INCREMENT,
                 FileName varchar(255) NOT NULL,    
                 `Order` int not null,
                 PRIMARY KEY (CarouselImageId)
             );";
-            $this->conn->exec($query);
-        }
+        $this->conn->exec($query);
+    }
 
-        public function createTableProducts()
-        {
-            $query = "CREATE TABLE Products (
+    public function createTableProducts()
+    {
+        $query = "CREATE TABLE Products (
                 ProductId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 Title varchar(255) NOT NULL,
                 Description varchar(10000),
@@ -287,24 +285,24 @@
                 SubCategoryId int, 
                 FOREIGN KEY(SubCategoryId) REFERENCES SubCategories(SubCategoryId)
             );";
-            $this->conn->exec($query);
-        }
+        $this->conn->exec($query);
+    }
 
-        public function createTableProductImages()
-        {
-            $query = "CREATE TABLE ProductsImages (
+    public function createTableProductImages()
+    {
+        $query = "CREATE TABLE ProductsImages (
                 ProductImageId int PRIMARY KEY AUTO_INCREMENT, 
                 ProductId int NOT NULL,
                 FileName nvarchar(255) not null, 
                 FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
             );";
-            $this->conn->exec($query);
-        }
+        $this->conn->exec($query);
+    }
 
-        public function createTableAddress()
-        {
-            $this->conn->exec(
-                "CREATE TABLE Addresses (
+    public function createTableAddress()
+    {
+        $this->conn->exec(
+            "CREATE TABLE Addresses (
                     AddressId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                     Street varchar(255) NOT NULL,
                     CEP varchar(9) NOT NULL,
@@ -316,13 +314,13 @@
                     FOREIGN KEY(StateId) REFERENCES States(StateId),
                     FOREIGN KEY(UserId) REFERENCES Users(UserId)
                 );"
-            );
-        }
-        
-        public function createTableSellers()
-        {
-            $this->conn->exec(
-                "CREATE TABLE Sellers (
+        );
+    }
+
+    public function createTableSellers()
+    {
+        $this->conn->exec(
+            "CREATE TABLE Sellers (
                     SellerId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                     Age int,    
                     Email varchar(100),
@@ -335,13 +333,13 @@
                     UserId int,
                     FOREIGN KEY(UserId) REFERENCES Users(UserId)
                 );"
-            );
-        }
+        );
+    }
 
-        public function createTableOrder()
-        {
-            $this->conn->exec(
-                "CREATE TABLE Orders (
+    public function createTableOrder()
+    {
+        $this->conn->exec(
+            "CREATE TABLE Orders (
                     OrderId int NOT NULL PRIMARY KEY AUTO_INCREMENT ,
                     Total int NOT NULL , 
                     CreatedAt datetime NOT NULL , 
@@ -359,13 +357,13 @@
                     City varchar(150) NOT NULL, 
                     Complement varchar(150) NOT NULL
                 );"
-            );
-        }
+        );
+    }
 
-        public function createTableOrderItens()
-        {
-            $this->conn->exec(
-                "CREATE TABLE OrderItens (
+    public function createTableOrderItens()
+    {
+        $this->conn->exec(
+            "CREATE TABLE OrderItens (
                     OrderItemId int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
                     OrderId int not null,
                     FOREIGN KEY(OrderId) REFERENCES Orders(OrderId),
@@ -373,19 +371,54 @@
                     FOREIGN KEY(ProductId) REFERENCES Products(ProductId),
                     Qtd int
                 );"
-            );
-        }
+        );
+    }
 
-        public function createTableSimilarProducts()
-        {
-            $query = "CREATE TABLE SimilarProducts (
+    public function createTableSimilarProducts()
+    {
+        $query = "CREATE TABLE SimilarProducts (
                 SimilarProductId int PRIMARY KEY AUTO_INCREMENT, 
                 ParentProductId int NOT NULL,
                 ChildProductId int NOT NULL, 
                 FOREIGN KEY(ParentProductId) REFERENCES Products(ProductId),
                 FOREIGN KEY(ChildProductId) REFERENCES Products(ProductId)
             );";
-            $this->conn->exec($query);
-        }
+        $this->conn->exec($query);
     }
-?>
+
+    public function createTableAtributes()
+    {
+        $query = "create table Atributes (
+                AtributeId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                Name varchar(255) NOT NULL
+        );";
+        $this->conn->exec($query);
+    }
+
+    public function createTableAtributeValues()
+    {
+        $query = "create table AtributeValues (
+            AtributeValueId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            AtributeId int NOT NULL,
+            ProductId int NOT NULL,
+            Value varchar(255) NOT NULL,
+            FOREIGN KEY(AtributeId) REFERENCES Atributes(AtributeId),
+            FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
+        );";
+        $this->conn->exec($query);
+    }
+
+    public function createTableComments()
+    {
+        $query = "create table ProductsComments (
+            ProductCommentId int NOT NULL PRIMARY KEY AUTO_INCREMENT,    
+            ProductId int NOT NULL,
+            Title varchar(30) NOT NULL,
+            Description varchar(100) NOT NULL,
+            Recommended bit not null,
+            Ratting varchar(30) not null,    
+            FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
+        );";
+        $this->conn->exec($query);
+    }
+}

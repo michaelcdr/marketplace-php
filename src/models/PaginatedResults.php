@@ -39,4 +39,3 @@
                 $this->attrDisableNext = "disabled";
         }
     }
-?>

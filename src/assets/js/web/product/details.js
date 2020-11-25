@@ -33,12 +33,12 @@ $(function () {
             arrows: true,
             asNavFor: '.slider-for',
             focusOnSelect: true,
-            prevArrow: '<button type="button" class="btn btn-outline-dark slick-next">' +
+            prevArrow: '<a class="slick-prev arrow-slider-product-img-details">' +
                 '<i class="fa fa-chevron-left"></i>' +
-                '</button>',
-            nextArrow: '<button type="button" class="btn btn-outline-dark slick-next">' +
+                '</a>',
+            nextArrow: '<a class="slick-next arrow-slider-product-img-details">' +
                 '<i class="fa fa-chevron-right"></i>' +
-                '</button>'
+                '</a>'
         });
     }
 

@@ -227,9 +227,7 @@
             if ($numberOfPages > 1 && $page > 1)
                 $hasPreviousPage = true;
 
-            $hasNextPage = false;
-            if ($numberOfPages > intval($page))
-                $hasNextPage = true;
+            $hasNextPage = $numberOfPages > intval($page) ? true : false;
             
             $paginatedReesults = new PaginatedResults(
                 $usersResults, 
@@ -245,5 +243,3 @@
             return $paginatedReesults;
         }
     }
-
-?>

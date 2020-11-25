@@ -14,5 +14,5 @@
         public abstract function getCartRepository();
         public abstract function getSubCategoryRepository();
         public abstract function getCategoryRepository();
+        public abstract function getAttributeRepository();
     }
-?>

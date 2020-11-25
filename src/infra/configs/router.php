@@ -67,6 +67,14 @@ use controllers\categories\CategoryListController;
 use controllers\categories\CategoryListPartialController;
 use controllers\categories\CategoryImageUploadController;
 
+use controllers\attributes\AttributeEditController;
+use controllers\attributes\AttributeEditPostController;
+use controllers\attributes\AttributeCreateController;
+use controllers\attributes\AttributeCreatePostController;
+use controllers\attributes\AttributeDeleteController;
+use controllers\attributes\AttributeListController;
+use controllers\attributes\AttributeListPartialController;
+
 use controllers\AddressCreateController;
 use controllers\products\SimilarProductPartialListController;
 use controllers\products\DeleteSimilarProductControler;
@@ -132,6 +140,14 @@ $routes = [
     "/admin/categoria/deletar" => [CategoryDeleteController::class, "admin"],
     "/admin/categoria" => [CategoryListController::class, "admin"],
     "/admin/categoria/lista-table" => [CategoryListPartialController::class, "admin"],
+
+    "/admin/atributo" => [AttributeListController::class, "admin"],
+    "/admin/atributo/lista-table" => [AttributeListPartialController::class, "admin"],
+    "/admin/atributo/cadastrar" => [AttributeCreateController::class, "admin"],
+    "/admin/atributo/cadastrar-post" => [AttributeCreatePostController::class, "admin"],
+    "/admin/atributo/editar" => [AttributeEditController::class, "admin"],
+    "/admin/atributo/editar-post" => [AttributeEditPostController::class, "admin"],
+    "/admin/atributo/deletar" => [AttributeDeleteController::class, "admin"],
 
     "/admin/vendedor" => [SellerListController::class, "admin"],
     "/admin/vendedor/lista-table" => [SellerPartialListController::class, "admin"],

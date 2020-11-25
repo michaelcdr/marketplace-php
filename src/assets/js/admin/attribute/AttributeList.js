@@ -1,14 +1,14 @@
-class CategoryList {
+class AttributeList {
     constructor() {
         this.initEvents();
-        this._routeDelete = '/admin/categoria/deletar';
-        this._routeList = '/admin/categoria/lista-table'
+        this._routeDelete = '/admin/atributo/deletar';
+        this._routeList = '/admin/atributo/lista-table'
         this._listContainerEl = $("#list-container");
     }
 
     initEvents() {
         let _self = this;
-        $('.btn-delete').unbind('click')
+        $('.btn-delete').unbind('click');
         $('.btn-delete').click(function () {
             let btnEl = $(this);
             _self.delete(btnEl);
@@ -16,13 +16,13 @@ class CategoryList {
 
         $('#btn-pesquisar').unbind('click')
         $('#btn-pesquisar').click(function () {
-            _self.toList(0, $("#search-categories").val());
+            _self.toList(0, $("#search-attributes").val());
         });
 
-        $("#search-categories").unbind('keyup')
-        $("#search-categories").keyup(function (ev) {
+        $("#search-attributes").unbind('keyup')
+        $("#search-attributes").keyup(function (ev) {
             if (ev.which === 13)
-                _self.toList(0, $("#search-categories").val());
+                _self.toList(0, $("#search-attributes").val());
         });
     }
 
@@ -33,15 +33,15 @@ class CategoryList {
             let params = { id: btnEl.data('id') };
             $.post(_self._routeDelete, params, function (data) {
                 if (data.success) {
-                    _self.toList(0, $("#search-categories").val());
+                    _self.toList(0, $("#search-attributes").val());
                 } else {
                     alertError({ text: data.text, msg: data.msg });
                 }
             });
         }
         alertConfirm({
-            title: 'Deseja remover essa categoria?',
-            text: 'Ao fazer isso você estará removendo a categoria, essa ação não podera ser desfeita.'
+            title: 'Deseja remover esse atributo?',
+            text: 'Ao fazer isso você estará removendo o atributo, essa ação não podera ser desfeita.'
         }, callback);
     }
 
@@ -55,4 +55,4 @@ class CategoryList {
     }
 }
 
-window.categoryList = new CategoryList();
+window.attributeList = new AttributeList();

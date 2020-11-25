@@ -386,23 +386,23 @@ implements ISeedRepository
         $this->conn->exec($query);
     }
 
-    public function createTableAtributes()
+    public function createTableAttributes()
     {
-        $query = "create table Atributes (
-                AtributeId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        $query = "create table Attributes (
+                AttributeId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
                 Name varchar(255) NOT NULL
         );";
         $this->conn->exec($query);
     }
 
-    public function createTableAtributeValues()
+    public function createTableAttributeValues()
     {
-        $query = "create table AtributeValues (
-            AtributeValueId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            AtributeId int NOT NULL,
+        $query = "create table AttributeValues (
+            AttributeValueId int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            AttributeId int NOT NULL,
             ProductId int NOT NULL,
             Value varchar(255) NOT NULL,
-            FOREIGN KEY(AtributeId) REFERENCES Atributes(AtributeId),
+            FOREIGN KEY(AttributeId) REFERENCES Atributes(AttributeId),
             FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
         );";
         $this->conn->exec($query);

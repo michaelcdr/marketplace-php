@@ -221,25 +221,14 @@
                 $usersResults = $stmt->fetchAll();
             }   
             
-            //obtendo dados para controle da paginação
-            $numberOfPages = ceil($total / $pageSize);
-            $hasPreviousPage = false;
-            if ($numberOfPages > 1 && $page > 1)
-                $hasPreviousPage = true;
-
-            $hasNextPage = $numberOfPages > intval($page) ? true : false;
-            
-            $paginatedReesults = new PaginatedResults(
+            return new PaginatedResults(
                 $usersResults, 
                 $total, 
                 count($usersResults),
-                $hasPreviousPage,
-                $hasNextPage,
                 $page,
-                $numberOfPages,
+                $pageSize,
                 "/admin/usuario?p="
             );
-
-            return $paginatedReesults;
+;
         }
     }

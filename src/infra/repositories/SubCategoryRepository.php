@@ -1,7 +1,7 @@
 <?php
     namespace infra\repositories;    
     use infra\MySqlRepository;
-    use infra\interfaces\ICategoryRepository;
+    use infra\interfaces\ISubCategoryRepository;
     use models\SubCategory;
     use models\PaginatedResults;
     use PDO;
@@ -136,7 +136,6 @@
                 $skipNumber = $pageSize * ($page - 1);
             
             $total = $this->total($search);
-            //echo "page: " . $page . "<br/> skipNumber: " . $skipNumber . "<br/>";
 
             //obtendo lista de usuarios...
             $subCategoriesResults = null;
@@ -165,34 +164,20 @@
                 $subCategoriesResults = $stmt->fetchAll();
             }   
             
-            //obtendo dados para controle da paginação
-            $numberOfPages = ceil($total / $pageSize);
-            $hasPreviousPage = false;
-            if ($numberOfPages > 1 && $page > 1)
-                $hasPreviousPage = true;
-
-                $hasNextPage = $numberOfPages >= intval($page) ? false :true;
-            
             $subCategoriesArray = array();
             foreach($subCategoriesResults as $row){
                 $subCategoriesArray[] = new SubCategory(
-                    $row["subCategoryId"],
-                    $row["categoryId"],
-                    $row["image"]
+                    $row["subCategoryId"], $row["categoryId"], $row["image"]
                 );
             }
 
-            $paginatedResults = new PaginatedResults(
+            return new PaginatedResults(
                 $subCategoriesArray, 
                 $total, 
                 count($subCategoriesArray),
-                $hasPreviousPage,
-                $hasNextPage,
                 $page,
-                $numberOfPages,
+                $pageSize,
                 "/admin/subcategoria?p="
-            );
-
-            return $paginatedResults;
+            );;
         }
     }

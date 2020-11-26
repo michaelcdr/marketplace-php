@@ -155,33 +155,13 @@
                 $stmt->execute();
                 $categoriesResults = $stmt->fetchAll();
             }   
-            
-            //obtendo dados para controle da paginação
-            $numberOfPages = ceil($total / $pageSize);
-            $hasPreviousPage = false;
-            if ($numberOfPages > 1 && $page > 1)
-                $hasPreviousPage = true;
 
-            $hasNextPage = $numberOfPages >= intval($page) ?false : true;
-            
             $categoriesArray = array();
-            foreach($categoriesResults as $row){
-                $categoriesArray[] = new Category(
-                    $row["categoryId"], $row["title"],$row["image"]
-                );
-            }
-
-            $paginatedResults = new PaginatedResults(
-                $categoriesArray, 
-                $total, 
-                count($categoriesArray),
-                $hasPreviousPage,
-                $hasNextPage,
-                $page,
-                $numberOfPages,
-                "/admin/categoria?p="
+            foreach($categoriesResults as $row)
+                $categoriesArray[] = new Category($row["categoryId"], $row["title"],$row["image"]);
+            
+            return new PaginatedResults(
+                $categoriesArray, $total, count($categoriesArray), $page, $pageSize, "/admin/categoria?p="
             );
-
-            return $paginatedResults;
         }
     }

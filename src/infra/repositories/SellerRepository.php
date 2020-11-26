@@ -108,12 +108,6 @@ class SellerRepository extends MySqlRepository implements ISellerRepository
 
     public function getAll($page, $search, $pageSize)
     {
-        //configurando variaveis para paginação
-        // if (!isset($page))
-        //     $page = 0;
-
-        // if (!isset($pageSize))
-        //     $pageSize = 5;  
 
         $skipNumber = 0;
         if (!is_null($page) && $page > 0)
@@ -164,17 +158,8 @@ class SellerRepository extends MySqlRepository implements ISellerRepository
             $usersResults = $stmt->fetchAll();
         }
 
-        //obtendo dados para controle da paginação
-        $numberOfPages = ceil($total / $pageSize);
-        $hasPreviousPage = false;
-        if ($numberOfPages > 1 && $page > 1)
-            $hasPreviousPage = true;
-
-        $hasNextPage = $numberOfPages >= intval($page) ? false : true;
-
         $sellers = array();
         foreach ($usersResults as $row) {
-            //echo $row["Login"];
             $sellers[] = new Seller(
                 $row["SellerId"],
                 $row["Name"],
@@ -186,18 +171,14 @@ class SellerRepository extends MySqlRepository implements ISellerRepository
             );
         }
 
-        $paginatedResults = new PaginatedResults(
+        return  new PaginatedResults(
             $sellers,
             $total,
             count($sellers),
-            $hasPreviousPage,
-            $hasNextPage,
             $page,
-            $numberOfPages,
+            $pageSize,
             "/admin/vendedor?p="
         );
-
-        return $paginatedResults;
     }
 
     public function getById($sellerId)

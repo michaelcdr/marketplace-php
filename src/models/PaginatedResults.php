@@ -16,26 +16,26 @@
         public $urlNextPage;
         public $attrDisableNext;
 
-        public function __construct(
-            $results,$qtdTotal,$qtdTotalFiltered,$hasPreviousPage,$hasNextPage,$page,$numberOfPages,$urlPagina)
+        public function __construct($results, $qtdTotal, $qtdTotalFiltered,  $page,$pageSize,$urlPagina)
         {
             $this->results = $results;
             $this->qtdTotal = $qtdTotal;
             $this->qtdTotalFiltered = $qtdTotalFiltered;
-            $this->hasPreviousPage= $hasPreviousPage;
-            $this->hasNextPage = $hasNextPage;
             $this->page = $page;
-            $this->numberOfPages = $numberOfPages;
-
+            $this->numberOfPages = ceil($qtdTotal / $pageSize);
+            $this->hasPreviousPage= ($this->numberOfPages > 1 && $page > 1) ? true : false;
+            $this->hasNextPage = (intval($this->numberOfPages) > intval($page)) ? true : false;
+            
             //dados de controle da paginação
             $this->urlPrevPage = $urlPagina . ($this->page - 1);
             $this->attrDisablePrev = "";
             if ($this->hasPreviousPage == false)
-                $this->attrDisablePrev = "disabled";
-
+            $this->attrDisablePrev = "disabled";
+            
             $this->urlNextPage = $urlPagina . ($this->page + 1);
             $this->attrDisableNext = "";
             if (!$this->hasNextPage)
                 $this->attrDisableNext = "disabled";
+            //echo 'page ' . $page . ' -- ' . $qtdTotal . ' / ' . $pageSize . '=' . $this->numberOfPages;
         }
     }

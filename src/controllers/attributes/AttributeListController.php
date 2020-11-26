@@ -15,15 +15,8 @@ class AttributeListController  implements IBaseController
 
     public function proccessRequest(): void
     {
-        $page = 1;
-        if (isset($_GET["p"]))
-            $page = intval($_GET["p"]);
-
+        $page = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
         $paginatedResults = $this->_repoAttribute->getAllPaginated($page, null, 5);
-        echo '<pre>';
-        var_dump($paginatedResults);
-        echo '</pre>';
-        //exit;
         $attributes = $paginatedResults->results;
         require "views/admin/attributes/index.php";
     }

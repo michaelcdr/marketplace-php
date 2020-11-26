@@ -9,10 +9,9 @@
     use models\PaginatedResults;
     use models\ProductOrder;
     use PDO;
-    
-    class OrderRepository 
-        extends MySqlRepository 
-        implements IOrderRepository
+    use PDOException;
+
+    class OrderRepository  extends MySqlRepository  implements IOrderRepository
     {
         public function add($order)
         {
@@ -44,22 +43,8 @@
                 $stmt->bindValue(':cpf', $order->getCpf());
                 $stmt->bindValue(':complement', $order->getComplement());
                 $stmt->execute();
-
-                // echo "chegou <br> total:" . $order->getTotal();
-                // echo "<br> userId: " . $order->getUserId();
-                // echo "<br> stateid: " . $order->getStateId();
-                // echo "<br> cardOwner: " . $order->getCardOwner();
-                // echo "<br> getExpirationDate: " . $order->getExpirationDate();
-                // echo "<br> name: " . $order->getName();
-                // echo "<br> getAddress: " . $order->getAddress();
-                // echo "<br> getNeighborhood: " . $order->getNeighborhood();
-                // echo "<br> getCep: " . $order->getCep();
-                
                 $orderId = $this->conn->lastInsertId();
-                // echo $orderId;
-                // echo "<pre>";
-                // echo $order->getOrderItens();
-                // echo "</pre>";
+              
                 foreach($order->getOrderItens() as $item)
                 {
                     $stmt = $this->conn->prepare(
@@ -286,21 +271,13 @@
                 $stmt->bindValue(':userId', intval($userId), PDO::PARAM_INT);
                 $stmt->execute();
                 $ordersResults = $stmt->fetchAll();
-            }   
-            
-            //obtendo dados para controle da paginação
-            $numberOfPages = ceil($total / $pageSize);
-            $hasPreviousPage = false;
-            if ($numberOfPages > 1 && $page > 1)
-                $hasPreviousPage = true;
-
-                $hasNextPage = $numberOfPages >= intval($page) ? false :true;
+            }
             
             $orders = array();
             foreach($ordersResults as $row)
             {
                 $order =new Order(
-                    $row["orderId"],
+                    $row["orderId"], 
                     $row["userId"],
                     $row["total"],
                     $row["name"],
@@ -321,21 +298,14 @@
                 $orders[] = $order;
             }
             
-            $paginatedResults = new PaginatedResults(
-                $orders, 
-                $total, 
-                count($orders),
-                $hasPreviousPage,
-                $hasNextPage,
-                $page,
-                $numberOfPages,
-                "/admin/usuario/minhas-compras?p="
+            return new PaginatedResults(
+                $orders, $total, count($orders), $page, 
+                $pageSize, "/admin/usuario/minhas-compras?p="
             );
-
-            return $paginatedResults;
         }
 
-        public function delete($id){
+        public function delete($id)
+        {
             $stmt = $this->conn->prepare(
                 "delete from orderitens where orderId = :orderId"
             );

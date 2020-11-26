@@ -57,18 +57,18 @@ implements IProductRepository
 
             $stmt = $this->conn->prepare(
                 "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
-                            p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
-                            p.UserId, u.Name as Seller
-                            FROM Products p
-                    inner join users u on p.userid = u.userid
-                    left join (
-                        select pi.ProductId, pi.filename as filename
-                        from ProductsImages pi     
-                    )
-                    as Image on p.ProductId = Image.ProductId $userClausule
-                    group by p.productid 
-                    order by p.title
-                    limit :pageSize OFFSET :skipNumber "
+                        p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
+                        p.UserId, u.Name as Seller
+                        FROM Products p
+                inner join users u on p.userid = u.userid
+                left join (
+                    select pi.ProductId, pi.filename as filename
+                    from ProductsImages pi     
+                )
+                as Image on p.ProductId = Image.ProductId $userClausule
+                group by p.productid 
+                order by p.title
+                limit :pageSize OFFSET :skipNumber "
             );
         } else {
             if (isset($userId) && $userId != null)
@@ -102,26 +102,16 @@ implements IProductRepository
         $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
         $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
         $stmt->execute();
+
         $produtosResult = $stmt->fetchAll();
-
-        $numberOfPages = ceil($total / $pageSize);
-        $hasPreviousPage = false;
-        if ($numberOfPages > 1 && $page > 1)
-            $hasPreviousPage = true;
-
-        $hasNextPage = $numberOfPages >= intval($page) ?  false : true;
-        if (!isset($site)) {
-            $site = false;
-        }
+        $site = !isset($site) ? false: $site;
 
         return new PaginatedResults(
             $produtosResult,
             $total,
             count($produtosResult),
-            $hasPreviousPage,
-            $hasNextPage,
             $page,
-            $numberOfPages,
+            $pageSize,
             $site ? "/pesquisa?p=" : "/admin/produto?p="
         );
     }
@@ -130,7 +120,7 @@ implements IProductRepository
     {
         $stmt = $this->conn->prepare(
             "INSERT INTO products(Title, Description, Price, CreatedAt, CreatedBy, Offer, Stock, Sku,UserId) 
-                values (:title, :desc, :price, now(), :createdBy, :offer, :stock,:sku,:userId);"
+            values (:title, :desc, :price, now(), :createdBy, :offer, :stock,:sku,:userId);"
         );
 
         $stmt->bindValue(":title", $product->getTitle());
@@ -458,21 +448,13 @@ implements IProductRepository
 
         $produtosResult = $stmt->fetchAll();
 
-        $numberOfPages = ceil($total / $pageSize);
-        $hasPreviousPage = false;
-        if ($numberOfPages > 1 && $page > 1)
-            $hasPreviousPage = true;
-
-        $hasNextPage = $numberOfPages >= intval($page) ? false : true;
 
         return new PaginatedResults(
             $produtosResult,
             $total,
             count($produtosResult),
-            $hasPreviousPage,
-            $hasNextPage,
             $page,
-            $numberOfPages,
+            $pageSize,
             "/admin/produto?p="
         );
     }
@@ -573,18 +555,13 @@ implements IProductRepository
         $stmt->execute();
 
         $produtosResult = $stmt->fetchAll();
-        $numberOfPages = ceil($total / $pageSize);
-        $hasPreviousPage =  ($numberOfPages > 1 && $page > 1) ? true : false;
-        $hasNextPage = ($numberOfPages >= intval($page)) ? false : true;
 
         return new PaginatedResults(
             $produtosResult,
             $total,
             count($produtosResult),
-            $hasPreviousPage,
-            $hasNextPage,
             $page,
-            $numberOfPages,
+            $pageSize,
             "/admin/produto?p="
         );
     }

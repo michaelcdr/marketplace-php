@@ -80,15 +80,11 @@ class AttributeRepository  extends MySqlRepository implements IAttributeReposito
 
     public function getAllPaginated($page, $search, $pageSize)
     {
-
         $page = !isset($page) ? 0 : $page;
         $pageSize = !isset($pageSize) ? 5 : $pageSize;
         $skipNumber = (!is_null($page) && $page > 0) ? $pageSize * ($page - 1) : 0;
-
         $total = $this->total($search);
         $total = isset($total) ? $total : 0;
-
-
         $attributesResults = null;
 
         if (is_null($search) ||  $search === "") {
@@ -108,27 +104,17 @@ class AttributeRepository  extends MySqlRepository implements IAttributeReposito
             $attributesResults = $stmt->fetchAll();
         }
 
-        //obtendo dados para controle da paginação
-        $numberOfPages = ceil($total / $pageSize);
-        $hasPreviousPage = ($numberOfPages > 1 && $page > 1) ? true : false;
-        $hasNextPage = (intval($numberOfPages) >= intval($page)) ?  false : true;
-
-
         $attributeArray = array();
         foreach ($attributesResults as $row)
             $attributeArray[] = new Attribute($row["attributeId"], $row["name"]);
 
-        $paginatedResults = new PaginatedResults(
+        return new PaginatedResults(
             $attributeArray,
             $total,
             count($attributeArray),
-            $hasPreviousPage,
-            $hasNextPage,
             $page,
-            $numberOfPages,
+            $pageSize,
             "/admin/atributo?p="
         );
-
-        return $paginatedResults;
     }
 }

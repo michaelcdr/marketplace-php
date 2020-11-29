@@ -5,6 +5,7 @@ namespace infra\repositories;
 use infra\MySqlRepository;
 use infra\interfaces\IProductRepository;
 use models\Product;
+use domain\entities\AttributeValue;
 use models\PaginatedResults;
 use PDO;
 
@@ -104,7 +105,7 @@ implements IProductRepository
         $stmt->execute();
 
         $produtosResult = $stmt->fetchAll();
-        $site = !isset($site) ? false: $site;
+        $site = !isset($site) ? false : $site;
 
         return new PaginatedResults(
             $produtosResult,
@@ -609,13 +610,14 @@ implements IProductRepository
     public function like($productId, $userId)
     {
         $stmt = $this->conn->prepare(
-            "INSERT INTO productslikeds(ProductId,UserId)
-             SELECT ProductId, UserId FROM products WHERE ProductId = :ProductId and UserId = :UserId and 
-                not exists(select productlikedid from productslikeds where  ProductId = :ProductId and UserId = :UserId);"
+            "INSERT INTO productslikeds(ProductId, UserId) select :ProductId, :UserId
+             WHERE (
+                 select COUNT(productlikedid) from productslikeds 
+                 where  ProductId = :ProductId and UserId = :UserId) = 0;"
         );
         $stmt->bindValue(':ProductId', $productId);
         $stmt->bindValue(':UserId', $userId);
-        $stmt->execute();
+        $affectedsRows = $stmt->execute();
     }
 
     public function dislike($productId, $userId)
@@ -640,5 +642,46 @@ implements IProductRepository
         $total = $stmt->fetch();
         $isLiked = (intval($total["total"]) == 0 ? false : true);
         return $isLiked;
+    }
+
+    public function addAttributeValue($attributeValue)
+    {
+        $stmt = $this->conn->prepare(
+            "INSERT INTO attributevalues(ProductId, AttributeId, Value) 
+            VALUES (:ProductId, :AttributeId, :Value);");
+        $stmt->bindValue(":AttributeId", $attributeValue->getAttributeId());
+        $stmt->bindValue(':ProductId',  $attributeValue->getProductId());
+        $stmt->bindValue(':Value',  $attributeValue->getValue());
+        $stmt->execute();
+    }
+
+    public function getAllAttributesValues($productId)
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT a.Name as Attribute, av.Value, av.ProductId, av.AttributeId FROM attributevalues av
+             inner join attributes a on av.AttributeId = a.AttributeId
+             where av.ProductId = :productId;"
+        );
+
+        $stmt->bindValue(':productId',  $productId);
+        $stmt->execute();
+        $attributesValuesRows = $stmt->fetchAll();
+
+        $attributesValues = array();
+        foreach ($attributesValuesRows as $attributeValueRow) {
+            $attributeValue = new AttributeValue(
+                $attributeValueRow['AttributeId'],$attributeValueRow['ProductId'],$attributeValueRow['Value']
+            );
+            $attributeValue->setAttributeName($attributeValueRow["Attribute"]);
+
+            $attributesValues[] = $attributeValue;
+        }
+        return $attributesValues;
+    }
+
+    public function removeAllAttributesValues($productId){
+        $stmt = $this->conn->prepare("DELETE FROM attributevalues where ProductId = :productId;");
+        $stmt->bindValue(':productId',  $productId);
+        $stmt->execute();
     }
 }

@@ -108,11 +108,42 @@ if ($_SESSION["role"] == "vendedor") {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="pull-left">
+                                    Ficha técnica:
+                                </label>
+                                <button type="button" class="btn btn-dark btn-sm pull-right" id="btn-add-attribute" data-product-id="" data-toggle="button" 
+                                    aria-pressed="false" autocomplete="off">
+                                    <i class="fa fa-plus"></i> Adicionar atributo
+                                </button>
+                                <span class="clearfix"></span>
+                            </div>
+
+                            <table class="table table-striped hidden" id="tb-attributes">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nome</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                            <div class="alert alert-info" id="has-no-attributes">
+                                Nenhum atributo foi selecionado.
+                            </div>
+
+                        </div>
+
                         <div class="col-md-12">
                             <a class="btn btn-warning btn-sm" href="/admin/produto">
                                 <i class="fa fa-chevron-left"></i>
                             </a>
-                            <button type="submit" name="btn-salvar" id="btn-salvar" data-loading-text="Processando, Aguarde..." class="btn btn-dark btn-sm"><i class="fa fa-save"></i> Salvar produto
+                            <button type="submit" name="btn-salvar" id="btn-salvar" data-loading-text="Processando, Aguarde..." class="btn btn-dark btn-sm">
+                                <i class="fa fa-save"></i> Salvar produto
                             </button>
                         </div>
                     </div>

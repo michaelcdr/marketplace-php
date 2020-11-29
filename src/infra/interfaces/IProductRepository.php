@@ -23,4 +23,7 @@ interface IProductRepository
     public function isLiked($productId, $userId): bool;
     public function dislike($productId, $userId);
     public function like($productId, $userId);
+    public function getAllAttributesValues($productId);
+    public function addAttributeValue($attributeValue);
+    public function removeAllAttributesValues($productId);
 }

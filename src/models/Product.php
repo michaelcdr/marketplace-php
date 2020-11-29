@@ -5,8 +5,6 @@ namespace models;
 use infra\helpers\SrcHelper;
 use domain\catalog\viewmodels\ProductImage;
 
-
-
 class Product
 {
     private $ProductId;
@@ -24,6 +22,7 @@ class Product
     private $errors;
     private $userId;
     private $imgPath;
+    private $attributesValues;
 
     public function __construct(
         $id,
@@ -52,6 +51,7 @@ class Product
         $this->errors = array();
 
         $this->imgPath = SrcHelper::getProductImg();
+        $this->attributesValues = array();
     }
 
     public function getId()
@@ -184,5 +184,27 @@ class Product
             $this->errors['description'] = 'Informe o descritivo.';
 
         return count($this->errors) === 0;
+    }
+    
+    public function addAttributeValue($attributeValue)
+    {
+        $this->attributesValues[] = $attributeValue;
+    }
+
+    /**
+     * Get the value of attributesValues
+     */ 
+    public function getAttributesValues()
+    {
+        return $this->attributesValues;
+    }
+
+    public function addRangeAttributeValues($itens){
+        
+        if (isset($itens) && count($itens) >0){
+            foreach ($itens as $item) {
+                $this->attributesValues[] = $item;
+            }
+        }
     }
 }

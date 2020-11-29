@@ -16,9 +16,8 @@ class ProductEditController implements IBaseController
 
     public function proccessRequest(): void
     {
-        $product  = $this->_productService->getById($_GET['id']);
+        $product = $this->_productService->getById($_GET['id']);
         $model = $this->_productService->getProductEditViewModel($_GET['id']);
-
         require $_SERVER['DOCUMENT_ROOT'] . '\\views\\admin\\product\\editar.php';
     }
 }

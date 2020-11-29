@@ -66,12 +66,11 @@ class AttributeRepository  extends MySqlRepository implements IAttributeReposito
     public function getAll()
     {
         $attributesResults = null;
-        $stmt = $this->conn->prepare("SELECT attributeId, name FROM Attributes order by name");
+        $stmt = $this->conn->prepare("SELECT attributeId,name FROM Attributes order by name");
         $stmt->execute();
         $attributesResults = $stmt->fetchAll();
 
         $attributesArray = array();
-
         foreach ($attributesResults as $row)
             $attributesArray[] = new Attribute($row["attributeId"], $row["name"]);
 

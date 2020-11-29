@@ -102,7 +102,7 @@
                                         <?php foreach ($product->getImages() as $image) : ?>
                                             <div class="card text-center " data-name="<?php echo $image["FileName"]; ?>">
                                                 <div class="text-center p-2">
-                                                    <img src="/img/products/<?php echo $image["FileName"]; ?>" src="..." alt="..." style="max-width:100px; max-height:100px;" class="img-fluid ">
+                                                    <img src="/assets/img/products/<?php echo $image["FileName"]; ?>" src="..." alt="..." style="max-width:100px; max-height:100px;" class="img-fluid ">
                                                 </div>
                                                 <div class="card-footer p-2">
                                                     <button type="button" class="btn btn-danger btn-sm" data-name="<?php echo $image["FileName"]; ?>" data-product-id="<?php echo $image["ProductId"]; ?>" data-id="<?php echo $image["ProductImageId"]; ?>" title="Remover imagem">
@@ -124,6 +124,51 @@
                         </div>
 
                         <div class="col-md-12">
+                            <div class="mb-2">
+                                <label class="pull-left">
+                                    Ficha técnica:
+                                </label>
+                                <button type="button" class="btn btn-dark btn-sm pull-right" id="btn-add-attribute" data-product-id="<?php echo $product->getId(); ?>" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                    <i class="fa fa-plus"></i> Adicionar atributo
+                                </button>
+                                <span class="clearfix"></span>
+                            </div>
+
+                            <table class="table table-striped <?php echo (count($product->getAttributesValues()) > 0 ? "" : "hidden"); ?>" id="tb-attributes">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nome</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (count($product->getAttributesValues()) > 0) : ?>
+                                        <?php foreach ($product->getAttributesValues() as $attributeValue) : ?>
+                                            <tr data-attribute-id="<?php echo $attributeValue->getAttributeId(); ?>">
+                                                <td width="10px" scope="row" style="vertical-align:middle">
+                                                    <button type="button" class="btn btn-danger btn-sm btn-remove-attribute" data-toggle="button" aria-pressed="false" autocomplete="off">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                                <td valign="middle" style="vertical-align:middle" width="30%"><?php echo $attributeValue->getAttributeName(); ?></td>
+                                                <td valign="middle" style="vertical-align:middle" width="70%">
+                                                    <input type="text" value="<?php echo $attributeValue->getValue(); ?>" class="form-control" name="attribute-<?php echo $attributeValue->getAttributeId(); ?>" id="attribute-<?php echo $attributeValue->getAttributeId(); ?>" data-required="true" aria-describedby="helpId" placeholder="">
+                                                    <small id="helpId" class="form-text text-muted">Valor do atributo <?php echo $attributeValue->getAttributeName(); ?></small>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+
+                            <div class="alert alert-info <?php echo (count($product->getAttributesValues()) == 0 ? "" : "hidden"); ?>" id="has-no-attributes">
+                                Nenhum atributo foi selecionado.
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
                             <a class="btn btn-sm btn-warning" href="/admin/produto">
                                 <i class="fa fa-chevron-left"></i>
                             </a>
@@ -140,6 +185,7 @@
 <?php require_once './views/partials/scripts-admin.php' ?>
 <script src="/assets/libs/dropzone/dropzone.min.js"></script>
 <script src="/assets/js/models/GenericValidator.js"></script>
+<script src="/assets/js/admin/product/Product.js"></script>
 <script src="/assets/js/models/ProductDropzone.js"></script>
 <script src="/assets/js/models/ProductImageCard.js"></script>
 <script src="/assets/js/models/ProductCrudBase.js"></script>

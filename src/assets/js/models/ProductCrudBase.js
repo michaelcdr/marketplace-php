@@ -142,4 +142,37 @@ class ProductCrudBase {
             ]
         });
     }
+
+    getCategories() {
+        let _self = this;
+        $.get(`/admin/categoria/lista-json`, function (data) {
+            if (data) {
+                $(data.categories).each(function (index, el) {
+                    $("#categoryId").append(`<option value='${el.categoryId}'>${el.title}</option>`);
+                });
+
+                $("#categoryId").off('change');
+                $("#categoryId").on('change', function () {
+                    let categoryId = $(this).val();
+                    if (categoryId === "") {
+                        $("#subCategoryId").prop('disabled', true);
+                        $("#subCategoryId").html('<option value="">Selecione</option>');
+                    } else
+                        _self.getSubCategories(categoryId);
+                });
+            }
+        });
+    }
+
+    getSubCategories(categoryId) {
+        //console.log("categoria selecionada " + categoryId);
+        $.get(`/admin/subcategoria/lista-json`, { categoryId: categoryId }, function (data) {
+            if (data) {
+                $(data.subCategories).each(function (index, el) {
+                    $("#subCategoryId").append(`<option value='${el.subCategoryId}'>${el.title}</option>`);
+                });
+                $("#subCategoryId").prop('disabled', false);
+            }
+        });
+    }
 }

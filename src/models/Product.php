@@ -23,7 +23,7 @@ class Product
     private $userId;
     private $imgPath;
     private $attributesValues;
-
+    private $subCategoryId;
     public function __construct(
         $id,
         $title,
@@ -115,6 +115,12 @@ class Product
     public function setImages($images)
     {
         $this->images = $images;
+    }
+    public function getSubCategoryId(){
+        return $this->subCategoryId;
+    }
+    public function setSubCategoryId($subCategoryId){
+        $this->subCategoryId = $subCategoryId;
     }
 
     public function getImages()

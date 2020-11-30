@@ -34,12 +34,10 @@
                     $_SESSION["role"] == "vendedor" ? $_SESSION["userId"] : filter_input(INPUT_POST,'userId',FILTER_SANITIZE_STRING),
                     null
                 );
-
+                $product->setSubCategoryId($_POST["subCategoryId"]);
                 $attributesValues = json_decode($_POST['attributesValues']);
                 for ($i=0; $i < count($attributesValues); $i++) { 
-                    $product->addAttributeValue(
-                        new AttributeValue($attributesValues[$i]->attributeId,$product->getId(),$attributesValues[$i]->value)
-                    );
+                    $product->addAttributeValue(new AttributeValue($attributesValues[$i]->attributeId,$product->getId(),$attributesValues[$i]->value));
                 }
                 
                 if (!$product->isValid())

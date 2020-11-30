@@ -6,8 +6,9 @@
         public function remove($categoryId);
         public function update($category);
         public function getById($id);
-        public function total($search);
+        public function total($categoryId,$search);
         public function getAll();
-        public function getAllPaginated($page, $search, $pageSize);
+        public function getAllPaginated($categoryId,$page, $search, $pageSize);
+        public function getAllByCategory($categoryId);
     }
 ?>

@@ -1,10 +1,10 @@
 <?php
-$qtdItensCarrinho = 0;
-if (isset($_SESSION["cart"])) {
-    foreach ($_SESSION["cart"]->getProducts() as $productItem) {
-        $qtdItensCarrinho += $productItem->getQtd();
+    $qtdItensCarrinho = 0;
+    if (isset($_SESSION["cart"])) {
+        foreach ($_SESSION["cart"]->getProducts() as $productItem) {
+            $qtdItensCarrinho += $productItem->getQtd();
+        }
     }
-}
 ?>
 <div class=" container-nav">
     <div class="container">
@@ -83,29 +83,45 @@ if (isset($_SESSION["cart"])) {
             </div>
             <div class="col-md-12">
                 <ul class="menu">
-                    <li class="">
-                        <a class="" href="/">Home</a>
+                    <li>
+                        <a href="/">Home</a>
                     </li>
-                    <li class="">
-                        <a class="" href="/carrinho">Carrinho</a>
+                    <li class=" dropdown">
+                        <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categorias
+                        </a>
+                        <?php
+                            $factory = new infra\MySqlRepositoryFactory();
+                            $categoriesMenu = $factory->getCategoryRepository()->getAll();
+                        ?>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <?php foreach ($categoriesMenu as $categoryMenuItem):?>
+                                <a class="dropdown-item" href="/categorias?id=<?php echo $categoryMenuItem->getCategoryId(); ?>"><?php echo $categoryMenuItem->getTitle(); ?></a>
+                            <?php endforeach;?>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/carrinho">Carrinho</a>
                     </li>
 
                     <?php if (!isset($_SESSION["role"])) : ?>
-                        <li class="">
-                            <a class="" href="/vender">Vender</a>
+                        <li>
+                            <a href="/vender">Vender</a>
                         </li>
                     <?php endif; ?>
 
                     <?php
-                    if (isset($_SESSION["userId"])) {
-                        if ($_SESSION["role"] == "comum") {
-                            require_once "./views/partials/nav-menu-default.php";
-                        } else if ($_SESSION["role"] == "vendedor") {
-                            require_once "./views/partials/nav-menu-seller.php";
-                        } else {
-                            require_once "./views/partials/nav-menu-admin.php";
+                    
+                        if (isset($_SESSION["userId"])) 
+                        {
+                            if ($_SESSION["role"] == "comum") {
+                                require_once "./views/partials/nav-menu-default.php";
+                            } else if ($_SESSION["role"] == "vendedor") {
+                                require_once "./views/partials/nav-menu-seller.php";
+                            } else {
+                                require_once "./views/partials/nav-menu-admin.php";
+                            }
                         }
-                    }
                     ?>
                 </ul>
             </div>

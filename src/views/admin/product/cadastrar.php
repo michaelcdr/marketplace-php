@@ -83,6 +83,29 @@ if ($_SESSION["role"] == "vendedor") {
                                 <small id="help-stock" class="text-muted">Se esse produto esta em oferta selecione sim</small>
                             </div>
                         </div>
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label for="offer">Categoria:</label>
+                                <div class="mb-2">
+                                    <select class="form-control" id="categoryId" name="categoryId">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                                <small id="help-stock" class="text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label for="offer">Subcategoria:</label>
+                                <div class="mb-2">
+                                    <select class="form-control" id="subCategoryId" name="subCategoryId" disabled="disabled">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                                <small id="help-stock" class="text-muted"></small>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="description">Descritivo do produto:</label>

@@ -30,7 +30,9 @@
                                     </a>
                                 </div>
                             </td>
-                            <td><?php echo $category->getTitle(); ?></td>
+                            <td>
+                                <a href="/admin/subcategoria?id=<?php echo $category->getCategoryId(); ?>"><?php echo $category->getTitle(); ?></a>
+                            </td>
                         </tr>
                     <?php endforeach?>
                 <?php endif ?>

@@ -9,9 +9,7 @@ require_once './views/partials/header-admin.php';
                 <li>
                     <a href="/admin/categoria">Categorias</a>
                 </li>
-                <li>
-                    <a href="javascript:void(0);">Lista de categorias</a>
-                </li>
+                <li>Lista de categorias</li>
             </ul>
         </div>
     </div>

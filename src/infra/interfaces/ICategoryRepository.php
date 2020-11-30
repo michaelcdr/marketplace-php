@@ -9,5 +9,6 @@
         public function total($search);
         public function getAll();
         public function getAllPaginated($page, $search, $pageSize);
+        
     }
 ?>

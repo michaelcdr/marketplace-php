@@ -11,17 +11,17 @@
         
         public function getTitle()
         {
-            return  $this->_title;
+            return $this->_title;
         }
 
         public function getSubCategoryId()
         {
-            return  $this->_subCategoryId;
+            return $this->_subCategoryId;
         }
 
         public function getCategoryId()
         {
-            return  $this->_categoryId;
+            return $this->_categoryId;
         }
 
         public function __construct($subCategoryId, $categoryId, $title)

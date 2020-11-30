@@ -92,7 +92,28 @@
                                 </small>
                             </div>
                         </div>
-
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label for="offer">Categoria:</label>
+                                <div class="mb-2">
+                                    <select class="form-control" id="categoryId" name="categoryId">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                                <small id="help-stock" class="text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                <label for="offer">Subcategoria:</label>
+                                <div class="mb-2">
+                                    <select class="form-control" id="subCategoryId" name="subCategoryId" disabled="disabled">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </div>
+                                <small id="help-stock" class="text-muted"></small>
+                            </div>
+                        </div>
                         <!--imagens atuais e container de uploads-->
                         <div class="col-md-12">
                             <div class="form-group">

@@ -9,7 +9,6 @@ class SearchController implements IBaseController
 {
     private $_productService;
 
-
     public function __construct($factory)
     {
         $this->_productService = new ProductService($factory);

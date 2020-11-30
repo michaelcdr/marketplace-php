@@ -1,6 +1,6 @@
 <?php
-$titlePage = "Loja Whatever - Sua loja de instrumentos músicais e acessórios";
-require_once './views/partials/header.php';
+    $titlePage = "Loja Whatever - Sua loja de instrumentos músicais e acessórios";
+    require_once './views/partials/header.php';
 ?>
 <main>
     <!-- carrossel -->
@@ -38,4 +38,4 @@ require_once './views/partials/header.php';
     </div>
 </main>
 
-<?php require_once './views/partials/footer.php' ?>
+<?php require_once './views/partials/footer.php' ?> 

@@ -1,16 +1,21 @@
 <?php
 
-use infra\helpers\SrcHelper;
-
-require_once './views/partials/header-admin.php' ?>
+    use infra\helpers\SrcHelper;
+    require_once './views/partials/header-admin.php'
+ ?>
 <link rel="stylesheet" href="/assets/libs/dropzone/dropzone.min.css">
 <div class="container">
     <div class="d-flex align-items-center p-3 mt-3 text-white-50 bg-dark rounded shadow-sm">
         <div class="lh-100">
             <h6 class="mb-0 text-white lh-100">Edição de categoria</h6>
-            <small>Categorias > Editar</small>
+           
+            <ul class="nav-breadcrumb">
+                <li>
+                    <a href="/admin/categoria">Categorias</a>
+                </li>
+                <li>Editar</li>
+            </ul>
         </div>
-
     </div>
 
     <div class="card mt-3">
@@ -37,7 +42,7 @@ require_once './views/partials/header-admin.php' ?>
                                     <?php if ($category->getImage()) : ?>
                                         <div class="card text-center" data-name="<?php echo $category->getImage(); ?>">
                                             <div class="text-center p-2">
-                                                <img src="/img/categories/<?php echo $category->getImage(); ?>" style="max-width:100px; max-height:100px;" class="img-fluid ">
+                                                <img src="<?php echo $category->getImage(); ?>" style="max-width:100px; max-height:100px;" class="img-fluid ">
                                             </div>
                                             <div class="card-footer p-2">
                                                 <button type="button" class="btn btn-danger btn-sm" data-name="<?php echo $category->getImage(); ?>" title="Remover imagem">

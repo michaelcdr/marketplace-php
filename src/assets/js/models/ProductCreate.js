@@ -12,6 +12,7 @@ class ProductCreate extends ProductCrudBase {
         this.initImgRemoveEvent();
         this.initAddAtributeEvent();
         this.initEventRemoveRowAttributeHtml();
+        this.getCategories();
     }
 
     initSubmitEvent() {

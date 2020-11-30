@@ -9,16 +9,11 @@
 
         public function __construct($factory)
         {
-            // echo "seed > construtor<br/>";
-            // echo "<pre>";
-            // var_dump($factory);
-            // echo "<pre/>";
             $this->_repoSeed = $factory->getSeedRepository();
         }
 
         public function proccessRequest() : void
         {
-            // echo "entrou controller seed";
             $this->_repoSeed->seed();
         }
     }

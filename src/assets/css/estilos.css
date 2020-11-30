@@ -506,3 +506,32 @@ a.slick-prev.arrow-slider-product-img-details:hover i{
 .cursor{
     cursor: pointer;
 }
+.table a:link,.table a:visited,.table a:hover,.table a:active{
+    color:var(--default-color);
+}
+.categories-menu > span{
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--default-color);
+    text-transform: lowercase;
+}
+.categories-menu ul > li{
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.categories-menu ul > li a:link,
+.categories-menu ul > li a:visited{
+    color:var(--default-color);
+}
+.categories-menu ul > li a:hover{
+    color:var(--default-color);
+    text-decoration: underline;
+}
+.categories-menu ul > li a:active{
+    color:var(--default-color);
+}
+

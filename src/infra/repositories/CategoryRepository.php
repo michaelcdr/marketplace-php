@@ -5,6 +5,7 @@ namespace infra\repositories;
 use infra\MySqlRepository;
 use infra\interfaces\ICategoryRepository;
 use models\Category;
+use models\SubCategory;
 use models\PaginatedResults;
 use PDO;
 use infra\helpers\SrcHelper;
@@ -54,7 +55,7 @@ class CategoryRepository  extends MySqlRepository implements ICategoryRepository
     {
         $stmt = $this->conn->prepare(
             "SELECT categoryId, title, image from Categories
-                 WHERE categoryId = :categoryId LIMIT 1"
+                 WHERE categoryId = :categoryId "
         );
         $stmt->bindValue(':categoryId', intval($id));
         $stmt->execute();
@@ -88,7 +89,7 @@ class CategoryRepository  extends MySqlRepository implements ICategoryRepository
     public function getAll()
     {
         $categoriesResults = null;
-        $stmt = $this->conn->prepare("SELECT categoryId, title, image  FROM categories  ");
+        $stmt = $this->conn->prepare("SELECT categoryId, title, image  FROM categories order by title ");
         $stmt->execute();
         $categoriesResults = $stmt->fetchAll();
 
@@ -100,7 +101,6 @@ class CategoryRepository  extends MySqlRepository implements ICategoryRepository
                 SrcHelper::getCategoryImg() . $row["image"]
             );
         }
-
         return $categoriesArray;
     }
 
@@ -114,7 +114,7 @@ class CategoryRepository  extends MySqlRepository implements ICategoryRepository
         $stmt = null;
 
         if (is_null($search) ||  $search === "") {
-            $stmt = $this->conn->prepare("SELECT categoryId, title, image FROM categories limit :pageSize OFFSET :skipNumber ");
+            $stmt = $this->conn->prepare("SELECT categoryId, title, image FROM categories order by title limit :pageSize OFFSET :skipNumber ");
         } else {
             $stmt = $this->conn->prepare(
                 "SELECT categoryId, title, image FROM categories WHERE title like :search  order by title  limit :pageSize OFFSET :skipNumber "

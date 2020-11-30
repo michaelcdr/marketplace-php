@@ -29,6 +29,7 @@ use controllers\CartController;
 use controllers\RemoveFromCartController;
 use controllers\CartListController;
 use controllers\CartAtualizarQtdProdutoController;
+use controllers\ProductsByCategoryController;
 
 use controllers\products\ProductListController;
 use controllers\products\ProductCreateController;
@@ -66,6 +67,13 @@ use controllers\categories\CategoryDeleteController;
 use controllers\categories\CategoryListController;
 use controllers\categories\CategoryListPartialController;
 use controllers\categories\CategoryImageUploadController;
+use controllers\categories\CategoryListJsonController;
+
+use controllers\subcategories\SubCategoryListJsonController;
+use controllers\subcategories\SubCategoryListController;
+use controllers\subcategories\SubCategoryListPartialController;
+
+use controllers\ProductsBySubCategoryController;
 
 use controllers\attributes\AttributeEditController;
 use controllers\attributes\AttributeEditPostController;
@@ -105,9 +113,11 @@ $routes = [
     "/adicionar-carrinho" => [AddToCartController::class, ""],
     "/finalizar-pedido" => [CartCheckoutController::class, ""],
     "/cart-checkout-post" => [CartCheckoutPostController::class, ""],
+    "/categorias" => [ProductsByCategoryController::class, ""],
     "/remover-item-carrinho" => [RemoveFromCartController::class, ""],
     "/produto/curtir" => [LikeProductController::class, ""],
     "/produto/descurtir" => [DislikeProductController::class, ""],
+    "/produto/subcategoria" => [ProductsBySubCategoryController::class, ""],
 
     "/admin/usuario/editar" => [UserEditController::class, "admin,vendedor,comum"],
     "/admin/usuario/editar-post" => [UserEditPostController::class, "admin,vendedor,comum"],
@@ -141,6 +151,10 @@ $routes = [
     "/admin/categoria/deletar" => [CategoryDeleteController::class, "admin"],
     "/admin/categoria" => [CategoryListController::class, "admin"],
     "/admin/categoria/lista-table" => [CategoryListPartialController::class, "admin"],
+    "/admin/categoria/lista-json" => [CategoryListJsonController::class, "admin"],    
+    "/admin/subcategoria" => [SubCategoryListController::class, "admin"],    
+    "/admin/subcategoria/lista-table" => [SubCategoryListPartialController::class, "admin"],    
+    "/admin/subcategoria/lista-json" => [SubCategoryListJsonController::class, "admin"],    
 
     "/admin/atributo" => [AttributeListController::class, "admin"],
     "/admin/atributo/lista-table" => [AttributeListPartialController::class, "admin"],
@@ -163,6 +177,7 @@ $routes = [
 
     "/admin/usuario/minhas-compras" => [OrderListController::class, "admin,vendedor,comum"],
     "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"],
+    
 ];
 
 

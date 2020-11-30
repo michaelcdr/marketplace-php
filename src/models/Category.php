@@ -4,29 +4,42 @@
 
     class Category
     {
-        private $_categoryId;
-        private $_title;        
-        private $_image;
+        public $_categoryId;
+        public $_title;        
+        public $_image;
+        public $_subCategories;
+
         private $errors;
         
         public function getTitle()
         {
-            return  $this->_title;
+            return $this->_title;
         }
         
         public function getCategoryId()
         {
-            return  $this->_categoryId;
+            return $this->_categoryId;
         }
         
         public function getImage()
         {
-            return  $this->_image;
+            return $this->_image;
         }
+
+        public function getSubCategories()
+        {
+            return $this->_subCategories;
+        }
+
+        public function setSubCategories($subCategories){
+            $this->_subCategories = $subCategories;
+        }
+
         public function setImage($image)
         {
             $this->_image = $image;
         }
+
         public function __construct($categoryId, $title, $image)
         {
             $this->_categoryId = $categoryId;
@@ -34,6 +47,7 @@
             $this->_image = $image;
             $this->errors = array();
         }
+
         public function getErrors()
         {
             return $this->errors;

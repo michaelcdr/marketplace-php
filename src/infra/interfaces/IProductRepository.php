@@ -26,4 +26,5 @@ interface IProductRepository
     public function getAllAttributesValues($productId);
     public function addAttributeValue($attributeValue);
     public function removeAllAttributesValues($productId);
+    public function getAllBySubCategoryId($subCategoryId);
 }

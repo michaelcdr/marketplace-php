@@ -120,8 +120,8 @@ implements IProductRepository
     public function add($product)
     {
         $stmt = $this->conn->prepare(
-            "INSERT INTO products(Title, Description, Price, CreatedAt, CreatedBy, Offer, Stock, Sku,UserId) 
-            values (:title, :desc, :price, now(), :createdBy, :offer, :stock,:sku,:userId);"
+            "INSERT INTO products(Title, Description, Price, CreatedAt, CreatedBy, Offer, Stock, Sku,UserId,SubCategoryId) 
+            values (:title, :desc, :price, now(), :createdBy, :offer, :stock,:sku,:userId,:subCategoryId);"
         );
 
         $stmt->bindValue(":title", $product->getTitle());
@@ -132,6 +132,9 @@ implements IProductRepository
         $stmt->bindValue(":stock", $product->getStock());
         $stmt->bindValue(":sku", $product->getSku());
         $stmt->bindValue(":userId", $product->getUserId());
+        $stmt->bindValue(":subCategoryId", $product->getSubCategoryId());
+
+
         if (!$stmt->execute()) {
             return null;
         }
@@ -181,7 +184,8 @@ implements IProductRepository
                 stock = :stock,
                 sku = :sku,
                 userId = :userId,
-                price = :price
+                price = :price,
+                subCategoryId = :subCategoryId
                 where ProductId = :productId"
         );
 
@@ -193,7 +197,7 @@ implements IProductRepository
         $stmt->bindValue(":productId", $product->getId());
         $stmt->bindValue(":price", $product->getPrice());
         $stmt->bindValue(":userId", $product->getUserId());
-
+        $stmt->bindValue(":subCategoryId", $product->getSubCategoryId());
         $stmt->execute();
     }
 
@@ -303,6 +307,50 @@ implements IProductRepository
         if (isset($userId) && $userId != null)
             $stmt->bindValue(':userId',  $userId);
 
+        $stmt->execute();
+        $produtosResult = $stmt->fetchAll();
+
+        $products = array();
+        foreach ($produtosResult as $row) {
+            $prod = new Product(
+                $row['ProductId'],
+                $row['Title'],
+                $row['Price'],
+                $row['Description'],
+                $row['CreatedAt'],
+                $row['CreatedBy'],
+                $row['Offer'],
+                $row['Stock'],
+                $row['Sku'],
+                $row['UserId'],
+                $row["Seller"]
+            );
+            $prod->setDefaultImage($row["ImageFileName"]);
+
+            $products[] = $prod;
+        }
+        return $products;
+    }
+
+    public function getAllBySubCategoryId($subCategoryId)
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
+                        p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
+                        p.UserId, u.Name as Seller
+                        FROM Products p
+                inner join users u on p.userid = u.userid
+                left join (
+                    select pi.ProductId, pi.filename as filename
+                    from ProductsImages pi     
+                )
+                as Image on p.ProductId = Image.ProductId 
+                where  p.subCategoryId = :subCategoryId
+                group by p.productid 
+                order by p.title "
+        );
+
+        $stmt->bindValue(':subCategoryId',  $subCategoryId);
         $stmt->execute();
         $produtosResult = $stmt->fetchAll();
 

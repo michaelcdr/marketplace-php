@@ -535,3 +535,9 @@ a.slick-prev.arrow-slider-product-img-details:hover i{
     color:var(--default-color);
 }
 
+.loader-text{
+    display: inline-block;
+    padding-left: 10px;
+    bottom: 5px;
+    position: relative;
+}

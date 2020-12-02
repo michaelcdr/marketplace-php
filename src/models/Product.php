@@ -24,6 +24,8 @@ class Product
     private $imgPath;
     private $attributesValues;
     private $subCategoryId;
+    private $subCategory;
+
     public function __construct(
         $id,
         $title,
@@ -122,7 +124,16 @@ class Product
     public function setSubCategoryId($subCategoryId){
         $this->subCategoryId = $subCategoryId;
     }
+    public function getCategoryId(){
 
+        return is_null($this->subCategory) ? null : $this->subCategory->getCategoryId();
+    }
+    public function setSubCategory($subCategory){
+        $this->subCategory = $subCategory;
+    }
+    public function getSubCategory($subCategory){
+        return $this->subCategory ;
+    }
     public function getImages()
     {
 

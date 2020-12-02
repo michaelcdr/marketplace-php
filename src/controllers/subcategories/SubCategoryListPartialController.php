@@ -18,7 +18,7 @@ class SubCategoryListPartialController implements IBaseController
         $page = isset($_GET["p"]) ? intval($_GET["p"]) : 1;
         $search = isset($_GET["s"]) ?  $_GET["s"] : null;
         $paginatedResults = $this->_repoSubCategories->getAllPaginated(intval($_GET["categoryId"]),$page, $search, 5);
-        $categories = $paginatedResults->results;
-        require "views/admin/categories/lista-table.php";
+        $subCategories  = $paginatedResults->results;
+        require "views/admin/subcategories/lista-table.php";
     }
 }

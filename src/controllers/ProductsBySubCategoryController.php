@@ -16,7 +16,6 @@ class ProductsBySubCategoryController implements IBaseController
     public function proccessRequest(): void
     {
         $products = $this->_repoProduct->getAllBySubCategoryId($_GET["subCategoryId"]);
-        var_dump($products);
         require "views/produto/list-by-subcategories.php";
     }
 }

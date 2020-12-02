@@ -16,9 +16,7 @@
         {
             try
             {
-                //echo "RemoveFromCartController productId: " . $_POST["productId"] ;            
                 $this->_cartService->removeProduct($_POST["productId"]);
-                //$cartViewModel = $this->_cartService->removeProduct($_GET["id"]);
                 $retorno = new JsonSuccess("Item removido com sucesso.");
                 header('Content-type:application/json;charset=utf-8');
                 echo json_encode($retorno);

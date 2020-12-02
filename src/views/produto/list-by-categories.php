@@ -3,7 +3,7 @@
     require_once './views/partials/header.php';
 ?>
 <style>
-    #container-products-category .card{
+    .categories-menu.card{
         min-height:400px;
     }
 </style>
@@ -38,7 +38,12 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <div class="card" id="products-list"></div>                
+                    <div class="card bg-light">
+                        <div class="card-header">
+                            <span id="qtd-produtos">0</span> produtos encontrados
+                        </div>
+                    </div>      
+                    <div id="products-list" class="mt-2"></div>
                 </div>
             </div>
         </section>

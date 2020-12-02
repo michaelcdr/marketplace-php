@@ -10,8 +10,7 @@ class SubCategoryList {
         let _self = this;
         $('.btn-delete').unbind('click')
         $('.btn-delete').click(function () {
-            let btnEl = $(this);
-            _self.delete(btnEl);
+            _self.delete($(this));
         });
 
         $('#btn-pesquisar').unbind('click')
@@ -47,7 +46,11 @@ class SubCategoryList {
 
     toList(page, search) {
         let _self = this;
-        let params = { categoryId: _self._listContainerEl.data('categoryId'), page: page, s: search };
+        let params = {
+            subCategoryId: $("#subCategoryId").val(),
+            categoryId: _self._listContainerEl.data('categoryId'),
+            page: page, s: search
+        };
         $.get(_self._routeList, params, function (data) {
             _self._listContainerEl.html(data)
             _self.initEvents();

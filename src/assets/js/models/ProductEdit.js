@@ -12,6 +12,10 @@ class ProductEdit extends ProductCrudBase {
         this.initImgRemoveEvent();
         this.initAddAtributeEvent();
         this.initEventRemoveRowAttributeHtml();
+        this.setEventCategory();
+        if (parseInt($("#categoryId").data('categoryId')) > 0) {
+            this.getSubCategories($("#categoryId").data('categoryId'), $("#subCategoryId").data('subCategoryId'));
+        }
     }
 
     initSubmitEvent() {

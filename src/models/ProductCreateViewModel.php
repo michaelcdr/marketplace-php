@@ -5,6 +5,7 @@
     {
         private $_colPrice;
         private $_sellers; 
+        private $_categories;
 
         public function __construct($colPrice, $sellers)
         {
@@ -21,5 +22,6 @@
         {
             return $this->_sellers;
         }
+
     }
 ?>

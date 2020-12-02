@@ -143,6 +143,19 @@ class ProductCrudBase {
         });
     }
 
+    setEventCategory() {
+        let _self = this;
+        $("#categoryId").off('change');
+        $("#categoryId").on('change', function () {
+            let categoryId = $(this).val();
+            if (categoryId === "") {
+                $("#subCategoryId").prop('disabled', true);
+                $("#subCategoryId").html('<option value="">Selecione</option>');
+            } else
+                _self.getSubCategories(categoryId);
+        });
+    }
+
     getCategories() {
         let _self = this;
         $.get(`/admin/categoria/lista-json`, function (data) {
@@ -150,28 +163,25 @@ class ProductCrudBase {
                 $(data.categories).each(function (index, el) {
                     $("#categoryId").append(`<option value='${el.categoryId}'>${el.title}</option>`);
                 });
-
-                $("#categoryId").off('change');
-                $("#categoryId").on('change', function () {
-                    let categoryId = $(this).val();
-                    if (categoryId === "") {
-                        $("#subCategoryId").prop('disabled', true);
-                        $("#subCategoryId").html('<option value="">Selecione</option>');
-                    } else
-                        _self.getSubCategories(categoryId);
-                });
+                _self.setEventCategory();
             }
         });
     }
 
-    getSubCategories(categoryId) {
+    getSubCategories(categoryId, subCategoryIdToPreSelect) {
         //console.log("categoria selecionada " + categoryId);
         $.get(`/admin/subcategoria/lista-json`, { categoryId: categoryId }, function (data) {
             if (data) {
+                $("#subCategoryId").html(`<option value=''>Selecione</option>`);
                 $(data.subCategories).each(function (index, el) {
                     $("#subCategoryId").append(`<option value='${el.subCategoryId}'>${el.title}</option>`);
                 });
                 $("#subCategoryId").prop('disabled', false);
+
+                if (subCategoryIdToPreSelect) {
+                    $("#subCategoryId option").prop("selected", false);
+                    $("#subCategoryId option[value=" + subCategoryIdToPreSelect + "]").prop("selected", true);
+                }
             }
         });
     }

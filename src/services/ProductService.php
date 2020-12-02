@@ -12,11 +12,14 @@ class ProductService
 {
     private $_repoProduct;
     private $_repoUser;
-
+    private $_repoSubCategory;
+    private $_repoCategory;
     public function __construct($factory)
     {
         $this->_repoProduct = $factory->getProductRepository();
         $this->_repoUser = $factory->getUserRepository();
+        $this->_repoSubCategory = $factory->getSubCategoryRepository();
+        $this->_repoCategory = $factory->getCategoryRepository();
     }
 
     public function getProductCreateViewModel()
@@ -27,7 +30,8 @@ class ProductService
             $colPrice = "col-md-3";
             $sellers = $this->_repoUser->getSellers();
         }
-        return new ProductCreateViewModel($colPrice, $sellers);
+        $model = new ProductCreateViewModel($colPrice, $sellers);
+        return $model;
     }
 
     public function getProductEditViewModel($productId)
@@ -38,7 +42,10 @@ class ProductService
             $colPrice = "col-md-3";
             $sellers = $this->_repoUser->getSellers();
         }
-        return new ProductEditViewModel($colPrice, $sellers);
+        $categories = $this->_repoCategory->getAll();
+        $model = new ProductEditViewModel($colPrice, $sellers);
+        $model->setCategories($categories);
+        return $model;
     }
 
     public function getAllForSearchPaginated()
@@ -67,6 +74,9 @@ class ProductService
     {
         $product = $this->_repoProduct->getById($productId);
         $product->addRangeAttributeValues($this->_repoProduct->getAllAttributesValues($productId));
+        $subCategory = $this->_repoSubCategory->getById(intval($product->getSubCategoryId()));        
+        $product->setSubCategory($subCategory);
+     
         return $product;
     }
 

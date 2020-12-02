@@ -61,9 +61,9 @@ use controllers\sellers\SellerDetailsController;
 
 use controllers\categories\CategoryEditController;
 use controllers\categories\CategoryEditPostController;
+use controllers\categories\CategoryDeleteController;
 use controllers\categories\CategoryCreateController;
 use controllers\categories\CategoryCreatePostController;
-use controllers\categories\CategoryDeleteController;
 use controllers\categories\CategoryListController;
 use controllers\categories\CategoryListPartialController;
 use controllers\categories\CategoryImageUploadController;
@@ -72,6 +72,11 @@ use controllers\categories\CategoryListJsonController;
 use controllers\subcategories\SubCategoryListJsonController;
 use controllers\subcategories\SubCategoryListController;
 use controllers\subcategories\SubCategoryListPartialController;
+use controllers\subcategories\SubCategoryCreateController;
+use controllers\subcategories\SubCategoryCreatePostController;
+use controllers\subcategories\SubCategoryEditController;
+use controllers\subcategories\SubCategoryEditPostController;
+use controllers\subcategories\SubCategoryDeleteController;
 
 use controllers\ProductsBySubCategoryController;
 
@@ -152,9 +157,15 @@ $routes = [
     "/admin/categoria" => [CategoryListController::class, "admin"],
     "/admin/categoria/lista-table" => [CategoryListPartialController::class, "admin"],
     "/admin/categoria/lista-json" => [CategoryListJsonController::class, "admin"],    
+
+    "/admin/subcategoria/editar" => [SubCategoryEditController::class, "admin"],
+    "/admin/subcategoria/editar-post" => [SubCategoryEditPostController::class, "admin"],
+    "/admin/subcategoria/deletar" => [SubCategoryDeleteController::class, "admin"],
     "/admin/subcategoria" => [SubCategoryListController::class, "admin"],    
     "/admin/subcategoria/lista-table" => [SubCategoryListPartialController::class, "admin"],    
     "/admin/subcategoria/lista-json" => [SubCategoryListJsonController::class, "admin"],    
+    "/admin/subcategoria/cadastrar" => [SubCategoryCreateController::class, "admin"],  
+    "/admin/subcategoria/cadastrar-post" => [SubCategoryCreatePostController::class, "admin"],  
 
     "/admin/atributo" => [AttributeListController::class, "admin"],
     "/admin/atributo/lista-table" => [AttributeListPartialController::class, "admin"],

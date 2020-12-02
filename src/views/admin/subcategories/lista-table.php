@@ -17,7 +17,7 @@
                         <tr>
                             <td>
                                 <div class="btn-group">
-                                    <button class='btn btn-sm btn-outline-danger btn-delete' data-id="<?php echo $subCategory->getCategoryId(); ?>">
+                                    <button class='btn btn-sm btn-outline-danger btn-delete' data-id="<?php echo $subCategory->getSubCategoryId(); ?>">
                                         <i class="fa fa-remove"></i>
                                     </button>
                                     <a class='btn btn-sm btn-outline-dark' 

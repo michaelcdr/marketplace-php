@@ -29,8 +29,17 @@ class CategoryRepository  extends MySqlRepository implements ICategoryRepository
     public function remove($categoryId)
     {
         $stmt = $this->conn->prepare(
-            "delete from categories where categoryId = :categoryId "
+            "update Products set subCategoryId = null where subCategoryId 
+            in (select subCategoryId from subCategories where categoryId = :categoryId )"
         );
+        $stmt->bindParam(':categoryId', $categoryId);
+        $stmt->execute();
+
+        $stmt = $this->conn->prepare("delete from SubCategories where categoryId = :categoryId ");
+        $stmt->bindParam(':categoryId', $categoryId);
+        $stmt->execute();
+        
+        $stmt = $this->conn->prepare("delete from categories where categoryId = :categoryId ");
         $stmt->bindParam(':categoryId', $categoryId);
         $stmt->execute();
     }

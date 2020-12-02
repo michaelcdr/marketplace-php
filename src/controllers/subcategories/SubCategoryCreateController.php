@@ -1,10 +1,10 @@
 <?php
 
-namespace controllers\categories;
+namespace controllers\subcategories;
 
 use controllers\IBaseController;
 
-class CategoryCreateController implements IBaseController
+class SubCategoryCreateController implements IBaseController
 {
     public function __construct($factory)
     {
@@ -12,6 +12,6 @@ class CategoryCreateController implements IBaseController
 
     public function proccessRequest(): void
     {
-        require "views/admin/categories/cadastrar.php";
+        require "views/admin/subcategories/cadastrar.php";
     }
 }

@@ -3,23 +3,13 @@
 
     class ProductEditViewModel extends ProductCreateViewModel
     {
-        // private $_colPrice;
-        // private $_sellers; 
+        private $_categories;
+         
+        public function setCategories($categories)
+        {
+            $this->_categories = $categories;
+        }
 
-        // public function __construct($colPrice, $sellers)
-        // {
-        //     $this->_colPrice = $colPrice;
-        //     $this->_sellers = $sellers;
-        // }
-
-        // public function getColPrice()
-        // {
-        //     return $this->_colPrice;
-        // }
-
-        // public function getSellers()
-        // {
-        //     return $this->_sellers;
-        // }
+        public function getCategories(){ return $this->_categories; }
     }
 ?>

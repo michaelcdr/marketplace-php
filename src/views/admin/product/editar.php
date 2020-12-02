@@ -92,12 +92,18 @@
                                 </small>
                             </div>
                         </div>
+                        
                         <div class="col-md-6 ">
                             <div class="form-group">
                                 <label for="offer">Categoria:</label>
                                 <div class="mb-2">
-                                    <select class="form-control" id="categoryId" name="categoryId">
+                                    <select class="form-control" id="categoryId" name="categoryId" data-category-id="<?php echo $product->getCategoryId(); ?>">
                                         <option value="">Selecione</option>
+                                        <?php foreach ($model->getCategories() as $category) : ?>
+                                            <option value="<?php echo $category->getCategoryId(); ?>" <?php echo $product->getCategoryId() == $category->getCategoryId() ? "selected" : "" ?>>
+                                                <?php echo $category->getTitle(); ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <small id="help-stock" class="text-muted"></small>
@@ -107,13 +113,14 @@
                             <div class="form-group">
                                 <label for="offer">Subcategoria:</label>
                                 <div class="mb-2">
-                                    <select class="form-control" id="subCategoryId" name="subCategoryId" disabled="disabled">
-                                        <option value="">Selecione</option>
+                                    <select class="form-control" id="subCategoryId" name="subCategoryId" disabled="disabled" data-sub-category-id="<?php echo $product->getSubCategoryId(); ?>">
+                                        <option value="">Selecione </option>
                                     </select>
                                 </div>
                                 <small id="help-stock" class="text-muted"></small>
                             </div>
                         </div>
+
                         <!--imagens atuais e container de uploads-->
                         <div class="col-md-12">
                             <div class="form-group">
@@ -126,7 +133,9 @@
                                                     <img src="/assets/img/products/<?php echo $image["FileName"]; ?>" src="..." alt="..." style="max-width:100px; max-height:100px;" class="img-fluid ">
                                                 </div>
                                                 <div class="card-footer p-2">
-                                                    <button type="button" class="btn btn-danger btn-sm" data-name="<?php echo $image["FileName"]; ?>" data-product-id="<?php echo $image["ProductId"]; ?>" data-id="<?php echo $image["ProductImageId"]; ?>" title="Remover imagem">
+                                                    <button type="button" class="btn btn-danger btn-sm" data-name="<?php echo $image["FileName"]; ?>" 
+                                                        data-product-id="<?php echo $image["ProductId"]; ?>" data-id="<?php echo $image["ProductImageId"]; ?>"
+                                                        title="Remover imagem">
                                                         <i class="fa fa-trash"></i> Remover
                                                     </button>
                                                 </div>

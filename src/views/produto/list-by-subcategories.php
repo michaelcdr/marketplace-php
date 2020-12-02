@@ -3,8 +3,7 @@
     <div class="col-lg-4 col-md-4 col-sm-6 mb-3 col-xs-12">
         <div class="card card-oferta fade h-100">
             <div class="p-3 text-center">
-                <img src="<?php echo $product->getDefaultImage(); ?>" 
-                    class="card-img-top" >
+                <img src="<?php echo $product->getDefaultImage(); ?>" class="card-img-top" >
             </div>
             <div class="card-body">
                 <h5 class="card-title text-center">

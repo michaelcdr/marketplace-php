@@ -24,15 +24,11 @@
 
         public function remove($subCategoryId)
         {
-            $stmt = $this->conn->prepare(
-                "update Products set subCategoryId = null where subCategoryId = :subCategoryId "
-            );
+            $stmt = $this->conn->prepare("update Products set subCategoryId = null where subCategoryId = :subCategoryId ");
             $stmt->bindParam(':subCategoryId', $subCategoryId);
             $stmt->execute();
 
-            $stmt = $this->conn->prepare(
-                "delete from SubCategories where subCategoryId = :subCategoryId "
-            );
+            $stmt = $this->conn->prepare("delete from SubCategories where subCategoryId = :subCategoryId ");
             $stmt->bindParam(':subCategoryId', $subCategoryId);
             $stmt->execute();
         }
@@ -40,7 +36,7 @@
         public function update($subCategory)
         {
             $stmt = $this->conn->prepare(
-                "UPDATE categories 
+                "UPDATE subcategories 
                     set 
                         title = :title, 
                         categoryId = :categoryId
@@ -48,13 +44,13 @@
             
             $stmt->bindValue(':title', $subCategory->getTitle());
             $stmt->bindValue(':categoryId', $subCategory->getCategoryId());
-            $stmt->bindValue(':subCategoryId', $subCategory->getSubCategory());
+            $stmt->bindValue(':subCategoryId', $subCategory->getSubCategoryId());
             $stmt->execute();
         }
 
         public function getById($id)
         {
-            $stmt = $this->conn->prepare("SELECT categoryId, title, subCategoryId from SubCategoriesWHERE subCategoryId = :subCategoryId " );
+            $stmt = $this->conn->prepare("SELECT categoryId, title, subCategoryId from SubCategories WHERE subCategoryId = :subCategoryId " );
             $stmt->bindValue(':subCategoryId', intval($id));
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);

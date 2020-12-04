@@ -37,13 +37,10 @@ class ProductEditPostController implements IBaseController
                 $_SESSION["role"] === "admin" ? filter_input(INPUT_POST, 'userId', FILTER_SANITIZE_STRING) : $_SESSION["userId"],
                 null
             );
-            $product->setSubCategoryId($_POST["subCategoryId"]);
+            $product->setSubCategoryId(isset($_POST["subCategoryId"]) ? $_POST["subCategoryId"] : null);
             $attributesValues = json_decode($_POST['attributesValues']);
-            for ($i=0; $i < count($attributesValues); $i++) { 
-                $product->addAttributeValue(
-                    new AttributeValue($attributesValues[$i]->attributeId,$product->getId(),$attributesValues[$i]->value)
-                );
-            }
+            for ($i=0; $i < count($attributesValues); $i++) 
+                $product->addAttributeValue(new AttributeValue($attributesValues[$i]->attributeId,$product->getId(),$attributesValues[$i]->value));
 
             if (!$product->isValid())
                 $retornoJson = new JsonError($this->errorMsg);

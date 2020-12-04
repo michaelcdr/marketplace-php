@@ -40,18 +40,11 @@ class SellerRepository extends MySqlRepository implements ISellerRepository
     public function update($seller)
     {
         $stmt = $this->conn->prepare(
-            "update Sellers 
-                    set Age = :age, 
-                    cpf = :cpf, 
-                    email = :email, 
-                    dateOfBirth = :dateOfBirth,
-                    webSite = :webSite,
-                    company = :company,
-                    cnpj = :cnpj, 
-                    branchOfActivity = :branchOfActivity,
-                    fantasyName = :fantasyName 
-                    where sellerId = :sellerId
-                "
+            "UPDATE Sellers 
+             SET Age = :age, cpf = :cpf, email = :email, 
+                 dateOfBirth = :dateOfBirth, webSite = :webSite,
+                 company = :company, cnpj = :cnpj, branchOfActivity = :branchOfActivity, fantasyName = :fantasyName 
+             WHERE sellerId = :sellerId"
         );
 
         $stmt->bindValue(':sellerId', $seller->getSellerId());

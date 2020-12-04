@@ -25,7 +25,9 @@ class Product
     private $attributesValues;
     private $subCategoryId;
     private $subCategory;
-
+    private $categoryId;
+    private $subcategoryName;
+    private $categoryName;
     public function __construct(
         $id,
         $title,
@@ -114,31 +116,21 @@ class Product
         return $this->Sku;
     }
 
-    public function setImages($images)
-    {
-        $this->images = $images;
-    }
-    public function getSubCategoryId(){
-        return $this->subCategoryId;
-    }
-    public function setSubCategoryId($subCategoryId){
-        $this->subCategoryId = $subCategoryId;
-    }
-    public function getCategoryId(){
+    public function setImages($images) { $this->images = $images; }
+    
+    public function getSubCategoryId(){ return $this->subCategoryId; }
+    public function getCategoryId(){ return $this->categoryId; }
+    public function getSubCategory($subCategory){ return $this->subCategory; }
+    public function getSubCategoryName(){ return $this->subcategoryName; }
+    public function getCategoryName(){ return $this->categoryName; }
+    
+    public function setSubCategoryId($subCategoryId){ $this->subCategoryId = $subCategoryId; }
+    public function setCategoryId($categoryId){ $this->categoryId = $categoryId;}
+    public function setSubCategory($subCategory){ $this->subCategory = $subCategory; }
+    public function setSubCategoryName($subcategoryName){ $this->subcategoryName = $subcategoryName; }
+    public function setCategoryName($categoryName){ $this->categoryName = $categoryName; }
 
-        return is_null($this->subCategory) ? null : $this->subCategory->getCategoryId();
-    }
-    public function setSubCategory($subCategory){
-        $this->subCategory = $subCategory;
-    }
-    public function getSubCategory($subCategory){
-        return $this->subCategory ;
-    }
-    public function getImages()
-    {
-
-        return $this->images;
-    }
+    public function getImages() { return $this->images; }
 
     public function getImagesWithSrc()
     {
@@ -175,13 +167,11 @@ class Product
         foreach ($this->images as $image) {
             $itens[] = $image["FileName"];
         }
-
         return join("$$", $itens);
     }
 
     public function isValid(): bool
     {
-
         if (is_null($this->getTitle()) || $this->getTitle() === "")
             $this->errors['title'] = 'Informe o titulo.';
 

@@ -221,13 +221,15 @@ implements IProductRepository
     {
         $stmt = $this->conn->prepare(
             "SELECT p.ProductId, p.Title, p.Description, p.Price, 
-                        p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku,
-                         p.UserId  , u.name as Seller, Image.filename as ImageFileName,p.SubCategoryId
-                FROM Products p
-                left join (select pi.ProductId, pi.filename as filename from ProductsImages pi )
-                as Image on p.ProductId = Image.ProductId 
-                inner join users u on p.userid = u.userid
-                WHERE p.ProductId = :ProductId"
+                    p.CreatedAt, p.CreatedBy, p.Offer, p.Stock, p.Sku,
+                    p.UserId  , u.name as Seller, Image.filename as ImageFileName,p.SubCategoryId, 
+                    c.Title as Category, s.Title as SubCategory, c.CategoryId as CategoryId
+            FROM Products p 
+            inner join users u on p.userid = u.userid 
+            left join subcategories s on p.SubCategoryId = s.SubCategoryId 
+            left join categories c on s.categoryId = c.categoryId 
+            left join (select pi.ProductId, pi.filename as filename from ProductsImages pi ) as Image on p.ProductId = Image.ProductId 
+            WHERE p.ProductId = :ProductId GROUP BY p.ProductId"
         );
         $stmt->bindValue(":ProductId", $id);
         $stmt->execute();
@@ -250,6 +252,10 @@ implements IProductRepository
             );
             $product->setDefaultImage($row["ImageFileName"]);
             $product->setSubCategoryId($row["SubCategoryId"]);
+            $product->setSubCategoryName($row["SubCategory"]);
+            $product->setCategoryId($row["CategoryId"]);
+            $product->setCategoryName($row["Category"]);
+
             $stmt = $this->conn->prepare("select * from productsimages where productid = :ProductId;");
             $stmt->bindValue(":ProductId", $id);
             $stmt->execute();

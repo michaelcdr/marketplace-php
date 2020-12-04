@@ -2,6 +2,7 @@ $(function () {
     $('.categories-menu ul > li a').on('click', function (ev) {
         obterProdutos(ev);
     });
+    openFirstSubCategory();
 });
 
 function openFirstSubCategory() {

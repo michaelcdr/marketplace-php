@@ -18,9 +18,9 @@ class DetailsProductController implements IBaseController
 
         $product = $this->_repoProduct->getById($_GET["id"]);
         $attributesValues = $this->_repoProduct->getAllAttributesValues($_GET["id"]);
+        $product->addRangeAttributeValues($attributesValues);
         $similarProducts = $this->_repoProduct->getAllSimilarProducts($_GET["id"]);
         $isLiked = !isset($_SESSION["userId"]) ? false : $this->_repoProduct->isLiked($_GET["id"], $_SESSION["userId"]);
-        $product->addRangeAttributeValues($attributesValues);
         require "views/produto/details-product.php";
     }
 }

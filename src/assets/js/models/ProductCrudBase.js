@@ -1,5 +1,5 @@
-class ProductCrudBase {
-
+class ProductCrudBase
+{
     constructor() {
         this._tbAttributeEl = $("#tb-attributes");
         this._hasNoAttributesEl = $('#has-no-attributes');
@@ -15,7 +15,6 @@ class ProductCrudBase {
         this.uploadEl = $('#upload-container');
         this.validator = new GenericValidator($('#form-cadastro'));
         this.dropzone = new ProductDropzone(this, $("#images"));
-
     }
 
     getModel() {

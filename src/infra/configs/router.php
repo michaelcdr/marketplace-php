@@ -21,7 +21,6 @@ use controllers\users\UserRegisterController;
 use controllers\users\UserRegisterPostController;
 
 use controllers\OrderListController;
-use controllers\OrderListPartialController;
 use controllers\OrderDetailsController;
 
 use controllers\AddToCartController;
@@ -93,6 +92,7 @@ use controllers\products\SimilarProductPartialListController;
 use controllers\products\DeleteSimilarProductControler;
 use controllers\products\DislikeProductController;
 use controllers\products\LikeProductController;
+use controllers\products\ProductRateController;
 
 //rota X [controller , roles]
 $routes = [
@@ -123,6 +123,7 @@ $routes = [
     "/produto/curtir" => [LikeProductController::class, ""],
     "/produto/descurtir" => [DislikeProductController::class, ""],
     "/produto/subcategoria" => [ProductsBySubCategoryController::class, ""],
+    "/produto/avaliar" => [ProductRateController::class, ""],
 
     "/admin/usuario/editar" => [UserEditController::class, "admin,vendedor,comum"],
     "/admin/usuario/editar-post" => [UserEditPostController::class, "admin,vendedor,comum"],
@@ -156,14 +157,14 @@ $routes = [
     "/admin/categoria/deletar" => [CategoryDeleteController::class, "admin"],
     "/admin/categoria" => [CategoryListController::class, "admin"],
     "/admin/categoria/lista-table" => [CategoryListPartialController::class, "admin"],
-    "/admin/categoria/lista-json" => [CategoryListJsonController::class, "admin"],    
+    "/admin/categoria/lista-json" => [CategoryListJsonController::class, "admin,vendedor"],    
 
     "/admin/subcategoria/editar" => [SubCategoryEditController::class, "admin"],
     "/admin/subcategoria/editar-post" => [SubCategoryEditPostController::class, "admin"],
     "/admin/subcategoria/deletar" => [SubCategoryDeleteController::class, "admin"],
     "/admin/subcategoria" => [SubCategoryListController::class, "admin"],    
     "/admin/subcategoria/lista-table" => [SubCategoryListPartialController::class, "admin"],    
-    "/admin/subcategoria/lista-json" => [SubCategoryListJsonController::class, "admin"],    
+    "/admin/subcategoria/lista-json" => [SubCategoryListJsonController::class, "admin,vendedor"],    
     "/admin/subcategoria/cadastrar" => [SubCategoryCreateController::class, "admin"],  
     "/admin/subcategoria/cadastrar-post" => [SubCategoryCreatePostController::class, "admin"],  
 

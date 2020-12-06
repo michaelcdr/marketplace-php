@@ -14,7 +14,7 @@
                     <div class="card p-3">
                         <div class="row">
                             <div class="col-lg-3 text-center">
-                                <img src="<?php echo $product->getDefaultImage(); ?>" class="img-fluid d-block" style="max-height:150px; text-align:center; display:inline !important;" alt="" title="">
+                                <img src="<?php echo $product->getDefaultImage(); ?>" class="img-fluid d-block img-sm" alt="<?php echo $product->getTitle(); ?>" title="<?php echo $product->getTitle(); ?>">
                             </div>
                             <div class="col-lg-9">
                                 <h4><?php echo $product->getTitle(); ?></h4>

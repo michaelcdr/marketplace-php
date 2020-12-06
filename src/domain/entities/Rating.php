@@ -1,6 +1,6 @@
 <?php
 
-namespace domain\inputmodels;
+namespace domain\entities;
 
 class Rating
 {
@@ -12,9 +12,13 @@ class Rating
     private $errors;
     private $approved;
     private $userId;
+    private $ratingId;
+    
+    private $productTitle;
 
-    public function __construct($productId, $rating, $recommended, $title, $description, $userId, $approved)
+    public function __construct($ratingId,$productId, $rating, $recommended, $title, $description, $userId, $approved)
     {
+        $this->ratingId = $ratingId;
         $this->productId = $productId;
         $this->rating = $rating;
         $this->recommended = $recommended;
@@ -96,4 +100,25 @@ class Rating
     {
         return $this->approved;
     }
+
+    public function getRatingId(){ return $this->ratingId; }
+
+    public function getProductTitle(){ return $this->productTitle; }
+    public function setProductTitle($productTitle){ $this->productTitle = $productTitle; }
+
+    private $userName;
+    public function getUserName(){ return $this->userName; }
+    public function setUserName($userName){ $this->userName = $userName; }
+
+    private $sku;
+    public function getSku(){ return $this->sku; }
+    public function setSku($sku){ $this->sku = $sku; }
+
+    public function hasImage(){
+        return !is_null($this->image) && isset($this->image) && $this->image != "";
+    }
+
+    private $image;
+    public function getImage(){ return $this->image; }
+    public function setImage($image){ $this->image = $image; }
 }

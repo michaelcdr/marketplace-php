@@ -541,3 +541,8 @@ a.slick-prev.arrow-slider-product-img-details:hover i{
     bottom: 5px;
     position: relative;
 }
+.img-sm{
+    max-height:150px; 
+    text-align:center; 
+    display:inline !important;
+}

@@ -4,7 +4,7 @@
     use services\ProductService;
     use models\JsonSuccess;
     use models\JsonError;
-    use domain\inputmodels\Rating;
+    use domain\entities\Rating;
 
     class ProductRatePostController implements IBaseController
     {
@@ -18,6 +18,7 @@
             $retornoJson = null;
             try {
                 $rating = new Rating(
+                    null,
                     filter_input(INPUT_POST, 'ProductId', FILTER_SANITIZE_STRING),
                     $_POST["Rating"],
                     $_POST["Recommended"] == "Sim" ? 1 : 0,

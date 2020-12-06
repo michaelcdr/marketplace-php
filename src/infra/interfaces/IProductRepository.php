@@ -29,4 +29,5 @@ interface IProductRepository
     public function getAllBySubCategoryId($subCategoryId);
     public function addRating($rating);
     public function approveRate($productCommentId);
+    public function getAllRatingPaginated($pagina, $search, $pageSize);
 }

@@ -6,6 +6,7 @@ use models\Product;
 use models\ProductCreateViewModel;
 use models\ProductEditViewModel;
 use infra\helpers\SrcHelper;
+
 use domain\admin\ProductWithSimilarProducts;
 
 class ProductService
@@ -20,6 +21,14 @@ class ProductService
         $this->_repoUser = $factory->getUserRepository();
         $this->_repoSubCategory = $factory->getSubCategoryRepository();
         $this->_repoCategory = $factory->getCategoryRepository();
+    }
+
+    public function getAllRatingPaginated()
+    {
+        $pagina = isset($_GET["p"]) ? intval($_GET["p"]) : 1 ;
+        $search = isset($_GET["s"]) ? $_GET["s"] : null;
+        $paginatedResults = $this->_repoProduct->getAllRatingPaginated($pagina, $search, 5, false);
+        return $paginatedResults;
     }
 
     public function getProductCreateViewModel()

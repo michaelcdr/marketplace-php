@@ -4,9 +4,32 @@ namespace infra\helpers;
 
 use models\ProductComAssociacaoSimilar;
 use models\Product;
+use domain\entities\Rating;
+use infra\helpers\SrcHelper;
 
 class StatementHelper
 {
+    public static function ToRating($statement)
+    {
+        $rating = new Rating(
+            $statement["RatingId"],
+            $statement["ProductId"],
+            $statement["Rating"],
+            $statement["Recommended"],
+            $statement["Title"],
+            $statement["Description"],            
+            $statement["UserId"],
+            $statement["Approved"]
+        );
+        $rating->setSku($statement["Sku"]);
+        $rating->setProductTitle($statement["ProductTitle"]);
+        
+        if (isset($statement["ImageDefault"]) && $statement["ImageDefault"] != "")
+            $rating->setImage(SrcHelper::getProductImg() . $statement["ImageDefault"]);
+        
+        return $rating;
+    }
+
     public static function ToProductComAssociacaoSimilar($productItem)
     {
         $product = new ProductComAssociacaoSimilar(

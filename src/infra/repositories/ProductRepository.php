@@ -7,12 +7,55 @@ use infra\interfaces\IProductRepository;
 use models\Product;
 use domain\entities\AttributeValue;
 use models\PaginatedResults;
+use infra\helpers\StatementHelper;
 use PDO;
 
-class ProductRepository
-extends MySqlRepository
-implements IProductRepository
+class ProductRepository extends MySqlRepository implements IProductRepository
 {
+    public function getAllRatingPaginated($page, $search, $pageSize )
+    {
+        $pageSize = !isset($pageSize) ? 5 :$pageSize;
+        $skipNumber = !is_null($page) && $page > 0 ? ($pageSize * ($page - 1)) : 0;
+        $stmt = null;
+        $hasSearch = is_null($search) ||  $search === "" ? false :true;
+        $whereClausule = $hasSearch ? " where p.Title like :search or pc.Title like :search or pc.Description like :search " : "";
+
+        //contando total de registros...
+        $stmt = $this->conn->prepare(
+            "SELECT count(pc.RatingId) as Total from Ratings pc
+            inner join products p on pc.ProductId = p.ProductId
+            inner join users u on p.UserId = u.UserId $whereClausule   "
+        );
+        if ($hasSearch) $stmt->bindValue(":search", '%' . $search . '%');
+        $stmt->execute();
+        $total = $stmt->fetch();
+        $total = intval($total["Total"]);
+        
+        // fazendo consulta
+        $stmt = $this->conn->prepare(
+            "SELECT pc.RatingId, pc.ProductId,pc.Rating, pc.Recommended, pc.Title,pc.Description, pc.Approved, 
+                    u.UserId , p.Title as ProductTitle,  p.Sku, u.Name as UserName, Image.filename as ImageDefault
+            from Ratings pc
+            inner join products p on pc.ProductId = p.ProductId
+            inner join users u on p.UserId = u.UserId 
+            left join (select pi.ProductId, pi.filename as filename from ProductsImages pi ) as Image on p.ProductId = Image.ProductId 
+            $whereClausule  group by pc.RatingId  order by p.title limit :pageSize OFFSET :skipNumber "
+        );
+
+        if ($hasSearch) $stmt->bindValue(":search", '%' . $search . '%');
+        
+        $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
+        $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
+        $stmt->execute();
+        $produtosResult = $stmt->fetchAll();
+        
+        $ratings = array();
+        foreach ($produtosResult as $rating) 
+            $ratings[] = StatementHelper::ToRating($rating);
+
+        return new PaginatedResults($ratings, $total, count($produtosResult), $page, $pageSize, "avaliacoes-pendentes?p=");
+    }
+
     public function totalOfProducts($search, $userId)
     {
         $stmt = null;
@@ -165,8 +208,6 @@ implements IProductRepository
     public function remove($id)
     {
         $this->removeAllImages($id);
-
-        //removendo produtos...
         $stmt = $this->conn->prepare("delete from products where productid = :id");
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -178,14 +219,8 @@ implements IProductRepository
     {
         $stmt = $this->conn->prepare(
             "UPDATE Products set 
-                title = :title,
-                description = :description,
-                offer = :offer,
-                stock = :stock,
-                sku = :sku,
-                userId = :userId,
-                price = :price,
-                subCategoryId = :subCategoryId
+                title = :title, description = :description, offer = :offer, stock = :stock,
+                sku = :sku, userId = :userId, price = :price, subCategoryId = :subCategoryId
                 where ProductId = :productId"
         );
 

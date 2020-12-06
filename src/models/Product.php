@@ -30,17 +30,8 @@ class Product
     private $categoryName;
     
     public function __construct(
-        $id,
-        $title,
-        $price,
-        $description,
-        $createdAt,
-        $createdBy,
-        $offer,
-        $stock,
-        $sku,
-        $userId,
-        $seller
+        $id, $title, $price, $description, $createdAt, $createdBy, $offer, $stock, $sku,
+        $userId, $seller
     ) {
         $this->ProductId = $id;
         $this->Title = $title;

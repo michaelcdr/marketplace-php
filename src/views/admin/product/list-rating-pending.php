@@ -3,7 +3,7 @@
         <table id="tb-products" data-page="0" class="table table-bordered table-hovered table-striped">
             <thead>
                 <tr>
-                    <th   style="width:20px;"></th>
+                    <th style="width:20px;"></th>
                     <th style="text-align:center">Image</th>
                     <th>Avaliação</th>
                 </tr>
@@ -35,8 +35,9 @@
                                 <strong>Produto:</strong><?php echo $rating->getProductTitle(); ?><br />
                                 <strong>Titulo:</strong><?php echo $rating->getTitle(); ?><br />
                                 <strong>Avaliação:</strong><?php echo $rating->getRating(); ?><br />
-                                <strong>Recomenda:</strong><?php echo $rating->getRecommended(); ?><br />
-                                <strong>Description:</strong><?php echo $rating->getDescription(); ?>
+                                <strong>Recomenda:</strong><?php echo ($rating->getRecommended() == 1 ? "Sim" : "Não"); ?><br /> 
+                                <strong>Description:</strong><br />
+                                <?php echo $rating->getDescription(); ?>
                             </td>
                         </tr>
                     <?php endforeach ?>

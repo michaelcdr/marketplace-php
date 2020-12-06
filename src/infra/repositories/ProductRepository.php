@@ -11,51 +11,7 @@ use infra\helpers\StatementHelper;
 use PDO;
 
 class ProductRepository extends MySqlRepository implements IProductRepository
-{
-    public function getAllRatingPaginated($page, $search, $pageSize )
-    {
-        $pageSize = !isset($pageSize) ? 5 :$pageSize;
-        $skipNumber = !is_null($page) && $page > 0 ? ($pageSize * ($page - 1)) : 0;
-        $stmt = null;
-        $hasSearch = is_null($search) ||  $search === "" ? false :true;
-        $whereClausule = $hasSearch ? " where p.Title like :search or pc.Title like :search or pc.Description like :search " : "";
-
-        //contando total de registros...
-        $stmt = $this->conn->prepare(
-            "SELECT count(pc.RatingId) as Total from Ratings pc
-            inner join products p on pc.ProductId = p.ProductId
-            inner join users u on p.UserId = u.UserId $whereClausule   "
-        );
-        if ($hasSearch) $stmt->bindValue(":search", '%' . $search . '%');
-        $stmt->execute();
-        $total = $stmt->fetch();
-        $total = intval($total["Total"]);
-        
-        // fazendo consulta
-        $stmt = $this->conn->prepare(
-            "SELECT pc.RatingId, pc.ProductId,pc.Rating, pc.Recommended, pc.Title,pc.Description, pc.Approved, 
-                    u.UserId , p.Title as ProductTitle,  p.Sku, u.Name as UserName, Image.filename as ImageDefault
-            from Ratings pc
-            inner join products p on pc.ProductId = p.ProductId
-            inner join users u on p.UserId = u.UserId 
-            left join (select pi.ProductId, pi.filename as filename from ProductsImages pi ) as Image on p.ProductId = Image.ProductId 
-            $whereClausule  group by pc.RatingId  order by p.title limit :pageSize OFFSET :skipNumber "
-        );
-
-        if ($hasSearch) $stmt->bindValue(":search", '%' . $search . '%');
-        
-        $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
-        $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
-        $stmt->execute();
-        $produtosResult = $stmt->fetchAll();
-        
-        $ratings = array();
-        foreach ($produtosResult as $rating) 
-            $ratings[] = StatementHelper::ToRating($rating);
-
-        return new PaginatedResults($ratings, $total, count($produtosResult), $page, $pageSize, "avaliacoes-pendentes?p=");
-    }
-
+{   
     public function totalOfProducts($search, $userId)
     {
         $stmt = null;
@@ -769,11 +725,11 @@ class ProductRepository extends MySqlRepository implements IProductRepository
         $stmt->bindValue(':productId',  $productId);
         $stmt->execute();
     }
+
     public function addRating($rating)
     {
-        //var_dump($rating);
         $stmt = $this->conn->prepare(
-            "INSERT into productscomments(ProductId,Title,Description,Recommended,Rating,Userid,Approved) values(:ProductId,:Title,:desc,:Recommended,:Rating,:Userid,:Approved)"
+            "INSERT into ratings(ProductId,Title,Description,Recommended,Rating,Userid,Approved) values(:ProductId,:Title,:desc,:Recommended,:Rating,:Userid,:Approved)"
         );
         $stmt->bindValue(':ProductId',  intval($rating->getProductId()));
         $stmt->bindValue(':Title',  $rating->getTitle());
@@ -785,12 +741,55 @@ class ProductRepository extends MySqlRepository implements IProductRepository
         $stmt->execute();
     }
     
-    public function approveRate($productCommentId)
+    public function approveRating($ratingId)
     {
-        $stmt = $this->conn->prepare(
-            "UPDATE FROM productscomments SET Approved = 1 WHERE ProductCommentId = :productCommentId"
-        );
-        $stmt->bindValue(':productCommentId',  $productCommentId);
+        $stmt = $this->conn->prepare("UPDATE ratings SET Approved = 1 WHERE ratingId = :ratingId");
+        $stmt->bindValue(":ratingId", $ratingId);
         $stmt->execute();
     }
+
+    public function getAllRatingPaginated($page, $search, $pageSize )
+    {
+        $pageSize = !isset($pageSize) ? 5 :$pageSize;
+        $skipNumber = !is_null($page) && $page > 0 ? ($pageSize * ($page - 1)) : 0;
+        $stmt = null;
+        $hasSearch = is_null($search) ||  $search === "" ? false :true;
+        $whereClausule = $hasSearch ? " and p.Title like :search or pc.Title like :search or pc.Description like :search " : "";
+
+        //contando total de registros...
+        $stmt = $this->conn->prepare(
+            "SELECT count(pc.RatingId) as Total from Ratings pc
+            inner join products p on pc.ProductId = p.ProductId
+            inner join users u on p.UserId = u.UserId where pc.Approved = 0 $whereClausule   "
+        );
+        if ($hasSearch) $stmt->bindValue(":search", '%' . $search . '%');
+        $stmt->execute();
+        $total = $stmt->fetch();
+        $total = intval($total["Total"]);
+        
+        // fazendo consulta
+        $stmt = $this->conn->prepare(
+            "SELECT pc.RatingId, pc.ProductId,pc.Rating, pc.Recommended, pc.Title,pc.Description, pc.Approved, 
+                    u.UserId , p.Title as ProductTitle,  p.Sku, u.Name as UserName, Image.filename as ImageDefault
+            from Ratings pc
+            inner join products p on pc.ProductId = p.ProductId
+            inner join users u on p.UserId = u.UserId 
+            left join (select pi.ProductId, pi.filename as filename from ProductsImages pi ) as Image on p.ProductId = Image.ProductId 
+            where pc.Approved = 0 $whereClausule  group by pc.RatingId  order by p.title limit :pageSize OFFSET :skipNumber "
+        );
+
+        if ($hasSearch) $stmt->bindValue(":search", '%' . $search . '%');
+        
+        $stmt->bindValue(':pageSize', intval(trim($pageSize)), PDO::PARAM_INT);
+        $stmt->bindValue(':skipNumber', intval(trim($skipNumber)), PDO::PARAM_INT);
+        $stmt->execute();
+        $produtosResult = $stmt->fetchAll();
+        
+        $ratings = array();
+        foreach ($produtosResult as $rating) 
+            $ratings[] = StatementHelper::ToRating($rating);
+
+        return new PaginatedResults($ratings, $total, count($produtosResult), $page, $pageSize, "avaliacoes-pendentes?p=");
+    }
+
 }

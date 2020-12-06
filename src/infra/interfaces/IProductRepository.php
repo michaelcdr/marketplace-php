@@ -28,6 +28,6 @@ interface IProductRepository
     public function removeAllAttributesValues($productId);
     public function getAllBySubCategoryId($subCategoryId);
     public function addRating($rating);
-    public function approveRate($productCommentId);
+    public function approveRating($ratingId);
     public function getAllRatingPaginated($pagina, $search, $pageSize);
 }

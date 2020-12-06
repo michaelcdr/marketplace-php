@@ -93,7 +93,8 @@ use controllers\products\SimilarProductPartialListController;
 use controllers\products\DeleteSimilarProductControler;
 use controllers\products\DislikeProductController;
 use controllers\products\LikeProductController;
-
+use controllers\products\ListOfRatingPendingPartialController;
+use controllers\products\ApproveRatingController;
 
 //rota X [controller , roles]
 $routes = [
@@ -136,6 +137,7 @@ $routes = [
     "/admin/usuario/lista-table" => [UserPartiaListController::class, "admin"],
 
     "/admin/avaliacoes-pendentes" => [ListOfRatingPendingController::class, "admin"],
+    "/admin/produto/lista-avaliacoes-pendentes-partial" => [ListOfRatingPendingPartialController::class, "admin"],
     "/admin/produto" => [ProductListController::class, "admin,vendedor"],
     "/admin/produto/lista-partial" => [ProductPartialListController::class, "admin,vendedor"],
     "/admin/produto/cadastrar" => [ProductCreateController::class, "admin,vendedor"],
@@ -191,7 +193,8 @@ $routes = [
     "/admin/endereco/cadastrar" => [AddressCreateController::class, ""],
 
     "/admin/usuario/minhas-compras" => [OrderListController::class, "admin,vendedor,comum"],
-    "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"]
+    "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"],
+    "/admin/produto/aprovar-avaliacao" => [ApproveRatingController::class, "admin"]
 ];
 
 return $routes;

@@ -16,5 +16,8 @@
         <a class="dropdown-item" href="/admin/atributo">
             Atributos <span class="sr-only"></span>
         </a>
+        <a class="dropdown-item" href="/admin/avaliacoes-pendentes">
+            Avaliações <span class="sr-only"></span>
+        </a>
     </div>
 </li>

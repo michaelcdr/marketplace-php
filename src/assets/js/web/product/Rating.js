@@ -30,7 +30,9 @@ class Ratting {
                     let optionsSwal = _self._optionsSwalSuccess;
                     optionsSwal.title = data.msg;
                     _self.resetFields();
-                    Swal.fire(optionsSwal);
+                    Swal.fire(optionsSwal).then(function(){
+                        window.location = "/detalhes-produto?id=" +$("#ProductId").val();
+                    });
                 } else {
                     alertServerError();
                     _self.btnSubmit.button('reset');

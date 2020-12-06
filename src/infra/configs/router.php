@@ -46,6 +46,7 @@ use controllers\products\ProductSimilarController;
 use controllers\products\AddSimilarProductControler;
 use controllers\products\AddSimilarProductPostControler;
 use controllers\products\AddProductAttributeController;
+use controllers\products\ListOfRatingPendingController;
 
 use controllers\sellers\SellerSimpleCreateController;
 use controllers\sellers\SellerRegisterController;
@@ -134,6 +135,7 @@ $routes = [
     "/admin/usuario" => [UserListController::class, "admin"],
     "/admin/usuario/lista-table" => [UserPartiaListController::class, "admin"],
 
+    "/admin/avaliacoes-pendentes" => [ListOfRatingPendingController::class, "admin"],
     "/admin/produto" => [ProductListController::class, "admin,vendedor"],
     "/admin/produto/lista-partial" => [ProductPartialListController::class, "admin,vendedor"],
     "/admin/produto/cadastrar" => [ProductCreateController::class, "admin,vendedor"],

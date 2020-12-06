@@ -30,4 +30,6 @@ interface IProductRepository
     public function addRating($rating);
     public function approveRating($ratingId);
     public function getAllRatingPaginated($pagina, $search, $pageSize);
+    public function getAllRating($productId);
+    
 }

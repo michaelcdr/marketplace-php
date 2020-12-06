@@ -22,6 +22,9 @@ class DetailsProductController implements IBaseController
         $isLiked = !isset($_SESSION["userId"]) 
             ? false 
             : $this->_repoProduct->isLiked($_GET["id"], $_SESSION["userId"]);
+
+        $ratings = $this->_repoProduct->getAllRating($_GET["id"]);
+        
         require "views/produto/details-product.php";
     }
 }

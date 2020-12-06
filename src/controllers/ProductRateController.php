@@ -14,6 +14,7 @@
         public function proccessRequest(): void
         {
             $product = $this->_productRepository->getById($_GET["id"]);
+            
             require "views/produto/product-rating.php";
         }
     }

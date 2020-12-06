@@ -792,4 +792,23 @@ class ProductRepository extends MySqlRepository implements IProductRepository
         return new PaginatedResults($ratings, $total, count($produtosResult), $page, $pageSize, "avaliacoes-pendentes?p=");
     }
 
+    public function getAllRating($productId)
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT pc.RatingId, pc.ProductId, pc.Rating, pc.Recommended, pc.Title, pc.Description, pc.Approved, u.UserId, p.Title as ProductTitle,  p.Sku, u.Name as UserName
+            from Ratings pc
+            inner join products p on pc.ProductId = p.ProductId
+            inner join users u on p.UserId = u.UserId             
+            where pc.Approved = 1 and pc.ProductId = :ProductId group by pc.RatingId  order by p.title "
+        );
+        $stmt->bindValue(':ProductId', intval($productId), PDO::PARAM_INT);
+        $stmt->execute();
+        $produtosResult = $stmt->fetchAll();
+        
+        $ratings = array();
+        foreach ($produtosResult as $rating) 
+            $ratings[] = StatementHelper::ToRating($rating);
+        
+        return $ratings;
+    }
 }

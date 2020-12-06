@@ -125,8 +125,8 @@ $routes = [
     "/produto/curtir" => [LikeProductController::class, ""],
     "/produto/descurtir" => [DislikeProductController::class, ""],
     "/produto/subcategoria" => [ProductsBySubCategoryController::class, ""],
-    "/produto/avaliar" => [ProductRateController::class, ""],
-    "/produto/avaliar-post" => [ProductRatePostController::class, ""],
+    "/produto/avaliar" => [ProductRateController::class, "admin,vendedor,comum"],
+    "/produto/avaliar-post" => [ProductRatePostController::class, "admin,vendedor,comum"],
 
     "/admin/usuario/editar" => [UserEditController::class, "admin,vendedor,comum"],
     "/admin/usuario/editar-post" => [UserEditPostController::class, "admin,vendedor,comum"],

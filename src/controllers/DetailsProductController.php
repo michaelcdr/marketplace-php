@@ -13,14 +13,15 @@ class DetailsProductController implements IBaseController
 
     public function proccessRequest(): void
     {
-        if (is_null($_GET["id"]) || !isset($_GET["id"]))
-            header('location: /');
+        if (is_null($_GET["id"]) || !isset($_GET["id"])) header('location: /');
 
         $product = $this->_repoProduct->getById($_GET["id"]);
         $attributesValues = $this->_repoProduct->getAllAttributesValues($_GET["id"]);
         $product->addRangeAttributeValues($attributesValues);
         $similarProducts = $this->_repoProduct->getAllSimilarProducts($_GET["id"]);
-        $isLiked = !isset($_SESSION["userId"]) ? false : $this->_repoProduct->isLiked($_GET["id"], $_SESSION["userId"]);
+        $isLiked = !isset($_SESSION["userId"]) 
+            ? false 
+            : $this->_repoProduct->isLiked($_GET["id"], $_SESSION["userId"]);
         require "views/produto/details-product.php";
     }
 }

@@ -728,9 +728,34 @@ implements IProductRepository
         return $attributesValues;
     }
 
-    public function removeAllAttributesValues($productId){
+    public function removeAllAttributesValues($productId)
+    {
         $stmt = $this->conn->prepare("DELETE FROM attributevalues where ProductId = :productId;");
         $stmt->bindValue(':productId',  $productId);
+        $stmt->execute();
+    }
+    public function addRating($rating)
+    {
+        //var_dump($rating);
+        $stmt = $this->conn->prepare(
+            "INSERT into productscomments(ProductId,Title,Description,Recommended,Rating,Userid,Approved) values(:ProductId,:Title,:desc,:Recommended,:Rating,:Userid,:Approved)"
+        );
+        $stmt->bindValue(':ProductId',  intval($rating->getProductId()));
+        $stmt->bindValue(':Title',  $rating->getTitle());
+        $stmt->bindValue(':desc',  $rating->getDescription());
+        $stmt->bindValue(':Recommended', intval($rating->getRecommended()), PDO::PARAM_INT);
+        $stmt->bindValue(':Rating',  $rating->getRating());
+        $stmt->bindValue(':Userid',  intval($rating->getUserid()), PDO::PARAM_INT);
+        $stmt->bindValue(':Approved',  intval($rating->getApproved()), PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    
+    public function approveRate($productCommentId)
+    {
+        $stmt = $this->conn->prepare(
+            "UPDATE FROM productscomments SET Approved = 1 WHERE ProductCommentId = :productCommentId"
+        );
+        $stmt->bindValue(':productCommentId',  $productCommentId);
         $stmt->execute();
     }
 }

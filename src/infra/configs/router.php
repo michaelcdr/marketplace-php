@@ -6,6 +6,20 @@ use controllers\DestroyDbController;
 use controllers\SearchController;
 use controllers\SeedController;
 use controllers\DetailsProductController;
+use controllers\OrderListController;
+use controllers\OrderDetailsController;
+use controllers\AddToCartController;
+use controllers\CartController;
+use controllers\RemoveFromCartController;
+use controllers\CartListController;
+use controllers\CartAtualizarQtdProdutoController;
+use controllers\ProductsByCategoryController;
+use controllers\CartCheckoutController;
+use controllers\CartCheckoutPostController;
+use controllers\AddressCreateController;
+use controllers\ProductRateController;
+use controllers\ProductRatePostController;
+use controllers\ProductsBySubCategoryController;
 
 use controllers\users\UserLogoutController;
 use controllers\users\UserLoginController;
@@ -20,16 +34,6 @@ use controllers\users\UserPartiaListController;
 use controllers\users\UserRegisterController;
 use controllers\users\UserRegisterPostController;
 
-use controllers\OrderListController;
-use controllers\OrderDetailsController;
-
-use controllers\AddToCartController;
-use controllers\CartController;
-use controllers\RemoveFromCartController;
-use controllers\CartListController;
-use controllers\CartAtualizarQtdProdutoController;
-use controllers\ProductsByCategoryController;
-
 use controllers\products\ProductListController;
 use controllers\products\ProductCreateController;
 use controllers\products\ProductCreatePostController;
@@ -42,8 +46,6 @@ use controllers\products\ProductSimilarController;
 use controllers\products\AddSimilarProductControler;
 use controllers\products\AddSimilarProductPostControler;
 use controllers\products\AddProductAttributeController;
-use controllers\CartCheckoutController;
-use controllers\CartCheckoutPostController;
 
 use controllers\sellers\SellerSimpleCreateController;
 use controllers\sellers\SellerRegisterController;
@@ -77,8 +79,6 @@ use controllers\subcategories\SubCategoryEditController;
 use controllers\subcategories\SubCategoryEditPostController;
 use controllers\subcategories\SubCategoryDeleteController;
 
-use controllers\ProductsBySubCategoryController;
-
 use controllers\attributes\AttributeEditController;
 use controllers\attributes\AttributeEditPostController;
 use controllers\attributes\AttributeCreateController;
@@ -87,12 +87,12 @@ use controllers\attributes\AttributeDeleteController;
 use controllers\attributes\AttributeListController;
 use controllers\attributes\AttributeListPartialController;
 
-use controllers\AddressCreateController;
+
 use controllers\products\SimilarProductPartialListController;
 use controllers\products\DeleteSimilarProductControler;
 use controllers\products\DislikeProductController;
 use controllers\products\LikeProductController;
-use controllers\products\ProductRateController;
+
 
 //rota X [controller , roles]
 $routes = [
@@ -124,6 +124,7 @@ $routes = [
     "/produto/descurtir" => [DislikeProductController::class, ""],
     "/produto/subcategoria" => [ProductsBySubCategoryController::class, ""],
     "/produto/avaliar" => [ProductRateController::class, ""],
+    "/produto/avaliar-post" => [ProductRatePostController::class, ""],
 
     "/admin/usuario/editar" => [UserEditController::class, "admin,vendedor,comum"],
     "/admin/usuario/editar-post" => [UserEditPostController::class, "admin,vendedor,comum"],
@@ -188,9 +189,7 @@ $routes = [
     "/admin/endereco/cadastrar" => [AddressCreateController::class, ""],
 
     "/admin/usuario/minhas-compras" => [OrderListController::class, "admin,vendedor,comum"],
-    "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"],
-    
+    "/admin/pedido/detalhes" => [OrderDetailsController::class, "comum,admin,vendedor"]
 ];
-
 
 return $routes;

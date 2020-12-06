@@ -28,6 +28,7 @@ class Product
     private $categoryId;
     private $subcategoryName;
     private $categoryName;
+    
     public function __construct(
         $id,
         $title,
@@ -62,10 +63,12 @@ class Product
     {
         return $this->ProductId;
     }
+
     public function getUserId()
     {
         return $this->userId;
     }
+
     public function getSeller()
     {
         return $this->Seller;
@@ -155,12 +158,7 @@ class Product
     {
         return $this->imageDefault;
     }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
+    
     public function getImagesStr()
     {
         $itens = array();
@@ -168,6 +166,11 @@ class Product
             $itens[] = $image["FileName"];
         }
         return join("$$", $itens);
+    }
+    
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
     public function isValid(): bool

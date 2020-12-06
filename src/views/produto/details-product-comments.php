@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div class="col-lg-2">
-                        <a class="btn-outline-dark btn pull-right" href="/avaliar/<? echo $product->getProductId(); ?>">Avaliar produto</a>
+                        <a class="btn-outline-dark btn pull-right" href="/produto/avaliar?id=<?php echo $product->getId(); ?>">Avaliar produto</a>
                     </div>
                 </div>
             </div>

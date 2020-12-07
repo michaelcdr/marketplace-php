@@ -813,4 +813,27 @@ class ProductRepository extends MySqlRepository implements IProductRepository
         
         return $ratings;
     }
+
+    public function getAllLikeds($userId)
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT p.ProductId, p.Title, p.Price, p.Description, p.CreatedAt, 
+                    p.CreatedBy, p.Offer, p.Stock, p.Sku, Image.filename as ImageFileName,
+                    p.UserId
+            FROM Products p
+            inner join productslikeds pl on p.productId = pl.productId
+            left join (select pi.ProductId, pi.filename as filename from ProductsImages pi ) as Image on p.ProductId = Image.ProductId 
+            where pl.userId = :userId  group by p.productid  order by p.title "
+        );
+        $stmt->bindValue(':userId',  $userId);
+        $stmt->execute();
+        $produtosResult = $stmt->fetchAll();
+
+        $products = array();
+        foreach ($produtosResult as $row) {
+            $prod = StatementHelper::ToProduct($row);
+            $products[] = $prod;
+        }
+        return $products;
+    }
 }

@@ -31,5 +31,5 @@ interface IProductRepository
     public function approveRating($ratingId);
     public function getAllRatingPaginated($pagina, $search, $pageSize);
     public function getAllRating($productId);
-    
+    public function getAllLikeds($userId);
 }

@@ -64,7 +64,7 @@ class StatementHelper
             $productItem["Stock"],
             $productItem["Sku"],
             $productItem["UserId"],
-            $productItem["Seller"]
+            isset($productItem["Seller"]) ? $productItem["Seller"] : ""
         );
         $product->setDefaultImage($productItem["ImageFileName"]);
         return $product;

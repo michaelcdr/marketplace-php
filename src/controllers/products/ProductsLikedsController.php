@@ -15,6 +15,6 @@
         public function proccessRequest() : void
         {
             $products = $this->productRepository->getAllLikeds($_SESSION["userId"]);
-            require $_SERVER['DOCUMENT_ROOT'] . '\\views\\product\\likeds.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '\\views\\produto\\likeds.php';
         }
     }

@@ -24,9 +24,13 @@
                     <?php foreach ($ratings as $rating): ?>
                         <li class="list-group-item">
                             <div class="row">
-                            
-                                <h5><?php echo $rating->getTitle();?></h5>
-                            
+                                <div class="col-md-12">
+                                    <h4><?php echo $rating->getTitle();?></h4>
+                                    <div>
+                                        <p><?php echo $rating->getDescription();?></p>
+                                        <span class="badge badge-dark">Por: <?php echo $rating->getUserName();?></span>                            
+                                    </div>
+                                </div>
                             </div>
                         </li>
                     <?php endforeach;?>

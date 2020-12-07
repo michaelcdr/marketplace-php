@@ -15,8 +15,8 @@
                 <div class="col-md-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb bg-dark">
-                            <li class="breadcrumb-item"><a href="index.html">Categoria</a></li>
-                            <li class="breadcrumb-item"><a href="index.html"><?php echo $category->getTitle(); ?></a></li>
+                            <li class="breadcrumb-item"><a href="#">Categoria</a></li>
+                            <li class="breadcrumb-item"><a href="#"><?php echo $category->getTitle(); ?></a></li>
                             <li class="breadcrumb-item active" aria-current="page"></li>
                         </ol>
                     </nav>

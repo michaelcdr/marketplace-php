@@ -13,6 +13,7 @@
                     <div class="card p-3">
                         <div class="row">
                             <?php require_once './views/produto/details-product-images.php' ?>
+                            
                             <div class="col-lg-7">
                                 <div class="row">
                                     <div class="col-lg-10">

@@ -729,7 +729,8 @@ class ProductRepository extends MySqlRepository implements IProductRepository
     public function addRating($rating)
     {
         $stmt = $this->conn->prepare(
-            "INSERT into ratings(ProductId,Title,Description,Recommended,Rating,Userid,Approved) values(:ProductId,:Title,:desc,:Recommended,:Rating,:Userid,:Approved)"
+            "INSERT into ratings(ProductId,Title,Description,Recommended,Rating,Userid,Approved) 
+            values(:ProductId,:Title,:desc,:Recommended,:Rating,:Userid,:Approved)"
         );
         $stmt->bindValue(':ProductId',  intval($rating->getProductId()));
         $stmt->bindValue(':Title',  $rating->getTitle());
@@ -750,10 +751,10 @@ class ProductRepository extends MySqlRepository implements IProductRepository
 
     public function getAllRatingPaginated($page, $search, $pageSize )
     {
-        $pageSize = !isset($pageSize) ? 5 :$pageSize;
+        $pageSize = !isset($pageSize) ? 5 : $pageSize;
         $skipNumber = !is_null($page) && $page > 0 ? ($pageSize * ($page - 1)) : 0;
         $stmt = null;
-        $hasSearch = is_null($search) ||  $search === "" ? false :true;
+        $hasSearch = is_null($search) || $search === "" ? false :true;
         $whereClausule = $hasSearch ? " and p.Title like :search or pc.Title like :search or pc.Description like :search " : "";
 
         //contando total de registros...
@@ -795,11 +796,12 @@ class ProductRepository extends MySqlRepository implements IProductRepository
     public function getAllRating($productId)
     {
         $stmt = $this->conn->prepare(
-            "SELECT pc.RatingId, pc.ProductId, pc.Rating, pc.Recommended, pc.Title, pc.Description, pc.Approved, u.UserId, p.Title as ProductTitle,  p.Sku, u.Name as UserName
+            "SELECT pc.RatingId, pc.ProductId, pc.Rating, pc.Recommended, pc.Title, pc.Description, 
+                    pc.Approved, u.UserId, p.Title as ProductTitle,  p.Sku, u.Name as UserName
             from Ratings pc
             inner join products p on pc.ProductId = p.ProductId
             inner join users u on p.UserId = u.UserId             
-            where pc.Approved = 1 and pc.ProductId = :ProductId group by pc.RatingId  order by p.title "
+            where pc.Approved = 1 and pc.ProductId = :ProductId group by pc.RatingId order by p.title "
         );
         $stmt->bindValue(':ProductId', intval($productId), PDO::PARAM_INT);
         $stmt->execute();

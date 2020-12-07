@@ -23,7 +23,7 @@ class StatementHelper
         );
         $rating->setSku($statement["Sku"]);
         $rating->setProductTitle($statement["ProductTitle"]);
-        
+        $rating->setUserName($statement["UserName"]);
         if (isset($statement["ImageDefault"]) && $statement["ImageDefault"] != "")
             $rating->setImage(SrcHelper::getProductImg() . $statement["ImageDefault"]);
         

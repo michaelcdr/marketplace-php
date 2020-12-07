@@ -33,10 +33,10 @@
                             <td>
                                 <strong>Sku: </strong><?php echo $rating->getSku(); ?><br />
                                 <strong>Produto:</strong><?php echo $rating->getProductTitle(); ?><br />
-                                <strong>Titulo:</strong><?php echo $rating->getTitle(); ?><br />
+                                <strong>Título:</strong><?php echo $rating->getTitle(); ?><br />
                                 <strong>Avaliação:</strong><?php echo $rating->getRating(); ?><br />
                                 <strong>Recomenda:</strong><?php echo ($rating->getRecommended() == 1 ? "Sim" : "Não"); ?><br /> 
-                                <strong>Description:</strong><br />
+                                <strong>Descrição:</strong><br />
                                 <?php echo $rating->getDescription(); ?>
                             </td>
                         </tr>

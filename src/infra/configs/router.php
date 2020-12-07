@@ -95,6 +95,7 @@ use controllers\products\DislikeProductController;
 use controllers\products\LikeProductController;
 use controllers\products\ListOfRatingPendingPartialController;
 use controllers\products\ApproveRatingController;
+use controllers\products\ProductsLikedsController;
 
 //rota X [controller , roles]
 $routes = [
@@ -125,6 +126,7 @@ $routes = [
     "/produto/curtir" => [LikeProductController::class, ""],
     "/produto/descurtir" => [DislikeProductController::class, ""],
     "/produto/subcategoria" => [ProductsBySubCategoryController::class, ""],
+    "/produto/curtidos" => [ProductsLikedsController::class, "admin,vendedor,comum"],
     "/produto/avaliar" => [ProductRateController::class, "admin,vendedor,comum"],
     "/produto/avaliar-post" => [ProductRatePostController::class, "admin,vendedor,comum"],
 

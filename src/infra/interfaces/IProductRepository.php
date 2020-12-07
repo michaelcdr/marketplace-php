@@ -32,4 +32,5 @@ interface IProductRepository
     public function getAllRatingPaginated($pagina, $search, $pageSize);
     public function getAllRating($productId);
     public function getAllLikeds($userId);
+    public function getAllByPreviousOrders($userId);
 }

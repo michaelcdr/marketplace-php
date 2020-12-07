@@ -9,12 +9,13 @@ class HomeController implements IBaseController
     private $_repoOfertas;
     private $_repoCarousel;
     private $_repoCategories;
-
+    private $_repoProducts;
     public function __construct($factory)
     {
         $this->_repoOfertas = $factory->getProductOnOfferRepository();
         $this->_repoCarousel = $factory->getCarouselRepository();
         $this->_repoCategories = $factory->getCategoryRepository();
+        $this->_repoProducts = $factory->getProductRepository();
     }
 
     public function getProductsOnOffer()
@@ -33,6 +34,10 @@ class HomeController implements IBaseController
         $caroselItens = $this->getCaroselItens();
         $categories = $this->_repoCategories->getAll();
         $carouselImgPath = SrcHelper::getCarouselSrc();
+
+
+        $ofertasBaseadasCompras = $this->_repoProducts->getAllByPreviousOrders($_SESSION["userId"]);
+        
         require "views/home/home.php";
     }
 }

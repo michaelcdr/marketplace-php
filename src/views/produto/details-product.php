@@ -20,8 +20,9 @@
                                         <h4><?php echo $product->getTitle(); ?></h4>
                                     </div>
                                     <div class="col-lg-2 text-right">
-                                        <i id="btn-like" data-product-id="<?php echo $product->getId(); ?>" 
-                                            class="cursor fa <?php echo ($isLiked === TRUE ? "fa-heart" : "fa-heart-o"); ?>"></i>
+                                    <?php if (isset($_SESSION["userId"])): ?>
+                                        <i id="btn-like" data-product-id="<?php echo $product->getId(); ?>" class="cursor fa <?php echo ($isLiked === TRUE ? "fa-heart" : "fa-heart-o"); ?>"></i>
+                                    <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="sku">(Cód. <?php echo $product->getSku(); ?>)</div>

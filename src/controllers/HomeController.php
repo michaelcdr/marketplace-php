@@ -35,7 +35,6 @@ class HomeController implements IBaseController
         $categories = $this->_repoCategories->getAll();
         $carouselImgPath = SrcHelper::getCarouselSrc();
 
-
         $ofertasBaseadasCompras = $this->_repoProducts->getAllByPreviousOrders($_SESSION["userId"]);
         
         require "views/home/home.php";

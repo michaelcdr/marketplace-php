@@ -24,7 +24,7 @@ use PDOException;
 class MySqlRepositoryFactory extends RepositoryFactory
 {
     private $host = "localhost";
-    private $db_name = "marketplace";
+    private $dbname = "marketplace";
     private $port = "3306";
     private $username = "michael";
     private $password = "giacom";
@@ -36,11 +36,10 @@ class MySqlRepositoryFactory extends RepositoryFactory
         $this->conn = null;
 
         try {
-            //echo "getConnection";
             $this->conn = new PDO(
                 "mysql:host=" . $this->host .
-                    ";port=" . $this->port .
-                    ";dbname=" . $this->db_name,
+                ";port=" . $this->port .
+                ";dbname=" . $this->dbname,
                 $this->username,
                 $this->password
             );

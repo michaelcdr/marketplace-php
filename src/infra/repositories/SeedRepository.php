@@ -185,6 +185,10 @@ implements ISeedRepository
         $this->createTableOrder();
         $this->createTableOrderItens();
         $this->createTableSimilarProducts();
+
+        $this->createTableAttributes();
+        $this->createTableAttributeValues();
+        $this->createTableComments();
     }
 
     public function destroyDatabase()
@@ -402,7 +406,7 @@ implements ISeedRepository
             AttributeId int NOT NULL,
             ProductId int NOT NULL,
             Value varchar(255) NOT NULL,
-            FOREIGN KEY(AttributeId) REFERENCES Atributes(AttributeId),
+            FOREIGN KEY(AttributeId) REFERENCES Attributes(AttributeId),
             FOREIGN KEY(ProductId) REFERENCES Products(ProductId)
         );";
         $this->conn->exec($query);
